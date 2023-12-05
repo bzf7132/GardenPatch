@@ -36,3 +36,44 @@
     max-width: 10%;
     height: auto;
 }
+
+.seedHeader {
+    width: 75%;
+    margin: auto;
+    background-color: #70FF99;
+    height: 4em;
+    display: flex;
+}
+
+.addSeed {
+    flex-basis: 16%;
+}
+.removeSeed {
+    flex-basis: 16%;
+}
+.seedRefine {
+    flex-basis: 16%;
+}
+.seedSearch{
+    flex-basis: 50%;
+}
+
+.button {
+    color: #000000;
+    border: #cbfad0;
+    text-align: center;
+    font-size: 1rem;
+    padding: 1rem;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 8px;
+    transition-duration: 0.2s;
+}
+.button:hover {
+    background-color: #cbfad0;
+}
+.addSeedButton {
+    background-color: #D2FCD6;
+}
+.removeSeedButton {
+    background-color: #D2FCD6;
+}
