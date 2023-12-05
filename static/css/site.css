@@ -36,44 +36,61 @@
     max-width: 10%;
     height: auto;
 }
-
-.seedHeader {
-    width: 75%;
-    margin: auto;
-    background-color: #70FF99;
-    height: 4em;
-    display: flex;
-}
-
-.addSeed {
-    flex-basis: 16%;
-}
-.removeSeed {
-    flex-basis: 16%;
-}
-.seedRefine {
-    flex-basis: 16%;
-}
-.seedSearch{
-    flex-basis: 50%;
-}
-
 .button {
     color: #000000;
     border: #cbfad0;
     text-align: center;
     font-size: 1rem;
-    padding: 1rem;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    padding: 1rem 0em 1rem 0rem;
+    width: 90%;
+    box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 8px;
     transition-duration: 0.2s;
 }
 .button:hover {
     background-color: #cbfad0;
 }
+
+
+/* Seed Library CSS */
+.seedPlantHeader {
+    width: 75%;
+    margin: auto;
+    background-color: #70FF99;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+.addSeed {
+    flex-basis: 14%;
+}
+.removeSeed {
+    flex-basis: 14%;
+}
+.seedRefine {
+    flex-basis: 14%;
+}
+.seedSearch{
+    flex-basis: 54%;
+    display: flex;
+    justify-content: right;
+}
 .addSeedButton {
+    background-color: #D2FCD6;
+}
+.refineSeedButton {
     background-color: #D2FCD6;
 }
 .removeSeedButton {
     background-color: #D2FCD6;
+}
+.seedSearch input[type=text] {
+    width: 65%;
+    background-color: #D2FCD6;
+    border-radius: 8px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 1rem;
 }
