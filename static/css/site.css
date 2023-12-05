@@ -4,6 +4,8 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: black;
     padding: 8px 5px 8px 5px;
+    display: flex;
+    justify-content: center;
 }
 
 .navbar a {
@@ -11,13 +13,7 @@
     color: inherit;
 }
 
-.navbar-brand {
-    font-size: 1.2em;
-    font-weight: 600;
-}
-
 .navbar-item {
-    font-variant: small-caps;
     margin-left: 30px;
 }
 
@@ -25,4 +21,16 @@
     padding: 5px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #D2FCD6;
+}
+
+.logo {
+    background-color: #D2FCD6;
+}
+
+.logo img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 10%;
+    height: auto;
 }
