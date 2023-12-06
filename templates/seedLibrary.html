@@ -5,17 +5,35 @@ Seed Library
 {% block content %}
 <p>This is the seed library page</p>
 <div class="seedPlantHeader">
-    <div class="addSeed">
+    <div class="addButton">
         <button class="button addSeedButton">Add Seed</button>
     </div>
-    <div class="removeSeed">
+    <div class="removeButton">
         <button class="button removeSeedButton">Remove Seed</button>
     </div>
-    <div class="seedRefine">
+    <div class="refineButton">
         <button class="button refineSeedButton">Refine Options</button>
     </div>
-    <div class="seedSearch">
+    <div class="searchBar">
         <input type="text" placeholder="Search..">
     </div>
 </div>
+<button class="seedBasicInfo">
+    <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
+
+    <div class="SeedName">
+        <p>Seed Name</p>
+    </div>
+    <div class="PlantType">
+        <p>Type of Plant</p>
+    </div>
+    <div class="PlantSeason">
+        <p>When to Plant</p>
+    </div>
+
+    <label class="container">
+        <input type="checkbox">
+        <span class="checkmark"></span>
+    </label>
+</button>
 {% endblock %}

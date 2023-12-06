@@ -19,7 +19,7 @@
 
 .body-content {
     padding: 5px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Segoe UI', Tahoma, Verdana, sans-serif;
     background-color: #D2FCD6;
 }
 
@@ -37,10 +37,10 @@
     height: auto;
 }
 .button {
-    color: #000000;
+    background-color: #D2FCD6;
     border: #cbfad0;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1em;
     padding: 1rem 0em 1rem 0rem;
     width: 90%;
     box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -52,7 +52,7 @@
 }
 
 
-/* Seed Library CSS */
+/* Seed Library and My Plants CSS */
 .seedPlantHeader {
     width: 75%;
     margin: auto;
@@ -63,30 +63,21 @@
     justify-content: center;
     border-radius: 8px;
 }
-.addSeed {
+.addButton {
     flex-basis: 14%;
 }
-.removeSeed {
+.removeButton {
     flex-basis: 14%;
 }
-.seedRefine {
+.refineButton {
     flex-basis: 14%;
 }
-.seedSearch{
+.searchBar{
     flex-basis: 54%;
     display: flex;
     justify-content: right;
 }
-.addSeedButton {
-    background-color: #D2FCD6;
-}
-.refineSeedButton {
-    background-color: #D2FCD6;
-}
-.removeSeedButton {
-    background-color: #D2FCD6;
-}
-.seedSearch input[type=text] {
+.searchBar input[type=text] {
     width: 65%;
     background-color: #D2FCD6;
     border-radius: 8px;
@@ -94,3 +85,57 @@
     padding-bottom: 1rem;
     font-size: 1rem;
 }
+.seedBasicInfo {
+    width: 75%;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #7dffa2;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.seedBasicInfo img {
+    max-width: 80%;
+    max-height: 80%;
+}
+.SeedName {
+    flex-basis: 30%;
+}
+.PlantType {
+    flex-basis: 30%;
+}
+.PlantSeason {
+    flex-basis: 25%;
+}
+
+.container { /* Container for checkbox */
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+.container input { /* Hides default checkbox */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .checkmark { /* Creates new checkbox */
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+  }
