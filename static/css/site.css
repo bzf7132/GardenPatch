@@ -42,7 +42,7 @@
     font-size: 1em;
     padding: 1rem 0em 1rem 0rem;
     width: 90%;
-    box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 8px;
     transition-duration: 0.2s;
 }
@@ -95,7 +95,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 .seedBasicInfo img {
     max-width: 80%;
@@ -153,6 +153,10 @@
     display: grid;
     grid-template-rows: 10% 90%;
     text-align: center;
+    visibility: hidden;
+  }
+  .open-seedPopup { /* Open popup window in seed library */
+    visibility: visible;
   }
   .infoContainer {
     max-width: 100%;
@@ -168,4 +172,8 @@
     object-fit: contain;
     max-width: 100%;
     max-height: 100%;
+  }
+  .infoContainer button {
+    outline: none;
+    background: #D2FCD6;
   }

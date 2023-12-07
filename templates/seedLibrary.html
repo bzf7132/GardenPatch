@@ -18,7 +18,7 @@ Seed Library
         <input type="text" placeholder="Search..">
     </div>
 </div>
-<button class="seedBasicInfo">
+<button class="seedBasicInfo" onclick="openPopup()">
     <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
     <div class="SeedName">
         <p>Seed Name</p>
@@ -34,7 +34,7 @@ Seed Library
         <span class="checkmark"></span>
     </label>
 </button>
-<div class="seedPopup">
+<div class="seedPopup" id="seedPopup">
     <h2>Seed Name</h2>
     <div class="infoContainer">
         <div class="seedImage"> 
@@ -47,7 +47,17 @@ Seed Library
         <p>Maturity Time</p>
         <p>Sun Requirement</p>
         <p>When to Plant</p>
-        <button class="seedExit">Exit</button>
+        <button class="seedExit" onclick="closePopup()">Exit</button>
     </div>
 </div>
+
+<script>
+    let seedPopup = document.getElementById("seedPopup")
+    function openPopup() {
+        seedPopup.classList.add("open-seedPopup");
+    }
+    function closePopup() {
+        seedPopup.classList.remove("open-seedPopup");
+    }
+</script>
 {% endblock %}
