@@ -20,7 +20,6 @@ Seed Library
 </div>
 <button class="seedBasicInfo">
     <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
-
     <div class="SeedName">
         <p>Seed Name</p>
     </div>
@@ -30,10 +29,25 @@ Seed Library
     <div class="PlantSeason">
         <p>When to Plant</p>
     </div>
-
     <label class="container">
         <input type="checkbox">
         <span class="checkmark"></span>
     </label>
 </button>
+<div class="seedPopup">
+    <h2>Seed Name</h2>
+    <div class="infoContainer">
+        <div class="seedImage"> 
+            <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
+        </div>
+        <p>Type of Plant</p>
+        <p>Germinate Time</p>
+        <p>Planting Depth</p>
+        <p>Plant Spacing</p>
+        <p>Maturity Time</p>
+        <p>Sun Requirement</p>
+        <p>When to Plant</p>
+        <button class="seedExit">Exit</button>
+    </div>
+</div>
 {% endblock %}
