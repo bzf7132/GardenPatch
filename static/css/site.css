@@ -38,7 +38,6 @@
 }
 .button {
     background-color: #D2FCD6;
-    border: #cbfad0;
     text-align: center;
     font-size: 1em;
     padding: 1rem 0em 1rem 0rem;
@@ -138,4 +137,35 @@
     height: 25px;
     width: 25px;
     background-color: #eee;
+  }
+
+  /* Seed Popup CSS */
+  .seedPopup {
+    width: 50%;
+    background-color: #7dffa2;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #59e280;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    display: grid;
+    grid-template-rows: 10% 90%;
+    text-align: center;
+  }
+  .infoContainer {
+    max-width: 100%;
+    max-height: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 16% 16% 16% 16% 16% 16%;
+  }
+  .seedImage {
+    grid-area: 1 / 1 / 5 / 1;
+  }
+  .seedImage img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
   }
