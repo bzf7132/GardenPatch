@@ -5,17 +5,57 @@ My Plants
 {% block content %}
 <p>This is the my plants page</p>
 <div class="seedPlantHeader">
-    <div class="addButton">
-        <button class="button addPlantButton">Add Plant</button>
+    <div class="addItemButton">
+        <button class="button addButton">Add Plant</button>
     </div>
-    <div class="removeButton">
-        <button class="button removePlantButton">Remove Plant</button>
+    <div class="removeItemButton">
+        <button class="button removeButton">Remove Plant</button>
     </div>
-    <div class="refineButton">
-        <button class="button refinePlantButton">Refine Options</button>
+    <div class="refineItemButton">
+        <button class="button refineButton">Refine Options</button>
     </div>
     <div class="searchBar">
         <input type="text" placeholder="Search..">
     </div>
 </div>
+<div class="BasicInfo">
+    <button class="InfoButton" onclick="openPopup()">
+        <div class="Name">
+            <p>Plant Name</p>
+        </div>
+        <div class="Type">
+            <p>Type of Plant</p>
+        </div>
+        <div class="Season">
+            <p>When to Plant</p>
+        </div>
+    </button>
+    <label class="container">
+        <input type="checkbox">
+        <span class="checkmark"></span>
+    </label>
+</div>
+<div class="PlantPopup" id="PlantPopup">
+    <h2>Plant Name</h2>
+    <div class="infoContainer">
+        <div class="infoBackground"><p>Germination Date</p></div>
+        <div class="infoBackground"><p>Actual Date</p></div>
+        <div class="infoBackground"><p>Plant Maturity</p></div>
+        <div class="infoBackground"><p>Type of Plant</p></div>
+        <div class="infoBackground"><p>Sun Requirement</p></div>
+        <div class="infoBackground"><p>What it has been Planted in</p></div>
+        <button class="seedExit" onclick="closePopup()">Remove</button>
+        <button class="seedExit" onclick="closePopup()">Exit</button>
+    </div>
+</div>
+
+<script>
+    let seedPopup = document.getElementById("PlantPopup")
+    function openPopup() {
+        seedPopup.classList.add("open-PlantPopup");
+    }
+    function closePopup() {
+        seedPopup.classList.remove("open-PlantPopup");
+    }
+</script>
 {% endblock %}
