@@ -1,3 +1,5 @@
+
+/* Navigation Menu */
 .navbar {
     background-color: #70FF99;
     font-size: 2em;
@@ -42,13 +44,14 @@
     font-size: 1em;
     padding: 1rem 0em 1rem 0rem;
     width: 90%;
-    box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 8px;
     transition-duration: 0.2s;
 }
 .button:hover {
     background-color: #cbfad0;
 }
+
 
 
 /* Seed Library and My Plants CSS */
@@ -62,13 +65,13 @@
     justify-content: center;
     border-radius: 8px;
 }
-.addButton {
+.addItemButton {
     flex-basis: 14%;
 }
-.removeButton {
+.removeItemButton {
     flex-basis: 14%;
 }
-.refineButton {
+.refineItemButton {
     flex-basis: 14%;
 }
 .searchBar{
@@ -84,20 +87,26 @@
     padding-bottom: 1rem;
     font-size: 1rem;
 }
-.seedBasicInfo {
+.BasicInfo {
     width: 75%;
     margin-top: 1rem;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.InfoButton {
+    width: 80%;
     background-color: #7dffa2;
     height: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
-.seedBasicInfo img {
+.InfoButton img {
     max-width: 80%;
     max-height: 80%;
 }
@@ -111,7 +120,9 @@
     flex-basis: 25%;
 }
 
-.container { /* Container for checkbox */
+
+/* Container for checkbox */
+.container { 
     display: block;
     position: relative;
     padding-left: 35px;
@@ -123,22 +134,55 @@
     -ms-user-select: none;
     user-select: none;
   }
-.container input { /* Hides default checkbox */
+/* Hides default checkbox */
+.container input { 
     position: absolute;
     opacity: 0;
     cursor: pointer;
     height: 0;
     width: 0;
   }
-  .checkmark { /* Creates new checkbox */
+  /* Creates new checkbox */
+  .checkmark {
     position: absolute;
     top: 0;
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: #eee;
+    background-color:#59e280;
+  }
+  /* When mouse hovers, change to a light green background colour */
+.container:hover input ~ .checkmark {
+    background-color:#7dffa2;
+  }
+  /* When the checkbox has been clicked, change colour */
+  .container input:checked ~ .checkmark {
+    background-color:#70FF99;
+  }
+  /* Create the checkmark */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  /* Style the checkmark*/
+  .container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid rgb(0, 0, 0);
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
   }
 
+  
   /* Seed Popup CSS */
   .seedPopup {
     width: 50%;
@@ -153,6 +197,11 @@
     display: grid;
     grid-template-rows: 10% 90%;
     text-align: center;
+    visibility: hidden;
+  }
+  /* Open popup window in seed library */
+  .open-seedPopup { 
+    visibility: visible;
   }
   .infoContainer {
     max-width: 100%;
@@ -160,12 +209,47 @@
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 16% 16% 16% 16% 16% 16%;
+    place-items: center;
+    font-size: 1rem;
   }
   .seedImage {
     grid-area: 1 / 1 / 5 / 1;
   }
   .seedImage img {
     object-fit: contain;
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 80%;
+    max-height: 80%;
+  }
+  .infoContainer button {
+    padding: 1rem;
+    width: 80%;
+    outline: none;
+    background: #D2FCD6;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 8px;
+  }
+  .infoBackground {
+    width: 80%;
+    background-color: #cbfad0;
+  }
+
+  /* Plant Popup */
+  .PlantPopup {
+    width: 50%;
+    background-color: #7dffa2;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #59e280;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    display: grid;
+    grid-template-rows: 10% 90%;
+    text-align: center;
+    visibility: hidden;
+  }
+  /* Open popup window in seed library */
+  .open-PlantPopup { 
+    visibility: visible;
   }

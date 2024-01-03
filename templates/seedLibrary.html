@@ -5,49 +5,61 @@ Seed Library
 {% block content %}
 <p>This is the seed library page</p>
 <div class="seedPlantHeader">
-    <div class="addButton">
-        <button class="button addSeedButton">Add Seed</button>
+    <div class="addItemButton">
+        <button class="button addButton">Add Seed</button>
     </div>
-    <div class="removeButton">
-        <button class="button removeSeedButton">Remove Seed</button>
+    <div class="removeItemButton">
+        <button class="button removeButton">Remove Seed</button>
     </div>
-    <div class="refineButton">
-        <button class="button refineSeedButton">Refine Options</button>
+    <div class="refineItemButton">
+        <button class="button refineButton">Refine Options</button>
     </div>
     <div class="searchBar">
         <input type="text" placeholder="Search..">
     </div>
 </div>
-<button class="seedBasicInfo">
-    <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
-    <div class="SeedName">
-        <p>Seed Name</p>
-    </div>
-    <div class="PlantType">
-        <p>Type of Plant</p>
-    </div>
-    <div class="PlantSeason">
-        <p>When to Plant</p>
-    </div>
+<div class="BasicInfo">
+    <button class="InfoButton" onclick="openPopup()">
+        <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
+        <div class="SeedName">
+            <p>Seed Name</p>
+        </div>
+        <div class="PlantType">
+            <p>Type of Plant</p>
+        </div>
+        <div class="PlantSeason">
+            <p>When to Plant</p>
+        </div>
+    </button>
     <label class="container">
         <input type="checkbox">
         <span class="checkmark"></span>
     </label>
-</button>
-<div class="seedPopup">
+</div>
+<div class="seedPopup" id="seedPopup">
     <h2>Seed Name</h2>
     <div class="infoContainer">
         <div class="seedImage"> 
             <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
         </div>
-        <p>Type of Plant</p>
-        <p>Germinate Time</p>
-        <p>Planting Depth</p>
-        <p>Plant Spacing</p>
-        <p>Maturity Time</p>
-        <p>Sun Requirement</p>
-        <p>When to Plant</p>
-        <button class="seedExit">Exit</button>
+        <div class="infoBackground"><p>Type of Plant</p></div>
+        <div class="infoBackground"><p>Germinate Time</p></div>
+        <div class="infoBackground"><p>Planting Depth</p></div>
+        <div class="infoBackground"><p>Plant Spacing</p></div>
+        <div class="infoBackground"><p>Maturity Time</p></div>
+        <div class="infoBackground"><p>Sun Requirement</p></div>
+        <div class="infoBackground"><p>When to Plant</p></div>
+        <button class="seedExit" onclick="closePopup()">Exit</button>
     </div>
 </div>
+
+<script>
+    let seedPopup = document.getElementById("seedPopup")
+    function openPopup() {
+        seedPopup.classList.add("open-seedPopup");
+    }
+    function closePopup() {
+        seedPopup.classList.remove("open-seedPopup");
+    }
+</script>
 {% endblock %}
