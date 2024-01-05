@@ -4,4 +4,83 @@ Tasks
 {% endblock %}
 {% block content %}
 <p>Tasks will be displayed here</p>
+<div class="tasksPage">
+    <div class="leftTasks">
+        <div class="myTasks">My Tasks</div>
+        <div class="tasksDaily">
+            <div class="tasksToday">Today</div>
+            <div class="tasksCompleted">Completed</div>
+        </div>
+        <div class="tasksBox">
+            <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
+            <button class="taskButton">N</button>
+        </div>
+        <div class="tasksTomorrow">Tomorrow</div>
+        <div class="tomorrowTasks">
+            <button class="tomorrowSelect" onclick="openTaskPopup()">Tomorrow Task</button>
+            <button class="tomorrowButton">N</button>
+        </div>
+    </div>
+
+    <div class="rightTasks">
+        <button class="addTasks" onclick="openPopup()">Add Tasks</button>
+        <div class="tasksWeekly">
+            <div class="weeklyTasks">Weekly</div>
+            <div class="tasksCompleted">Completed</div>
+        </div>
+        <div class="tasksBox">
+            <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
+            <button class="taskButton">N</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Task Popup-->
+<div class="taskPopup" id="taskPopup">
+    <div class="infoBackground"><h1>Task Name</h1></div>
+    <div class="taskDescription">Task Description</div>
+    <div class="taskPopupLayout">
+        <div class="DateforTask">Need to add Date</div>
+        <div class="Reccuring">Recurring: No</div>
+        <button class="submitButton" onclick="closeTaskPopup()">Submit</button>
+        <button class="exitButton" onclick="closeTaskPopup()">Exit</button>
+    </div>
+</div>
+
+<!--Add Task Popup-->
+<div class="addTaskPopup" id="addTaskPopup">
+        <div class="infoBackground"><p>Add Tasks</p></div>
+        <form>
+            <input type="text" name="taskName" placeholder="Task Name">
+            <textarea name="taskDesc" rows="4" cols="50" placeholder="Task Description"></textarea>
+            <input type="date" name="Date" placeholder="Date">
+            <select name="yesNo">
+                <option value="" disabled selected hidden>Recurring?</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </form>
+        <button class="submitButton" onclick="closePopup()">Submit</button>
+        <button class="exitButton" onclick="closePopup()">Exit</button>
+</div>
+
+<script>
+    /* Js Popup for tasks */
+    let taskPopup = document.getElementById("taskPopup")
+    function openTaskPopup() {
+        taskPopup.classList.add("open-taskPopup");
+    }
+    function closeTaskPopup() {
+        taskPopup.classList.remove("open-taskPopup");
+    }
+
+    /* Js Popup for Adding Task */
+    let addTaskPopup = document.getElementById("addTaskPopup")
+    function openPopup() {
+        addTaskPopup.classList.add("open-addTaskPopup");
+    }
+    function closePopup() {
+        addTaskPopup.classList.remove("open-addTaskPopup");
+    }
+</script>
 {% endblock %}
