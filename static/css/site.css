@@ -93,12 +93,11 @@
     margin-top: 1rem;
     margin-left: auto;
     margin-right: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 95% 5%;
 }
 .InfoButton {
-    width: 80%;
+    width: 100%;
     background-color: #7dffa2;
     height: 4rem;
     display: flex;
@@ -126,8 +125,6 @@
 .container { 
     display: block;
     position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
     cursor: pointer;
     font-size: 22px;
     -webkit-user-select: none;
@@ -148,9 +145,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 25px;
-    width: 25px;
+    height: 4rem;
+    width: 3rem;
     background-color:#59e280;
+    border-radius: 8px;
   }
   /* When mouse hovers, change to a light green background colour */
 .container:hover input ~ .checkmark {
@@ -172,12 +170,12 @@
   }
   /* Style the checkmark*/
   .container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
+    left: 15px;
+    top: 10px;
+    width: 25%;
+    height: 50%;
     border: solid rgb(0, 0, 0);
-    border-width: 0 3px 3px 0;
+    border-width: 0 2px 2px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
@@ -366,7 +364,6 @@ padding: 1rem;
   transform: translate(-50%, -50%);
   border: 3px solid #59e280;
   box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  place-items: center;
   text-align: center;
   visibility: hidden; 
 }
