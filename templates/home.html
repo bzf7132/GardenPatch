@@ -4,4 +4,41 @@ Home Page
 {% endblock %}
 {% block content %}
 <p>Welcome to Garden Patch!</p>
+<div class="homeLayout">
+    <div class="homeLeft">
+        <div class="homeTaskHeader"><h1>Today's Tasks</h1></div>
+        <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
+        <div class="homeTaskHeader"><h1>Weekly Tasks</h1></div>
+        <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
+    </div>
+    <div class="homeRight">
+        <div class="homeInfo">Germination Complete</div>
+        <div class="homeInfo">Seedling Ready To Plant</div>
+        <div class="homeInfo">Plant Maturity Reached</div>
+        <div class="homeInfo">Ready to Sow</div>
+    </div>
+
+</div>
+
+<!-- View Task Popup-->
+<div class="taskPopup" id="taskPopup">
+    <div class="infoBackground"><h1>Task Name</h1></div>
+    <div class="taskDescription">Task Description</div>
+    <div class="taskPopupLayout">
+        <div class="DateforTask">Need to add Date</div>
+        <div class="Reccuring">Recurring: No</div>
+        <button class="submitButton" onclick="closeTaskPopup()">Submit</button>
+        <button class="exitButton" onclick="closeTaskPopup()">Exit</button>
+    </div>
+</div>
+
+<script>
+    let taskPopup = document.getElementById("taskPopup")
+    function openTaskPopup() {
+        taskPopup.classList.add("open-taskPopup");
+    }
+    function closeTaskPopup() {
+        taskPopup.classList.remove("open-taskPopup");
+    }
+</script>
 {% endblock %}
