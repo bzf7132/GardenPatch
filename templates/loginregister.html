@@ -5,15 +5,54 @@ Login or Register
 {% block content %}
 <p>You will be able to login or register soon!</p>
 <div class="login-container">
-    <h2>Login</h2>
-    <form action="/login" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+    <div class="tab" onclick="showTab('loginTab')">Login</div>
+    <div class="tab" onclick="showTab('registerTab')">Register</div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+    <div id="loginTab" class="tab-content active">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
 
-        <button type="submit">Login</button>
-    </form>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="registerTab" class="tab-content">
+        <h2>Register</h2>
+        <form action="/register" method="post">
+            <label for="regUsername">Username:</label>
+            <input type="text" id="regUsername" name="regUsername" required>
+
+            <label for="regPassword">Password:</label>
+            <input type="password" id="regPassword" name="regPassword" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <label for="hemisphere">Hemisphere:</label>
+            <select id="hemisphere" name="hemisphere" required>
+                <option value="northern">Northern</option>
+                <option value="southern">Southern</option>
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
 </div>
+
+<script>
+    function showTab(tabId) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        // Show the selected tab
+        document.getElementById(tabId).classList.add('active');
+    }
+</script>
 {% endblock %}

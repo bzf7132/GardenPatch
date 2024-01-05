@@ -53,8 +53,28 @@
     background-color: #cbfad0;
 }
 
+/* Login and Register Page */
 
-
+.login-container {
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  background-color: #59e280;
+}
+.tab {
+  display: inline-block;
+  width: 49%;
+  padding: 1rem 0rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+.tab-content {
+  display: none;
+}
+.active {
+  display: block;
+}
 /* Seed Library and My Plants CSS */
 .seedPlantHeader {
     width: 75%;
