@@ -390,3 +390,19 @@ padding: 1rem;
 .open-addTaskPopup {
   visibility: visible;
 }
+
+
+/* Home CSS */
+.homeLayout {
+  display: grid;
+  grid-template-columns: 47% 47%;
+  column-gap: 6%;
+}
+.homeTaskHeader {
+  background-color: #59e280;
+}
+.homeInfo {
+  background-color: #59e280;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
