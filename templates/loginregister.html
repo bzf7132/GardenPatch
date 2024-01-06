@@ -10,20 +10,20 @@ Login or Register
 
     <div id="loginTab" class="tab-content active">
         <h2>Login</h2>
-        <form action="/login" method="post">
+        <form action="#" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <button type="submit">Login</button>
+            <button type="submit" name="Login">Login</button>
         </form>
     </div>
 
     <div id="registerTab" class="tab-content">
         <h2>Register</h2>
-        <form action="/register" method="post">
+        <form action="#" method="post">
             <label for="regUsername">Username:</label>
             <input type="text" id="regUsername" name="regUsername" required>
 
@@ -39,9 +39,14 @@ Login or Register
                 <option value="southern">Southern</option>
             </select>
 
-            <button type="submit">Register</button>
+            <button type="submit" name="Register">Register</button>
         </form>
     </div>
+</div>
+
+<div id="errorPopup" class="errorPopup">
+    <span class="close" onclick="closeErrorPopup()">&times;</span>
+    <p id="errorText"></p>
 </div>
 
 <script>
@@ -53,6 +58,15 @@ Login or Register
 
         // Show the selected tab
         document.getElementById(tabId).classList.add('active');
+    }
+
+    function showErrorPopup(errorMessage) {
+        document.getElementById('errorText').innerText = errorMessage;
+        document.getElementById('errorPopup').style.display = 'block';
+    }
+
+    function closeErrorPopup() {
+        document.getElementById('errorPopup').style.display = 'none';
     }
 </script>
 {% endblock %}

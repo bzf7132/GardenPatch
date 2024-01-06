@@ -3,7 +3,7 @@
 Home Page
 {% endblock %}
 {% block content %}
-<p>Welcome to Garden Patch!</p>
+{% if current_user.is_authenticated %}
 <div class="homeLayout">
     <div class="homeLeft">
         <div class="homeTaskHeader"><h1>Today's Tasks</h1></div>
@@ -31,6 +31,9 @@ Home Page
         <button class="exitButton" onclick="closeTaskPopup()">Exit</button>
     </div>
 </div>
+{% else %}
+<p>Welcome to Garden Patch!</p>
+{% endif %}
 
 <script>
     let taskPopup = document.getElementById("taskPopup")
