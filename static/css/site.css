@@ -2,7 +2,7 @@
 /* Navigation Menu */
 .navbar {
     background-color: #70FF99;
-    font-size: 2em;
+    font-size: 1.5em;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: black;
     padding: 8px 5px 8px 5px;
@@ -75,6 +75,28 @@
 .active {
   display: block;
 }
+.errorPopup {
+  display: none; /* Initially hide the popup */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff; /* Set background color */
+  padding: 20px;
+  border: 1px solid #ccc; /* Add a border for better visibility */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  z-index: 1000; /* Set a high z-index to ensure it appears above other elements */
+}
+
+/* Style for the close button */
+#errorPopup .closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+
 /* Seed Library and My Plants CSS */
 .seedPlantHeader {
     width: 75%;
