@@ -236,13 +236,14 @@
     border: 3px solid #59e280;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     display: grid;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 15% 85%;
     text-align: center;
     visibility: hidden;
   }
   /* Open popup window in seed library */
-  .open-seedPopup { 
-    visibility: visible;
+  /* Seed Information Popup */
+  .open-popup { 
+    visibility:visible;
   }
   .infoContainer {
     max-width: 100%;
@@ -251,7 +252,6 @@
     grid-template-columns: 50% 50%;
     grid-template-rows: 16% 16% 16% 16% 16% 16%;
     place-items: center;
-    font-size: 1rem;
   }
   .seedImage {
     grid-area: 1 / 1 / 5 / 1;
@@ -272,10 +272,51 @@
   .infoBackground {
     width: 80%;
     background-color: #cbfad0;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border: 1px solid #4cd172;
+  }
+
+  /* Add Seed Popup */
+  #addSeedPopup {
+    grid-template-rows: 15% 70% 15%;
+    height: 50%;
+  }
+  .addSeedLayout {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+  
+  #addSeedName {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: .5rem 0rem;
+    font-size: 1rem;
+  }
+  .addSeedExit {
+    width: 50%;
+    outline: none;
+    background: #D2FCD6;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 8px;
+    margin: auto;
+    font-size: 1rem;
+    padding: .5rem 0rem;
+  }
+  .addSeedLeft img {
+    width: 50%;
+    height: auto;
+  }
+  .addSeedLayout input {
+    padding: .5rem .5rem;
+  }
+  .addSeedLayout select {
+    padding: .5rem .5rem;
   }
 
   /* Plant Popup */
-  .PlantPopup {
+  .plantPopup {
     width: 50%;
     background-color: #7dffa2;
     border-radius: 6px;
@@ -290,11 +331,21 @@
     text-align: center;
     visibility: hidden;
   }
-  /* Open popup window in seed library */
-  .open-PlantPopup { 
+  .addPlantPopup {
+    width: 50%;
+    background-color: #7dffa2;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #59e280;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    visibility: hidden;
+  }
+  .open-plantPopup {
     visibility: visible;
   }
-
 
   /* Tasks Page */
   .tasksPage {
