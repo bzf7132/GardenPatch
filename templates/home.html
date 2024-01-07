@@ -6,12 +6,67 @@ Home Page
 {% if current_user.is_authenticated %}
 <div class="homeLayout">
     <div class="homeLeft">
-        <div class="homeTaskHeader"><h1>Today's Tasks</h1></div>
-        <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
-        <div class="homeTaskHeader"><h1>Weekly Tasks</h1></div>
-        <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
+        <div class="homeInfo">Today's Tasks</div>
+        <button class="homeInfoButton" onclick="openTaskPopup()">Task 1</button>
+        <button class="homeInfoButton" onclick="openTaskPopup()">Task 2</button>
+        <button class="homeInfoButton" onclick="openTaskPopup()">Task 3</button>
+        <div class="homeInfo">Weekly Tasks</div>
+        <button class="homeInfoButton" onclick="openTaskPopup()">Task 1</button>
+        <button class="homeInfoButton" onclick="openTaskPopup()">Task 2</button>
     </div>
     <div class="homeRight">
+        <div class="calendar">
+            <div class="month">
+                <ul>
+                  <li class="prev">&#10094;</li>
+                  <li class="next">&#10095;</li>
+                  <li>Janurary<br>2024</li>
+                </ul>
+              </div>
+              <ul class="weekdays">
+                <li>Mon</li>
+                <li>Tue</li>
+                <li>Wed</li>
+                <li>Thu</li>
+                <li>Fri</li>
+                <li>Sat</li>
+                <li>Sun</li>
+              </ul>
+            
+              <ul class="days">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li><span class="active">8</span></li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+                <li>23</li>
+                <li>25</li>
+                <li>26</li>
+                <li>27</li>
+                <li>28</li>
+                <li>29</li>
+                <li>30</li>
+                <li>31</li>
+              </ul>
+        </div>
         <div class="homeInfo">Germination Complete</div>
         <div class="homeInfo">Seedling Ready To Plant</div>
         <div class="homeInfo">Plant Maturity Reached</div>
@@ -32,7 +87,40 @@ Home Page
     </div>
 </div>
 {% else %}
-<p>Welcome to Garden Patch!</p>
+<div class="homeNonAuthenticatedLayout">
+    <h1>Welcome to Garden Patch: Your Personal Green Haven!</h1>
+    <p>Transform your gardening journey with Garden Patch, 
+        where cultivating your green paradise becomes a seamless joy. 
+        Whether you're a seasoned horticulturist or just starting your planting adventure, 
+        Garden Patch is your companion in growth.</p>
+
+    <div class="homeSplitText">
+        <p>Seed Library: Dive into the heart of your gardening sanctuary with Garden Patch's Seed Library, 
+            a cherished feature that transforms your planting experience. Here, you don't just catalog seeds; 
+            you curate a personalized botanical haven. Add your seeds to the library, 
+            capturing essential details like germination, planting depth, spacing, and maturity times. 
+            It's not just a record; it's your green encyclopedia, a comprehensive resource for cultivating the garden of your dreams.
+        </p>
+        <img src="{{url_for('static', filename='img/seedLibrary.png')}}" alt="Seed Library">
+        <p>My Plants: Planting becomes an art with Garden Patch's real-time tracking. 
+            Input the date you sow your seeds, and watch the magic unfold. 
+            The application becomes your gardening oracle, revealing germination days, seedling stages, 
+            maturity dates, and the sweet moment of harvest readiness. Your garden's journey is now at your fingertips, 
+            ensuring you stay intimately connected with each sprout's progress.
+        </p>
+        <img src="{{url_for('static', filename='img/MyPlants.png')}}" alt="My Plants">
+        <p>Tasks Page: Keep your gardening to-do list organized and flourishing with our Tasks Page. 
+            Seamlessly plan daily, weekly, or monthly tasks, ensuring your garden stays vibrant and thriving. 
+            The calendar feature highlights important dates, making it a breeze to manage your green oasis.
+        </p>
+        <img src="{{url_for('static', filename='img/TasksPage.png')}}" alt="TasksPage">
+    </div>
+        <p>Ready to embark on your Garden Patch journey? 
+            Click Login/Register to log in or create an account and unlock the full potential of your gardening experience. 
+            Your personal green haven awaits you. Let's grow together!
+        </p>
+</div> 
+
 {% endif %}
 
 <script>

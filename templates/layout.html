@@ -7,20 +7,22 @@
     </head>
 
     <body>
-        <div class="logo">
-            <img src="{{url_for('static', filename='img/logo.png')}}" alt="Logo">
-        </div>
-        <div class="navbar">
-            <a href="{{ url_for('home') }}" class="navbar-item">Home</a>
-            {% if current_user.is_authenticated %}
-            <a href="{{url_for('seedLibrary') }}" class="navbar-item">Seed Library</a>
-            <a href="{{url_for('myPlants')}}" class="navbar-item">My Plants</a>
-            <a href="{{url_for('tasks')}}" class="navbar-item">Tasks</a>
-            <a href="{{url_for('calendar')}}" class="navbar-item">Calendar</a>
-            <a href="{{ url_for('account') }}" class="navbar-item">Account</a>
-            {% else %}
-            <a href="{{ url_for('loginregister') }}" class="navbar-item">Login/Register</a>
-            {% endif %}
+        <div class="mainHeader">
+            <div class="logo">
+                <img src="{{url_for('static', filename='img/logo.png')}}" alt="Logo">
+            </div>
+            <div class="navbar">
+                <a href="{{ url_for('home') }}" class="navbar-item">Home</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{url_for('seedLibrary') }}" class="navbar-item">Seed Library</a>
+                    <a href="{{url_for('myPlants')}}" class="navbar-item">My Plants</a>
+                    <a href="{{url_for('tasks')}}" class="navbar-item">Tasks</a>
+                    <a href="{{url_for('calendar')}}" class="navbar-item">Calendar</a>
+                    <a href="{{ url_for('account') }}" class="navbar-item">Account</a>
+                {% else %}
+                    <a href="{{ url_for('loginregister') }}" class="navbar-item">Login/Register</a>
+                {% endif %}
+            </div>
         </div>
 
         <div class="body-content">

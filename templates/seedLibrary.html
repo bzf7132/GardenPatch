@@ -3,7 +3,6 @@
 Seed Library
 {% endblock %}
 {% block content %}
-<p>This is the seed library page</p>
 <!-- Seed Header -->
 <div class="seedPlantHeader">
     <div class="addItemButton">
@@ -24,13 +23,31 @@ Seed Library
 <div class="BasicInfo">
     <button class="InfoButton" onclick="openPopup('seedPopup')">
         <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
-        <div class="SeedName">
-            <p>Seed Name</p>
+        <div class="infoDetails">
+            <p>Seed Name 1</p>
         </div>
-        <div class="PlantType">
+        <div class="infoDetails">
             <p>Plant Type</p>
         </div>
-        <div class="PlantSeason">
+        <div class="infoDetails">
+            <p>Season to Plant</p>
+        </div>
+    </button>
+    <label class="container">
+        <input type="checkbox">
+        <span class="checkmark"></span>
+    </label>
+</div>
+<div class="BasicInfo">
+    <button class="InfoButton" onclick="openPopup('seedPopup')">
+        <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
+        <div class="infoDetails">
+            <p>Seed Name 2</p>
+        </div>
+        <div class="infoDetails">
+            <p>Plant Type</p>
+        </div>
+        <div class="infoDetails">
             <p>Season to Plant</p>
         </div>
     </button>
