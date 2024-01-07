@@ -3,7 +3,6 @@
 My Plants
 {% endblock %}
 {% block content %}
-<p>This is the my plants page</p>
 <!-- Header for Seed Plant page -->
 <div class="seedPlantHeader">
     <div class="addItemButton">
@@ -23,14 +22,14 @@ My Plants
 <!-- Basic Info Button and Checkbox -->
 <div class="BasicInfo">
     <button class="InfoButton" onclick="openPlantPopup()">
-        <div class="Name">
+        <div class="infoDetails">
             <p>Plant Name</p>
         </div>
-        <div class="Type">
+        <div class="infoDetails">
             <p>Type of Plant</p>
         </div>
-        <div class="Season">
-            <p>When to Plant</p>
+        <div class="infoDetails">
+            <p>Where it was Planted</p>
         </div>
     </button>
     <label class="container">
@@ -42,7 +41,7 @@ My Plants
 <!-- Plant Information Popup -->
 <div class="plantPopup" id="plantPopup">
     <h2>Plant Name</h2>
-    <div class="infoContainer">
+    <div class="infoContainerPlant">
         <div class="infoBackground"><p>Germination Date</p></div>
         <div class="infoBackground"><p>Actual Date</p></div>
         <div class="infoBackground"><p>Plant Maturity</p></div>
@@ -55,7 +54,7 @@ My Plants
 </div>
 
 <!-- Add Plant Popup -->
-<div class="plantPopup" id="addPlantPopup">
+<div class="addPlantPopup" id="addPlantPopup">
     <div class="tab" onclick="showTab('seedLibraryTab')">From Seed Library</div>
     <div class="tab" onclick="showTab('seedlingTab')">New Seedling</div>
     <div id="seedLibraryTab" class="tab-content active">
