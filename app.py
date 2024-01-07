@@ -28,6 +28,17 @@ class Users(UserMixin, db.Model):
     password = db.Column(db.String(250), nullable=False)
     hemisphere = db.Column(db.String(20), nullable=False)
 
+# class Seed(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(250), nullable=False)
+#     plant_type = db.Column(db.String(250), nullable=False)
+#     germinate_time = db.Column(db.String(250))
+#     planting_depth = db.Column(db.String(250))
+#     plant_spacing = db.Column(db.String(250))
+#     maturity_time = db.Column(db.String(250))
+#     sun_requirement = db.Column(db.String(250))
+#     when_to_plant = db.Column(db.String(250))
+
 #Initializes Flask-SQLAlchemy extension with flask App.
 db.init_app(app)
 #Then create the database table

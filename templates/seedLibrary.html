@@ -4,9 +4,10 @@ Seed Library
 {% endblock %}
 {% block content %}
 <p>This is the seed library page</p>
+<!-- Seed Header -->
 <div class="seedPlantHeader">
     <div class="addItemButton">
-        <button class="button addButton">Add Seed</button>
+        <button class="button addButton" onclick="openPopup('addSeedPopup')">Add Seed</button>
     </div>
     <div class="removeItemButton">
         <button class="button removeButton">Remove Seed</button>
@@ -18,17 +19,19 @@ Seed Library
         <input type="text" placeholder="Search..">
     </div>
 </div>
+
+<!-- Basic Info -->
 <div class="BasicInfo">
-    <button class="InfoButton" onclick="openPopup()">
+    <button class="InfoButton" onclick="openPopup('seedPopup')">
         <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
         <div class="SeedName">
             <p>Seed Name</p>
         </div>
         <div class="PlantType">
-            <p>Type of Plant</p>
+            <p>Plant Type</p>
         </div>
         <div class="PlantSeason">
-            <p>When to Plant</p>
+            <p>Season to Plant</p>
         </div>
     </button>
     <label class="container">
@@ -36,30 +39,66 @@ Seed Library
         <span class="checkmark"></span>
     </label>
 </div>
+
+<!-- Seed Information Popup -->
 <div class="seedPopup" id="seedPopup">
     <h2>Seed Name</h2>
     <div class="infoContainer">
         <div class="seedImage"> 
             <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
         </div>
-        <div class="infoBackground"><p>Type of Plant</p></div>
-        <div class="infoBackground"><p>Germinate Time</p></div>
-        <div class="infoBackground"><p>Planting Depth</p></div>
-        <div class="infoBackground"><p>Plant Spacing</p></div>
-        <div class="infoBackground"><p>Maturity Time</p></div>
-        <div class="infoBackground"><p>Sun Requirement</p></div>
-        <div class="infoBackground"><p>When to Plant</p></div>
-        <button class="seedExit" onclick="closePopup()">Exit</button>
+        <div class="infoBackground"><p id="plantType">Type of Plant</p></div>
+        <div class="infoBackground"><p id="germinateTime">Germinate Time</p></div>
+        <div class="infoBackground"><p id="maturityTime">Maturity Time</p></div>
+        <div class="infoBackground"><p id="plantingDepth">Planting Depth</p></div>
+        <div class="infoBackground"><p id="plantSpacing">Plant Spacing</p></div>
+        <div class="infoBackground"><p id="sunRequirement">Sun Requirement</p></div>
+        <div class="infoBackground"><p id="whenToPlant">When to Plant</p></div>
+        <button class="seedExit" onclick="closePopup('seedPopup')">Exit</button>
     </div>
 </div>
 
+<!-- Add Seed Popup -->
+<div class="seedPopup" id="addSeedPopup">
+    <input type="text" id="addSeedName" class="infoBackground" placeholder="Seed Name" required>
+    <div class="addSeedLayout">
+        <div class="addSeedLeft">
+            <!-- Spot for Uploading Image -->
+        <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
+        <button class="infoBackground" id="addSeedImageUpload">Upload Image</button>
+        <select id="addSeedSun" class="infoBackground" name="addSeedSun" required>
+            <option value="" disabled selected hidden>Sun Requirement</option>
+            <option value="fullSun">Full Sun</option>
+            <option value="partSun">Part Sun</option>
+            <option value="shade">Shade</option>
+        </select>
+        <select id="addSeedSeason" class="infoBackground" name="addSeedSeason" required>
+            <option value="" disabled selected hidden>When to Plant</option>
+            <option value="Summer">Summer</option>
+            <option value="Autumn">Autumn</option>
+            <option value="Winter">Winter</option>
+            <option value="Spring">Spring</option>
+        </select>
+        </div>
+        <div class="addSeedRight">
+            <input type="text" id="addSeedType" class="infoBackground" placeholder="Plant Type" required>
+            <input type="text" id="addSeedGermination" class="infoBackground" placeholder="Germination Time" required>
+            <input type="text" id="addSeedMaturity" class="infoBackground" placeholder="Maturity Time" required>
+            <input type="text" id="addSeedDepth" class="infoBackground" placeholder="Planting Depth" required>
+            <input type="text" id="addSeedSpacing" class="infoBackground" placeholder="Plant Spacing" required>
+        </div>
+    </div>
+    <button class="addSeedExit" onclick="closePopup('addSeedPopup')">Exit</button>
+</div>
+
+<!-- Javascript -->
 <script>
-    let seedPopup = document.getElementById("seedPopup")
-    function openPopup() {
-        seedPopup.classList.add("open-seedPopup");
-    }
-    function closePopup() {
-        seedPopup.classList.remove("open-seedPopup");
-    }
+    function openPopup(popupId) {
+    document.getElementById(popupId).classList.add("open-popup");
+}
+
+function closePopup(popupId) {
+    document.getElementById(popupId).classList.remove("open-popup");
+}
 </script>
 {% endblock %}
