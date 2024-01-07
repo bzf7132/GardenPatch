@@ -7,7 +7,7 @@ My Plants
 <!-- Header for Seed Plant page -->
 <div class="seedPlantHeader">
     <div class="addItemButton">
-        <button class="button addButton" onclick="openPlantPopup()">Add Plant</button>
+        <button class="button addButton" onclick="openAddPlantPopup()">Add Plant</button>
     </div>
     <div class="removeItemButton">
         <button class="button removeButton">Remove Plant</button>
@@ -69,8 +69,8 @@ My Plants
                 <option value="fullSun">Sweet 100 Tomato</option>
             </select>
         </form>
-        <button class="newPlantSubmit" onclick="closePlantPopup('addPlantPopup')">Submit</button>
-        <button class="newPlantExit" onclick="closePlantPopup('addPlantPopup')">Exit</button>
+        <button class="newPlantSubmit" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
+        <button class="newPlantExit" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
     </div>
     <div id="seedlingTab" class="tab-content active">
         <form>
@@ -93,18 +93,26 @@ My Plants
                 <option value="garden">Garden</option>
             </select>
         </form>
-        <button class="newPlantSubmit" onclick="closePlantPopup('addPlantPopup')">Submit</button>
-        <button class="newPlantExit" onclick="closePlantPopup('addPlantPopup')">Exit</button>
+        <button class="newPlantSubmit" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
+        <button class="newPlantExit" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
     </div>
 </div>
 
 <script>
     let addPlantPopup = document.getElementById("addPlantPopup")
-    function openPlantPopup() {
+    function openAddPlantPopup() {
         addPlantPopup.classList.add("open-plantPopup");
     }
-    function closePlantPopup() {
+    function closeAddPlantPopup() {
         addPlantPopup.classList.remove("open-plantPopup");
+    }
+
+    let PlantPopup = document.getElementById("plantPopup")
+    function openPlantPopup() {
+        PlantPopup.classList.add("open-plantPopup");
+    }
+    function closePlantPopup() {
+        PlantPopup.classList.remove("open-plantPopup");
     }
 
     function showTab(tabId) {
