@@ -452,7 +452,8 @@ input[type=password] {
     grid-template-rows: 25% 25% 25% 25%;
   }
   .addPlantPopup {
-    width: 50%;
+    width: 40%;
+    height: 40%;
     background-color: #7dffa2;
     border-radius: 6px;
     position: absolute;
@@ -466,7 +467,35 @@ input[type=password] {
   .open-plantPopup {
     visibility: visible;
   }
-
+  .tabPopup {
+    display: inline-block;
+    width: 49%;
+    padding: 1rem 0rem;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #cbfad0;
+  }
+  .tabPopup-content {
+    display: none;
+  }
+  .activeTab {
+    display: inline-block;
+  }
+  .seedLibraryTabLayout select{
+    font-size: 1rem;
+    background-color: #cbfad0;
+    padding: .5rem;
+  }
+  .newPlantButton {
+    width: 45%;
+    background-color: #cbfad0;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #59e280;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    padding: 1rem;
+  }
+  
   /* Tasks Page */
   .tasksPage {
     display: grid;
