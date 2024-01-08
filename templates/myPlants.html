@@ -3,10 +3,10 @@
 My Plants
 {% endblock %}
 {% block content %}
-<p>This is the my plants page</p>
+<!-- Header for Seed Plant page -->
 <div class="seedPlantHeader">
     <div class="addItemButton">
-        <button class="button addButton">Add Plant</button>
+        <button class="button addButton" onclick="openAddPlantPopup()">Add Plant</button>
     </div>
     <div class="removeItemButton">
         <button class="button removeButton">Remove Plant</button>
@@ -18,16 +18,18 @@ My Plants
         <input type="text" placeholder="Search..">
     </div>
 </div>
+
+<!-- Basic Info Button and Checkbox -->
 <div class="BasicInfo">
-    <button class="InfoButton" onclick="openPopup()">
-        <div class="Name">
+    <button class="InfoButton" onclick="openPlantPopup()">
+        <div class="infoDetails">
             <p>Plant Name</p>
         </div>
-        <div class="Type">
+        <div class="infoDetails">
             <p>Type of Plant</p>
         </div>
-        <div class="Season">
-            <p>When to Plant</p>
+        <div class="infoDetails">
+            <p>Where it was Planted</p>
         </div>
     </button>
     <label class="container">
@@ -35,27 +37,90 @@ My Plants
         <span class="checkmark"></span>
     </label>
 </div>
-<div class="PlantPopup" id="PlantPopup">
+
+<!-- Plant Information Popup -->
+<div class="plantPopup" id="plantPopup">
     <h2>Plant Name</h2>
-    <div class="infoContainer">
+    <div class="infoContainerPlant">
         <div class="infoBackground"><p>Germination Date</p></div>
         <div class="infoBackground"><p>Actual Date</p></div>
         <div class="infoBackground"><p>Plant Maturity</p></div>
         <div class="infoBackground"><p>Type of Plant</p></div>
         <div class="infoBackground"><p>Sun Requirement</p></div>
         <div class="infoBackground"><p>What it has been Planted in</p></div>
-        <button class="seedExit" onclick="closePopup()">Remove</button>
-        <button class="seedExit" onclick="closePopup()">Exit</button>
+        <button class="seedExit" onclick="closePlantPopup('plantPopup')">Remove</button>
+        <button class="seedExit" onclick="closePlantPopup('plantPopup')">Exit</button>
+    </div>
+</div>
+
+<!-- Add Plant Popup -->
+<div class="addPlantPopup" id="addPlantPopup">
+    <div class="tab" onclick="showTab('seedLibraryTab')">From Seed Library</div>
+    <div class="tab" onclick="showTab('seedlingTab')">New Seedling</div>
+    <div id="seedLibraryTab" class="tab-content active">
+        <form>
+            <select id="newPlantType">
+                <option value="" disabled selected hidden>Type of Plant</option>
+                <option value="tomato">Tomato</option>
+            </select>
+            <select id="newPlantName">
+                <option value="" disabled selected hidden>Seed Name</option>
+                <option value="fullSun">Sweet 100 Tomato</option>
+            </select>
+        </form>
+        <button class="newPlantSubmit" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
+        <button class="newPlantExit" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
+    </div>
+    <div id="seedlingTab" class="tab-content active">
+        <form>
+            <input type="text" id="seedlingPlantName" placeholder="Enter Plant Name" required>
+            <input type="text" id="seedlingPlantType" placeholder="Type of Plant" required>
+            <input type="date" id="seedlingPlantDate" placeholder="Plant Date" required>
+            <input type="text" id="plantMaturityTime" placeholder="How long for plant Maturity" required>
+            <select id="seedlingSunRequirement" name="seedlingSunRequirement">
+                <option value="" disabled selected hidden>Sun Requirement</option>
+                <option value="fullSun">Full Sun</option>
+                <option value="partSun">Part Sun</option>
+                <option value="shade">Shade</option>
+            </select>
+            <select id="seedlingPlantPlace" name="seedlingPlantPlace">
+                <option value="" disabled selected hidden>Plant Placement</option>
+                <option value="seedlingTray">Seedling Tray</option>
+                <option value="smallPot">Small Pot</option>
+                <option value="largePot">Large Pot</option>
+                <option value="raisedBed">Raised Bed</option>
+                <option value="garden">Garden</option>
+            </select>
+        </form>
+        <button class="newPlantSubmit" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
+        <button class="newPlantExit" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
     </div>
 </div>
 
 <script>
-    let seedPopup = document.getElementById("PlantPopup")
-    function openPopup() {
-        seedPopup.classList.add("open-PlantPopup");
+    let addPlantPopup = document.getElementById("addPlantPopup")
+    function openAddPlantPopup() {
+        addPlantPopup.classList.add("open-plantPopup");
     }
-    function closePopup() {
-        seedPopup.classList.remove("open-PlantPopup");
+    function closeAddPlantPopup() {
+        addPlantPopup.classList.remove("open-plantPopup");
+    }
+
+    let PlantPopup = document.getElementById("plantPopup")
+    function openPlantPopup() {
+        PlantPopup.classList.add("open-plantPopup");
+    }
+    function closePlantPopup() {
+        PlantPopup.classList.remove("open-plantPopup");
+    }
+
+    function showTab(tabId) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        // Show the selected tab
+        document.getElementById(tabId).classList.add('active');
     }
 </script>
 {% endblock %}

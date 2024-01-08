@@ -1,8 +1,171 @@
-{% extends "layout.html" %}
-{% block title %}
-Account
-{% endblock %}
-{% block content %}
-<p>This will be the account page</p>
-<a href="{{ url_for('logout') }}">Logout</a>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garden Patch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F0FFF0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #98FB98;
+      overflow: hidden;
+      padding: 10px 0;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: black;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .navbar a:hover {
+      background-color: #7F9F7F;
+    }
+
+    .account-container {
+      background-color: #F0FFF0;
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      /* Adjust the width as needed */
+      max-width: 350px;
+      /* Maximum width */
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .profile-picture {
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin: 10px auto;
+      display: block;
+      background-color: #fff;
+    }
+
+    input[type=text],
+    input[type=password],
+    button {
+      width: calc(100% - 24px);
+      /* Adjust width to account for padding */
+      padding: 12px;
+      margin: 8px auto;
+      display: block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .delete-account-btn {
+      background-color: #FF6347;
+      color: white;
+    }
+
+    .delete-account-btn:hover {
+      opacity: 0.8;
+    }
+
+    .edit-link {
+      font-size: 14px;
+      float: right;
+      margin-right: 20px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .edit-link:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <!-- Navigation bar section -->
+  <div class="navbar">
+    <a href="home.html">Home</a>
+    <a href="account.html">Account</a>
+    <a href="loginregister.html">Login or Register</a>
+    <a href="seedLibrary.html">Seed Library</a>
+    <a href="myPlants.html">My Plants</a>
+    <a href="tasks.html">Tasks</a>
+    <a href="calendar.html">Calendar</a>
+  </div>
+
+  <!-- Account settings section -->
+  <div class="account-container">
+    <a href="#" class="edit-link">edit</a>
+    <div class="profile-picture"></div>
+    <input type="text" placeholder="Username" class="account-input" required>
+    <button onclick="toggleForm('changePassword')">Change Password</button>
+    <input type="text" placeholder="Hemisphere" class="account-input" required>
+    <button onclick="toggleForm('setPasswordQuestion')">Set Password Question</button>
+    <button class="delete-account-btn">Delete Account</button>
+  </div>
+
+  <!-- Change Password Form -->
+  <div id="changePassword" class="form-container hidden">
+    <h2>Change Password</h2>
+    <input type="password" placeholder="Current Password" required>
+    <input type="password" placeholder="New Password" required>
+    <input type="password" placeholder="Confirm Password" required>
+    <button onclick="toggleForm('changePassword')">Submit</button>
+    <button onclick="toggleForm('changePassword')">Cancel</button>
+  </div>
+
+  <!-- Set Password Question Form -->
+  <div id="setPasswordQuestion" class="form-container hidden">
+    <h2>Set Password Question</h2>
+    <input type="text" placeholder="Question" required>
+    <input type="text" placeholder="Answer" required>
+    <button onclick="toggleForm('setPasswordQuestion')">Submit</button>
+    <button onclick="toggleForm('setPasswordQuestion')">Cancel</button>
+  </div>
+
+  <script>
+    function toggleForm(formId) {
+      // Retrieve all form containers
+      var forms = document.querySelectorAll('.form-container');
+
+      // Loop through all forms and hide them
+      forms.forEach(function (form) {
+        form.classList.add('hidden');
+      });
+
+      // Toggle the selected form
+      var form = document.getElementById(formId);
+      form.classList.toggle('hidden');
+    }
+  </script>
+
+</body>
+
+</html>
