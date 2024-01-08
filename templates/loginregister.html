@@ -1,157 +1,8 @@
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garden Patch</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #F0FFF0;
-    }
-
-    .navbar {
-      background-color: #98FB98;
-      overflow: hidden;
-      padding: 10px 0;
-    }
-
-    .navbar a {
-      float: left;
-      display: block;
-      color: black;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
-
-    .navbar a:hover {
-      background-color: #7F9F7F;
-    }
-
-    .form-container {
-      background-color: #F0FFF0;
-      padding: 20px;
-      margin: 10px 0;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .tab {
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .tab button {
-      background-color: inherit;
-      float: left;
-      border: none;
-      outline: none;
-      padding: 14px 16px;
-      transition: 0.3s;
-      font-size: 17px;
-      color: black;
-      /* Set default text color to black for visibility */
-    }
-
-    .tab button:hover {
-      background-color: #ddd;
-      /* Light grey for hover */
-    }
-
-    .tab button.active {
-      background-color: #ccc;
-      /* Lighter grey for active tab */
-      color: black;
-      /* Keep text color black for visibility */
-    }
-
-    .tab-content {
-      display: none;
-      padding: 6px 12px;
-      border-top: none;
-    }
-
-    input[type=text],
-    input[type=password] {
-      width: 100%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    button:hover {
-      opacity: 0.8;
-    }
-
-    /* Additional styles for the account container */
-    .account-container {
-      background-color: #F0FFF0;
-      padding: 20px;
-      margin: 10px auto;
-      width: fit-content;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      text-align: center;
-    }
-
-    .profile-picture {
-      border: 2px solid #ccc;
-      border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 20px;
-      display: block;
-      background-color: #fff;
-    }
-
-    .account-input {
-      width: 80%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: block;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    .edit-link {
-      font-size: 14px;
-      float: right;
-      margin-right: 20px;
-      text-decoration: none;
-      color: black;
-    }
-
-    .edit-link:hover {
-      text-decoration: underline;
-    }
-  </style>
-
-</head>
-
-<body>
-
-  <!-- Navigation bar section -->
-  <div class="navbar">
-    <a href="home.html">Home</a>
-    <a href="account.html">Account</a>
-    <a href="loginregister.html">Login or Register</a>
-    <a href="seedLibrary.html">Seed Library</a>
-    <a href="myPlants.html">My Plants</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="calendar.html">Calendar</a>
-  </div>
-
+{% extends "layout.html" %}
+{% block title %}
+Login or Register
+{% endblock %}
+{% block content %}
   <!-- Form container section for login and register -->
   <div class="form-container">
     <!-- Tabs for switching between Login and Register sections -->
@@ -163,20 +14,24 @@
     <!-- Login form section -->
     <div id="Login" class="tab-content">
       <h3>Login</h3>
-      <input type="text" placeholder="Username" name="uname" required>
-      <input type="password" placeholder="Password" name="psw" required>
-      <button type="submit">Login</button>
+      <form action="{{ url_for('loginregister') }}" method="post">
+        <input type="text" id="username" placeholder="Username" name="username" required>
+        <input type="password" id="password" placeholder="Password" name="password" required>
+        <button type="submit" class="loginButton" name="Login">Login</button>
+      </form>
       <span class="psw">Forgot <a href="#">password?</a></span>
     </div>
-
+    
     <!-- Register form section -->
     <div id="Register" class="tab-content">
       <h3>Register</h3>
-      <input type="text" placeholder="Username" name="uname" required>
-      <input type="password" placeholder="Password" name="psw" required>
-      <input type="password" placeholder="Confirm Password" name="psw-repeat" required>
-      <input type="text" placeholder="Hemisphere" name="hemisphere" required>
-      <button type="submit">Register</button>
+      <form action="{{ url_for('loginregister') }}" method="post">
+        <input type="text" id="regUsername" placeholder="Username" name="regUsername" required>
+        <input type="password" id="regPassword" placeholder="Password" name="regPassword" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" name="confirmPassword" required>
+        <input type="text" id="hemisphere" placeholder="Hemisphere" name="hemisphere" required>
+        <button type="submit" class="loginButton" name="Register">Register</button>
+      </form>
     </div>
   </div>
 
@@ -196,5 +51,4 @@
       evt.currentTarget.className += " active";
     }
   </script>
-
-</html>
+{% endblock %}

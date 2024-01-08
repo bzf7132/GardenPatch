@@ -111,13 +111,13 @@
 
   <!-- Navigation bar section -->
   <div class="navbar">
-    <a href="home.html">Home</a>
-    <a href="account.html">Account</a>
-    <a href="loginregister.html">Login or Register</a>
-    <a href="seedLibrary.html">Seed Library</a>
-    <a href="myPlants.html">My Plants</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="calendar.html">Calendar</a>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('account') }}">Account</a>
+    <a href="{{ url_for('loginregister') }}">Login or Register</a>
+    <a href="{{url_for('seedLibrary') }}">Seed Library</a>
+    <a href="{{url_for('myPlants')}}">My Plants</a>
+    <a href="{{url_for('tasks')}}">Tasks</a>
+    <a href="{{url_for('calendar')}}">Calendar</a>
   </div>
 
   <!-- Account settings section -->
@@ -149,6 +149,7 @@
     <button onclick="toggleForm('setPasswordQuestion')">Submit</button>
     <button onclick="toggleForm('setPasswordQuestion')">Cancel</button>
   </div>
+  <a href="{{ url_for('logout') }}">Logout</a>
 
   <script>
     function toggleForm(formId) {

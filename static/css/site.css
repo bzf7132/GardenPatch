@@ -58,28 +58,6 @@
 }
 
 /* Home CSS */
-.homeLayout {
-  width: 75%;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 47% 47%;
-  column-gap: 6%;
-}
-.homeInfo {
-  background-color: #59e280;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-.homeInfoButton {
-  width: 100%;
-  background-color: #70FF99;
-  text-align: left;
-  font-family:'Segoe UI', Tahoma, Verdana, sans-serif;
-  font-size: 1rem;
-  border: 1px solid #59e280;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
 .homeNonAuthenticatedLayout {
   display: grid;
   grid-template-rows: 10% 10% 69% 10%;
@@ -105,118 +83,140 @@
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
-/* Calendar */
+.container {
+  background-color: white;
+  padding: 20px;
+  margin: 20px;
+}
+.tasks {
+  margin-bottom: 20px;
+}
+.taskHome {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+}
 .calendar {
-  margin-bottom: 1rem;
-}
-/* Month header */
-.month {
-  padding: 1rem;
-  width: 95%;
-  background: #1abc9c;
-  text-align: center;
-}
-/* Month list */
-.month ul {
-  margin: 0;
-  padding: 0;
-}
-.month ul li {
-  color: white;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
-/* Previous button inside month header */
-.month .prev {
-  float: left;
-  padding-top: 10px;
-}
-/* Next button */
-.month .next {
-  float: right;
-  padding-top: 10px;
-}
-/* Weekdays */
-.weekdays {
+  border-collapse: collapse;
   width: 100%;
-  margin: 0;
-  padding: 1rem 0;
-  background-color:#ddd;
 }
-.weekdays li {
-  display: inline-block;
-  width: 13.5%;
-  color: #666;
+.calendar th,
+.calendar td {
+  border: 1px solid #98FB98;
+  padding: 8px;
   text-align: center;
 }
-/* Days */
-.days {
-  padding: 10px 0;
-  background: #eee;
-  margin: 0;
+.calendar th {
+  background-color: #98FB98;
 }
-.days li {
-  list-style-type: none;
-  display: inline-block;
-  width: 13.6%;
-  text-align: center;
-  margin-bottom: 5px;
-  font-size:12px;
-  color: #777;
-}
-/* Highlight the "current" day */
-.days li .active {
-  padding: 5px;
-  background: #1abc9c;
-  color: white !important
+.today {
+  background-color: #4CAF50;
+  color: white;
 }
 
 
 /* Login and Register Page */
-
-.login-container {
-  width: 50%;
-  margin: auto;
-  text-align: center;
-  background-color: #59e280;
-  padding: 2rem;
+.form-container {
+  background-color: #F0FFF0;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 .tab {
-  display: inline-block;
-  width: 49%;
-  padding: 1rem 0rem;
+  overflow: hidden;
   cursor: pointer;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
+}
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color: black;
+  /* Set default text color to black for visibility */
+}
+.tab button:hover {
+  background-color: #ddd;
+  /* Light grey for hover */
+}
+.tab button.active {
+  background-color: #ccc;
+  /* Lighter grey for active tab */
+  color: black;
+  /* Keep text color black for visibility */
 }
 .tab-content {
   display: none;
+  padding: 6px 12px;
+  border-top: none;
 }
-.active {
-  display: grid;
+input[type=text],
+input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
-.errorPopup {
-  display: none; /* Initially hide the popup */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff; /* Set background color */
-  padding: 20px;
-  border: 1px solid #ccc; /* Add a border for better visibility */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-  z-index: 1000; /* Set a high z-index to ensure it appears above other elements */
-}
-
-/* Style for the close button */
-#errorPopup .closeButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.loginButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
   cursor: pointer;
+  width: 100%;
+}
+.loginButton:hover {
+  opacity: 0.8;
 }
 
+/* Additional styles for the account container */
+.account-container {
+  background-color: #F0FFF0;
+  padding: 20px;
+  margin: 10px auto;
+  width: fit-content;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.profile-picture {
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  display: block;
+  background-color: #fff;
+}
+
+.account-input {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.edit-link {
+  font-size: 14px;
+  float: right;
+  margin-right: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.edit-link:hover {
+  text-decoration: underline;
+}
 
 /* Seed Library and My Plants CSS */
 .seedPlantHeader {
@@ -279,7 +279,7 @@
 
 
 /* Container for checkbox */
-.container { 
+.containerInfo { 
     display: block;
     position: relative;
     cursor: pointer;
@@ -290,7 +290,7 @@
     user-select: none;
   }
 /* Hides default checkbox */
-.container input { 
+.containerInfo input { 
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -308,25 +308,25 @@
     border-radius: 8px;
   }
   /* When mouse hovers, change to a light green background colour */
-.container:hover input ~ .checkmark {
+.containerInfo:hover input ~ .checkmark {
     background-color:#7dffa2;
   }
   /* When the checkbox has been clicked, change colour */
-  .container input:checked ~ .checkmark {
+  .containerInfo input:checked ~ .checkmark {
     background-color:#70FF99;
   }
   /* Create the checkmark */
-.checkmark:after {
+.checkmarkInfo:after {
     content: "";
     position: absolute;
     display: none;
   }
   /* Show the checkmark when checked */
-  .container input:checked ~ .checkmark:after {
+  .containerInfo input:checked ~ .checkmark:after {
     display: block;
   }
   /* Style the checkmark*/
-  .container .checkmark:after {
+  .containerInfo .checkmark:after {
     left: 15px;
     top: 10px;
     width: 25%;

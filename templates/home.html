@@ -1,115 +1,21 @@
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task and Calendar Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #98FB98;
-      /* Light green background */
-      margin: 0;
-      padding: 0;
-    }
-
-    .navbar {
-      background-color: #98FB98;
-      overflow: hidden;
-      padding: 10px 0;
-      display: flex;
-      justify-content: space-around;
-    }
-
-    .navbar a {
-      display: block;
-      color: black;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
-
-    .navbar a:hover {
-      background-color: #7F9F7F;
-    }
-
-    .container {
-      background-color: white;
-      padding: 20px;
-      margin: 20px;
-    }
-
-    .tasks {
-      margin-bottom: 20px;
-    }
-
-    .task {
-      background-color: #f0f0f0;
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin: 10px 0;
-    }
-
-    .calendar {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    .calendar th,
-    .calendar td {
-      border: 1px solid #98FB98;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .calendar th {
-      background-color: #98FB98;
-    }
-
-    .today {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    /* Style for navigation buttons */
-    .nav-button {
-      cursor: pointer;
-      padding: 5px 10px;
-      margin: 0 5px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- Navigation bar section -->
-  <div class="navbar">
-    <a href="home.html">Home</a>
-    <a href="account.html">Account</a>
-    <a href="loginregister.html">Login or Register</a>
-    <a href="seedLibrary.html">Seed Library</a>
-    <a href="myPlants.html">My Plants</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="calendar.html">Calendar</a>
-  </div>
-
+{% extends "layout.html" %}
+{% block title %}
+Home Page
+{% endblock %}
+{% block content %}
+{% if current_user.is_authenticated %}
   <div class="container">
-    <div class="tasks">
+    <div class="tasksHome">
       <h2>Today's Tasks</h2>
-      <div class="task">Water Plants</div>
-      <div class="task">Plant Seedlings</div>
+      <div class="taskHome">Water Plants</div>
+      <div class="taskHome">Plant Seedlings</div>
     </div>
 
-    <div class="tasks">
+    <div class="tasksHome">
       <h2>Weekly Tasks</h2>
-      <div class="task">Water Plants</div>
-      <div class="task">Plant Seedlings</div>
+      <div class="taskHome">Water Plants</div>
+      <div class="taskHome">Plant Seedlings</div>
 
     </div>
 
@@ -134,6 +40,42 @@
       </table>
     </div>
   </div>
+  {% else %}
+  <div class="homeNonAuthenticatedLayout">
+      <h1>Welcome to Garden Patch: Your Personal Green Haven!</h1>
+      <p>Transform your gardening journey with Garden Patch, 
+          where cultivating your green paradise becomes a seamless joy. 
+          Whether you're a seasoned horticulturist or just starting your planting adventure, 
+          Garden Patch is your companion in growth.</p>
+  
+      <div class="homeSplitText">
+          <p>Seed Library: Dive into the heart of your gardening sanctuary with Garden Patch's Seed Library, 
+              a cherished feature that transforms your planting experience. Here, you don't just catalog seeds; 
+              you curate a personalized botanical haven. Add your seeds to the library, 
+              capturing essential details like germination, planting depth, spacing, and maturity times. 
+              It's not just a record; it's your green encyclopedia, a comprehensive resource for cultivating the garden of your dreams.
+          </p>
+          <img src="{{url_for('static', filename='img/seedLibrary.png')}}" alt="Seed Library">
+          <p>My Plants: Planting becomes an art with Garden Patch's real-time tracking. 
+              Input the date you sow your seeds, and watch the magic unfold. 
+              The application becomes your gardening oracle, revealing germination days, seedling stages, 
+              maturity dates, and the sweet moment of harvest readiness. Your garden's journey is now at your fingertips, 
+              ensuring you stay intimately connected with each sprout's progress.
+          </p>
+          <img src="{{url_for('static', filename='img/MyPlants.png')}}" alt="My Plants">
+          <p>Tasks Page: Keep your gardening to-do list organized and flourishing with our Tasks Page. 
+              Seamlessly plan daily, weekly, or monthly tasks, ensuring your garden stays vibrant and thriving. 
+              The calendar feature highlights important dates, making it a breeze to manage your green oasis.
+          </p>
+          <img src="{{url_for('static', filename='img/TasksPage.png')}}" alt="TasksPage">
+      </div>
+          <p>Ready to embark on your Garden Patch journey? 
+              Click Login/Register to log in or create an account and unlock the full potential of your gardening experience. 
+              Your personal green haven awaits you. Let's grow together!
+          </p>
+  </div> 
+  
+  {% endif %}
 
   <script>
     // JavaScript to make the calendar dynamic
@@ -204,7 +146,4 @@
 
     showCalendar(currentMonth, currentYear);
   </script>
-
-</body>
-
-</html>
+{% endblock %}

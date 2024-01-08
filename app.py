@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user
+from werkzeug.security import check_password_hash
 
 
 #Creates Flask App
@@ -41,13 +42,14 @@ class Users(UserMixin, db.Model):
 
 #Initializes Flask-SQLAlchemy extension with flask App.
 db.init_app(app)
+
 #Then create the database table
 with app.app_context():
     db.create_all()
 
 #User loader callback, returns user object from id
-    @login_manager.user_loader
-    def loader_user(user_id) :
+@login_manager.user_loader
+def loader_user(user_id) :
         return Users.query.get(user_id)
 
 
@@ -95,9 +97,8 @@ def loginregister():
             return redirect(url_for("home"))
         # If it is for login
         elif 'Login' in request.form:
-            user = Users.query.filter_by(
-                username=request.form.get("username")).first()
-            if user and user.password == request.form.get("password"):
+            user = Users.query.filter_by(username=request.form.get("username")).first()
+            if user and check_password_hash(user.password, request.form.get("password")):
                 login_user(user)
                 return redirect(url_for("home"))
     return render_template("loginregister.html")
