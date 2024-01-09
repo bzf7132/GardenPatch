@@ -14,7 +14,7 @@ Login or Register
     <!-- Login form section -->
     <div id="Login" class="tab-content">
       <h3>Login</h3>
-      <form action="{{ url_for('loginregister') }}" method="post">
+      <form action="{{ url_for('login') }}" method="post">
         <input type="text" id="username" placeholder="Username" name="username" required>
         <input type="password" id="password" placeholder="Password" name="password" required>
         <button type="submit" class="loginButton" name="Login">Login</button>
@@ -25,7 +25,7 @@ Login or Register
     <!-- Register form section -->
     <div id="Register" class="tab-content">
       <h3>Register</h3>
-      <form action="{{ url_for('loginregister') }}" method="post">
+      <form action="{{ url_for('register') }}" method="post">
         <input type="text" id="regUsername" placeholder="Username" name="regUsername" required>
         <input type="password" id="regPassword" placeholder="Password" name="regPassword" required>
         <input type="password" id="confirmPassword" placeholder="Confirm Password" name="confirmPassword" required>

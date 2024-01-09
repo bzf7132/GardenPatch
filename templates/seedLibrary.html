@@ -77,34 +77,38 @@ Seed Library
 
 <!-- Add Seed Popup -->
 <div class="seedPopup" id="addSeedPopup">
-    <input type="text" id="addSeedName" class="infoBackground" placeholder="Seed Name" required>
-    <div class="addSeedLayout">
-        <div class="addSeedLeft">
-            <!-- Spot for Uploading Image -->
-        <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
-        <button class="infoBackground" id="addSeedImageUpload">Upload Image</button>
-        <select id="addSeedSun" class="infoBackground" name="addSeedSun" required>
-            <option value="" disabled selected hidden>Sun Requirement</option>
-            <option value="fullSun">Full Sun</option>
-            <option value="partSun">Part Sun</option>
-            <option value="shade">Shade</option>
-        </select>
-        <select id="addSeedSeason" class="infoBackground" name="addSeedSeason" required>
-            <option value="" disabled selected hidden>When to Plant</option>
-            <option value="Summer">Summer</option>
-            <option value="Autumn">Autumn</option>
-            <option value="Winter">Winter</option>
-            <option value="Spring">Spring</option>
-        </select>
+    <form id="addSeedForm" action="/add_seed" method="post" enctype="multipart/form-data" onsubmit="submitForm(); return false;">
+        <input type="text" id="addSeedName" class="infoBackground" placeholder="Seed Name" required>
+        <div class="addSeedLayout">
+            <div class="addSeedLeft">
+                <div class="imageUpload">
+                    <img id="previewSeedImage" src="#" alt="Preview Image">
+                    <input type="file" id="addSeedImage" accept="image/*" onchange="previewImage()">
+                </div>
+                <button class="infoBackground" id="addSeedImageUpload">Upload Image</button>
+                <select id="addSeedSun" class="infoBackground" name="addSeedSun" required>
+                    <option value="" disabled selected hidden>Sun Requirement</option>
+                    <option value="fullSun">Full Sun</option>
+                    <option value="partSun">Part Sun</option>
+                    <option value="shade">Shade</option>
+                </select>
+                <select id="addSeedSeason" class="infoBackground" name="addSeedSeason" required>
+                    <option value="" disabled selected hidden>When to Plant</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Autumn">Autumn</option>
+                    <option value="Winter">Winter</option>
+                    <option value="Spring">Spring</option>
+                </select>
+            </div>
+            <div class="addSeedRight">
+                <input type="text" id="addSeedType" class="infoBackground" placeholder="Plant Type" required>
+                <input type="text" id="addSeedGermination" class="infoBackground" placeholder="Germination Time" required>
+                <input type="text" id="addSeedMaturity" class="infoBackground" placeholder="Maturity Time" required>
+                <input type="text" id="addSeedDepth" class="infoBackground" placeholder="Planting Depth" required>
+                <input type="text" id="addSeedSpacing" class="infoBackground" placeholder="Plant Spacing" required>
+            </div>
         </div>
-        <div class="addSeedRight">
-            <input type="text" id="addSeedType" class="infoBackground" placeholder="Plant Type" required>
-            <input type="text" id="addSeedGermination" class="infoBackground" placeholder="Germination Time" required>
-            <input type="text" id="addSeedMaturity" class="infoBackground" placeholder="Maturity Time" required>
-            <input type="text" id="addSeedDepth" class="infoBackground" placeholder="Planting Depth" required>
-            <input type="text" id="addSeedSpacing" class="infoBackground" placeholder="Plant Spacing" required>
-        </div>
-    </div>
+    </form>
     <button class="addSeedExit" onclick="closePopup('addSeedPopup')">Exit</button>
 </div>
 
@@ -112,10 +116,40 @@ Seed Library
 <script>
     function openPopup(popupId) {
     document.getElementById(popupId).classList.add("open-popup");
-}
+    }
 
-function closePopup(popupId) {
-    document.getElementById(popupId).classList.remove("open-popup");
+    function closePopup(popupId) {
+        document.getElementById(popupId).classList.remove("open-popup");
+    }
+    /* Function to preview selected image */
+    function previewImage() {
+        const input = document.getElementById('addSeedImage');
+        const preview = document.getElementById('previewSeedImage');
+
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    function submitForm() {
+    const form = document.getElementById('addSeedForm');
+    const formData = new FormData(form);
+
+    // Make an AJAX request to submit the form data
+    fetch('/add_seed', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        // Handle the response if needed
+        console.log(response);
+    }).catch(error => {
+        console.error('Error:', error);
+    });
 }
 </script>
 {% endblock %}
