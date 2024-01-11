@@ -1,4 +1,9 @@
-
+body {
+  background-color: #D2FCD6;
+}
+footer {
+  margin-top: 2rem;
+}
 /* Navigation Menu */
 .navbar {
     background-color: #70FF99;
@@ -23,7 +28,6 @@
     padding: 5px;
     font-family:'Segoe UI', Tahoma, Verdana, sans-serif;
     font-size: 1rem;
-    background-color: #D2FCD6;
 }
 
 .logo {
@@ -175,7 +179,14 @@ input[type=password] {
 .loginButton:hover {
   opacity: 0.8;
 }
-
+.registerSelect {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
 /* Additional styles for the account container */
 .account-container {
   background-color: #F0FFF0;
@@ -218,9 +229,10 @@ input[type=password] {
   text-decoration: underline;
 }
 
+
 /* Seed Library and My Plants CSS */
 .seedPlantHeader {
-    width: 75%;
+    width: 70%;
     margin: auto;
     background-color: #70FF99;
     height: 5rem;
@@ -229,13 +241,7 @@ input[type=password] {
     justify-content: center;
     border-radius: 8px;
 }
-.addItemButton {
-    flex-basis: 14%;
-}
-.removeItemButton {
-    flex-basis: 14%;
-}
-.refineItemButton {
+.seedItemButton {
     flex-basis: 14%;
 }
 .searchBar{
@@ -252,7 +258,7 @@ input[type=password] {
     font-size: 1rem;
 }
 .BasicInfo {
-    width: 75%;
+    width: 70%;
     margin-top: 1rem;
     margin-left: auto;
     margin-right: auto;
@@ -354,6 +360,7 @@ input[type=password] {
     grid-template-rows: 15% 85%;
     text-align: center;
     visibility: hidden;
+    padding: 1rem;
   }
   /* Open popup window in seed library */
   /* Seed Information Popup */
@@ -394,19 +401,19 @@ input[type=password] {
 
   /* Add Seed Popup */
   #addSeedPopup {
-    grid-template-rows: 15% 70% 15%;
-    height: 50%;
+    grid-template-rows: 90% 10%;
+    height: 45%;
   }
   .addSeedLayout {
     display: grid;
     grid-template-columns: 50% 50%;
   }
-  
   #addSeedName {
     width: 50%;
     margin: auto;
     text-align: center;
     padding: .5rem 0rem;
+    margin-bottom: 1rem;
     font-size: 1rem;
   }
   .addSeedExit {
@@ -422,12 +429,20 @@ input[type=password] {
   .addSeedLeft img {
     width: 50%;
     height: auto;
+    margin-bottom: 1rem;
   }
-  .addSeedLayout input {
-    padding: .5rem .5rem;
+  .addSeedLeft input {
+    margin-bottom: 1rem;
   }
-  .addSeedLayout select {
-    padding: .5rem .5rem;
+  .addSeedRight input {
+    width: 100%;
+    padding: .5rem;
+    margin-bottom: 1rem;
+  }
+  .addSeedRight select {
+    width: 100%;
+    padding: .5rem;
+    margin-bottom: 1rem;
   }
 
   /* Plant Popup */

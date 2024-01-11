@@ -29,7 +29,11 @@ Login or Register
         <input type="text" id="regUsername" placeholder="Username" name="regUsername" required>
         <input type="password" id="regPassword" placeholder="Password" name="regPassword" required>
         <input type="password" id="confirmPassword" placeholder="Confirm Password" name="confirmPassword" required>
-        <input type="text" id="hemisphere" placeholder="Hemisphere" name="hemisphere" required>
+        <select id="hemisphere" name="hemisphere" class="registerSelect">
+          <option value="" disabled selected hidden>Hemisphere</option>
+          <option value="Northern">Northern</option>
+          <option value="Southern">Southern</option>
+        </select>
         <button type="submit" class="loginButton" name="Register">Register</button>
       </form>
     </div>

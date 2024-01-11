@@ -1,7 +1,7 @@
 #Imports necessary classes/modules
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 import os
@@ -30,6 +30,8 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     hemisphere = db.Column(db.String(20), nullable=False)
+    # Add a relationship to connect users to their seeds
+    seeds = db.relationship('Seed', backref='user', lazy=True)
 
 #Create Seed class, make it a subclass of db.Model
 class Seed(db.Model):
@@ -150,6 +152,7 @@ def calendar():
 
 # Route for adding seed form submission
 @app.route('/add_seed', methods=['POST'])
+@login_required  # Ensure that the user is logged in
 def add_seed():
     seed_name = request.form.get('addSeedName')
     plant_type = request.form.get('addSeedType')
