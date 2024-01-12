@@ -2,7 +2,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
-from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 import os
 
@@ -30,7 +29,6 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     hemisphere = db.Column(db.String(20), nullable=False)
-    # Add a relationship to connect users to their seeds
     seeds = db.relationship('Seed', backref='user', lazy=True)
 
 #Create Seed class, make it a subclass of db.Model
@@ -45,6 +43,7 @@ class Seed(db.Model):
     sun_requirement = db.Column(db.String(250))
     when_to_plant = db.Column(db.String(250))
     image_filename = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 #Initializes Flask-SQLAlchemy extension with flask App.
 db.init_app(app)
@@ -62,7 +61,13 @@ def loader_user(user_id) :
 def save_image(file):
     if file:
         filename = secure_filename(file.filename)
+
+        # Ensure the target directory exists
+        upload_folder = 'GardenPatch/uploads/seed_images'
+        os.makedirs(upload_folder, exist_ok=True)
+
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        print("File Path:", file_path)
         file.save(file_path)
         return filename
     return None
@@ -79,6 +84,7 @@ def home():
     return render_template("home.html")
 
 @app.route("/account/")
+@login_required
 def account():
     return render_template("account.html")
 
@@ -135,24 +141,28 @@ def login():
     return render_template("loginregister.html")
 
 @app.route("/seedlibrary/")
+@login_required
 def seedLibrary():
     return render_template("seedLibrary.html")
 
 @app.route("/myPlants/")
+@login_required
 def myPlants():
     return render_template("myPlants.html")
 
 @app.route("/tasks/")
+@login_required
 def tasks():
     return render_template("tasks.html")
 
 @app.route("/calendar/")
+@login_required
 def calendar():
     return render_template("calendar.html")
 
 # Route for adding seed form submission
 @app.route('/add_seed', methods=['POST'])
-@login_required  # Ensure that the user is logged in
+@login_required
 def add_seed():
     seed_name = request.form.get('addSeedName')
     plant_type = request.form.get('addSeedType')
@@ -166,8 +176,14 @@ def add_seed():
     # Get the image file
     image_file = request.files.get('addSeedImage')
 
+    # Debug print
+    print(f"Image File: {image_file}")
+
     # Save the image file
     image_filename = save_image(image_file)
+
+    # Debug print
+    print(f"Image Filename: {image_filename}")
 
     # Create a new seed with the form data
     new_seed = Seed(
@@ -179,12 +195,19 @@ def add_seed():
         maturity_time=maturity_time,
         sun_requirement=sun_requirement,
         when_to_plant=when_to_plant,
-        image_filename=image_filename
+        image_filename=image_filename,
+        user_id=current_user.id
     )
 
     # Add the new seed to the database
     db.session.add(new_seed)
-    db.session.commit()
+
+    try:
+        # Your database operations here
+        db.session.commit()
+    except Exception as e:
+        print(f"Error: {e}")
+        db.session.rollback()
 
     # Redirect to the seed library page or render a template
     return redirect(url_for('seedLibrary'))

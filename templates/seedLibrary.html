@@ -12,7 +12,7 @@ Seed Library
         <button class="button">Remove Seed</button>
     </div>
     <div class="seedItemButton">
-        <button class="button">Refine Options</button>
+        <button class="button" id="seedSearchBar">Refine Options</button>
     </div>
     <div class="searchBar">
         <input type="text" placeholder="Search..">
@@ -34,25 +34,7 @@ Seed Library
         </div>
     </button>
     <label class="containerInfo">
-        <input type="checkbox">
-        <span class="checkmark"></span>
-    </label>
-</div>
-<div class="BasicInfo">
-    <button class="InfoButton" onclick="openPopup('seedPopup')">
-        <img src="{{url_for('static', filename='img/seedpackimg.png')}}" alt="Seed Image">
-        <div class="infoDetails">
-            <p>Seed Name 2</p>
-        </div>
-        <div class="infoDetails">
-            <p>Plant Type</p>
-        </div>
-        <div class="infoDetails">
-            <p>Season to Plant</p>
-        </div>
-    </button>
-    <label class="containerInfo">
-        <input type="checkbox">
+        <input type="checkbox" id="checkboxSeed1">
         <span class="checkmark"></span>
     </label>
 </div>
@@ -85,14 +67,14 @@ Seed Library
                     <img id="previewSeedImage" src="{{url_for('static', filename='img/defaultimg.png')}}" alt="Default Image">
                     <input type="file" id="addSeedImage" accept="image/*" onchange="previewImage()">
                 </div>
-                <button type="submit" class="addSeedExit">Submit</button>
+                <button type="submit" class="addSeedExit" onclick="closePopup('addSeedPopup')">Submit</button>
             </div>
             <div class="addSeedRight">
                 <input type="text" id="addSeedType" class="infoBackground" placeholder="Plant Type" required>
-                <input type="text" id="addSeedGermination" class="infoBackground" placeholder="Germination Time" required>
-                <input type="text" id="addSeedMaturity" class="infoBackground" placeholder="Maturity Time" required>
-                <input type="text" id="addSeedDepth" class="infoBackground" placeholder="Planting Depth" required>
-                <input type="text" id="addSeedSpacing" class="infoBackground" placeholder="Plant Spacing" required>
+                <input type="number" id="addSeedGermination" class="infoBackground" placeholder="Germination Time &#40;days&#41;" required>
+                <input type="number" id="addSeedMaturity" class="infoBackground" placeholder="Maturity Time &#40;weeks&#41;" required>
+                <input type="number" id="addSeedDepth" class="infoBackground" placeholder="Sow Depth &#40;mm&#41;" required>
+                <input type="number" id="addSeedSpacing" class="infoBackground" placeholder="Plant Spacing &#40;cm&#41;" required>
                 <select id="addSeedSun" class="infoBackground" name="addSeedSun" required>
                     <option value="" disabled selected hidden>Sun Requirement</option>
                     <option value="fullSun">Full Sun</option>
@@ -128,6 +110,8 @@ Seed Library
         const preview = document.getElementById('previewSeedImage');        //Gets image element with id 'previewSeedImage'
 
         const file = input.files[0];            //Gets the first file from the selected files in the input element
+
+        console.log('Selected File:', file);
 
         if (file) {                             //Checks if a file is selected
             const reader = new FileReader();    //Creates a FileReader object
@@ -170,6 +154,17 @@ Seed Library
     const seedSeason = document.getElementById('addSeedSeason').value;
     formData.append('addSeedSeason', seedSeason);
 
+    
+    const imageInput = document.getElementById('addSeedImage');
+    const imageFile = imageInput.files[0];
+
+    formData.append('addSeedImage', imageFile);
+
+    console.log(formData);
+
+    for (const entry of formData.entries()) {
+    console.log(entry);
+    }
 
     // Make an AJAX request to submit the form data
     fetch('/add_seed', {
