@@ -249,6 +249,15 @@ input[type=password] {
     display: flex;
     justify-content: right;
 }
+.seedItemButton select {
+  background-color: #D2FCD6;
+  text-align: center;
+  font-size: 1em;
+  padding: 1rem 0em 1rem 0rem;
+  width: 90%;
+  border: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-radius: 8px;
+}
 .searchBar input[type=text] {
     width: 65%;
     background-color: #D2FCD6;

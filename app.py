@@ -4,15 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 import os
-
+from datetime import datetime
 
 #Creates Flask App
 app = Flask(__name__)
 
-app.config['UPLOAD_FOLDER'] = 'GardenPatch/uploads/seed_images'
+app.config['UPLOAD_FOLDER'] = 'static/uploads/seed_images'
 #Where the database to connect to is n n  bnn gbg/bb/
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-#Choose a secret key
+#Choose a secret key5 
 app.config["SECRET_KEY"] = "GPKey"
 #Initialize the database
 db = SQLAlchemy()
@@ -29,9 +29,10 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     hemisphere = db.Column(db.String(20), nullable=False)
-    seeds = db.relationship('Seed', backref='user', lazy=True)
+    seeds = db.relationship('Seed', backref='user', lazy=True)      #Relationship for Seed table
+    plants = db.relationship('Plant', backref='user', lazy=True)
 
-#Create Seed class, make it a subclass of db.Model
+#Create Seed class, a subclass of db.Model
 class Seed(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
@@ -43,7 +44,22 @@ class Seed(db.Model):
     sun_requirement = db.Column(db.String(250))
     when_to_plant = db.Column(db.String(250))
     image_filename = db.Column(db.String(255))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  #User ID from Users table
+
+#Create Plants class, a subclass of db.Model
+class Plant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    plantName = db.Column(db.String(250), nullable=False)
+    plantType = db.Column(db.String(250), nullable=False)
+    plantDate = db.Column(db.Date, nullable=False)
+    plantMaturity = db.Column(db.String(250))
+    maturityDate = db.column(db.String(250), nullable=True)
+    plantGermination = db.Column(db.String(250), nullable=True)
+    germinationDate = db.Column(db.String(250), nullable=True)
+    plantSunRequirement = db.Column(db.String(250))
+    plantPlacement = db.Column(db.String(250))
+    newSeedling = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)   #User ID from Users table
 
 #Initializes Flask-SQLAlchemy extension with flask App.
 db.init_app(app)
@@ -63,7 +79,7 @@ def save_image(file):
         filename = secure_filename(file.filename)
 
         # Ensure the target directory exists
-        upload_folder = 'GardenPatch/uploads/seed_images'
+        upload_folder = 'static/uploads/seed_images'
         os.makedirs(upload_folder, exist_ok=True)
 
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -140,16 +156,6 @@ def login():
 
     return render_template("loginregister.html")
 
-@app.route("/seedlibrary/")
-@login_required
-def seedLibrary():
-    return render_template("seedLibrary.html")
-
-@app.route("/myPlants/")
-@login_required
-def myPlants():
-    return render_template("myPlants.html")
-
 @app.route("/tasks/")
 @login_required
 def tasks():
@@ -160,10 +166,73 @@ def tasks():
 def calendar():
     return render_template("calendar.html")
 
+@app.route("/myPlants/")
+@login_required
+def myPlants():
+    user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
+    return render_template("myPlants.html", user_seeds=user_seeds)
+
+@app.route('/add_plant', methods=['POST'])
+@login_required
+def add_plant():
+    #Get data from form
+    addPlantName = request.form.get('seedlingPlantName')
+    addPlantType = request.form.get('seedlingPlantType')
+    addPlantDate = request.form.get('seedlingPlantDate')
+    addPlantMaturity = request.form.get('plantMaturityTime')
+    addPlantSun = request.form.get('seedlingSunRequirement')
+    addPlantPlace = request.form.get('seedlingPlantPlace')
+    addPlantDate = request.form.get('seedlingPlantDate')
+
+    #Convert the date string to a datetime object
+    plant_date = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
+
+    #Create newPlant from above
+    newPlant = Plant (
+        plantName=addPlantName,
+        plantType=addPlantType,
+        plantDate=plant_date,
+        plantMaturity=addPlantMaturity,
+        plantSunRequirement=addPlantSun,
+        plantPlacement=addPlantPlace,
+        newSeedling=1,
+        user_id=current_user.id
+    )
+     # Add the new seed to the database
+    db.session.add(newPlant)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        print(f"Error: {e}")
+        db.session.rollback()
+
+    # Redirect to the my plants page
+    return redirect(url_for('myPlants'))
+
+@app.route("/seedlibrary/")
+@login_required
+def seedLibrary():
+    user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
+    return render_template("seedLibrary.html", user_seeds=user_seeds)
+
+# Route to reload the seed library content
+@app.route('/reloadSeedLibrary')
+@login_required
+def reloadSeedLibrary():
+    # Fetch seeds only for the logged-in user
+    user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
+
+    # Render the seed library content as HTML
+    seedLibraryhtml = render_template('seedLibraryContent.html', user_seeds=user_seeds)
+    
+    return seedLibraryhtml
+
 # Route for adding seed form submission
 @app.route('/add_seed', methods=['POST'])
 @login_required
 def add_seed():
+    #Get data from form
     seed_name = request.form.get('addSeedName')
     plant_type = request.form.get('addSeedType')
     germinate_time = request.form.get('addSeedGermination')
@@ -177,13 +246,13 @@ def add_seed():
     image_file = request.files.get('addSeedImage')
 
     # Debug print
-    print(f"Image File: {image_file}")
+    #print(f"Image File: {image_file}")
 
     # Save the image file
     image_filename = save_image(image_file)
 
     # Debug print
-    print(f"Image Filename: {image_filename}")
+    #print(f"Image Filename: {image_filename}")
 
     # Create a new seed with the form data
     new_seed = Seed(
@@ -203,11 +272,10 @@ def add_seed():
     db.session.add(new_seed)
 
     try:
-        # Your database operations here
         db.session.commit()
     except Exception as e:
         print(f"Error: {e}")
         db.session.rollback()
 
-    # Redirect to the seed library page or render a template
+    # Redirect to the seed library page
     return redirect(url_for('seedLibrary'))

@@ -42,8 +42,8 @@ My Plants
 <div class="plantPopup" id="plantPopup">
     <h2>Plant Name</h2>
     <div class="infoContainerPlant">
-        <div class="infoBackground"><p>Germination Date</p></div>
-        <div class="infoBackground"><p>Actual Date</p></div>
+        <div class="infoBackground"><p>Plant date, either from seed or seedling</p></div>
+        <div class="infoBackground"><p>Germination Date, newSeedling in db 0 for false, 1 for true, only show germination if newSeedling is false.</p></div>
         <div class="infoBackground"><p>Plant Maturity</p></div>
         <div class="infoBackground"><p>Type of Plant</p></div>
         <div class="infoBackground"><p>Sun Requirement</p></div>
@@ -59,22 +59,35 @@ My Plants
     <div class="tabPopup" onclick="showTab('seedlingTab')">New Seedling</div>
     <div id="seedLibraryTab" class="tabPopup-content activeTab">
         <div class="seedLibraryTabLayout">
-            <form>
+            <form id="addPlantSeed">
                 <select id="newPlantType">
                     <option value="" disabled selected hidden>Type of Plant</option>
-                    <option value="tomato">Tomato</option>
+                    {% for seed in user_seeds %}
+                        <option value="{{ seed.plant_type }}">{{ seed.plant_type }}</option>
+                    {% endfor %}
                 </select>
                 <select id="newPlantName">
                     <option value="" disabled selected hidden>Seed Name</option>
-                    <option value="fullSun">Sweet 100 Tomato</option>
+                    <!-- this area is populated by js -->
                 </select>
+                <input type="date" id="datePlanted">
+                <select id="seedlingPlantPlace" name="seedlingPlantPlace">
+                    <option value="" disabled selected hidden>Plant Placement</option>
+                    <option value="seedlingTray">Seedling Tray</option>
+                    <option value="smallPot">Small Pot</option>
+                    <option value="largePot">Large Pot</option>
+                    <option value="raisedBed">Raised Bed</option>
+                    <option value="garden">Garden</option>
+                </select>
+                <input type="hidden" id="germinateTime" name="germinateTime">
+                <input type="hidden" id="maturityTime" name="maturityTime">
+                <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
             </form>
-            <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
             <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
         </div>
     </div>
     <div id="seedlingTab" class="tabPopup-content">
-        <form>
+        <form id="addPlantSeedling" action="/add_plant" method="post" onsubmit="submitForm(); return false;">
             <input type="text" id="seedlingPlantName" placeholder="Enter Plant Name" required>
             <input type="text" id="seedlingPlantType" placeholder="Type of Plant" required>
             <input type="date" id="seedlingPlantDate" placeholder="Plant Date" required>
@@ -93,8 +106,8 @@ My Plants
                 <option value="raisedBed">Raised Bed</option>
                 <option value="garden">Garden</option>
             </select>
+            <button type="submit" class="newPlantButton">Submit</button>
         </form>
-        <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
         <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
     </div>
 </div>
@@ -123,6 +136,34 @@ My Plants
         });
         // Show the selected tab
         document.getElementById(tabId).classList.add('activeTab');
+    }
+
+    function submitForm() {
+        const form = document.getElementById('addPlantSeedling');                   //Gets form element with the id 'addPlantSeedling'
+        const formData = new FormData(form);                                        //Creates new FormData object from the form
+
+        const plantName = document.getElementById('seedlingPlantName').value;       //Gets element with id seedlingPlantName
+        formData.append('seedlingPlantName', plantName);                             //Appends the Plant Name to the formData
+        const plantType = document.getElementById('seedlingPlantType').value;
+        formData.append('seedlingPlantType', plantType);
+        const plantDate = document.getElementById('seedlingPlantDate').value;
+        formData.append('seedlingPlantDate', plantDate);
+        const plantMaturity = document.getElementById('plantMaturityTime').value;
+        formData.append('plantMaturityTime', plantMaturity);
+        const plantSun = document.getElementById('seedlingSunRequirement').value;
+        formData.append('seedlingSunRequirement', plantSun);
+        const plantPlace = document.getElementById('seedlingPlantPlace').value;
+        formData.append('seedlingPlantPlace', plantPlace);
+
+        // Make an AJAX request to submit the form data
+        fetch('/add_plant', {
+            method: 'POST',                         //Specifies HTTP method as POST
+            body: formData                          //Sets request body to the FormData object
+        }).then(response => {
+            console.log(response);                  //Logs response to the console
+        }).catch(error => {
+            console.error('Error:', error);         //Logs error message to console if there is an error
+        })
     }
 </script>
 {% endblock %}
