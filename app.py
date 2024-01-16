@@ -1,5 +1,5 @@
 #Imports necessary classes/modules
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
@@ -53,9 +53,9 @@ class Plant(db.Model):
     plantType = db.Column(db.String(250), nullable=False)
     plantDate = db.Column(db.Date, nullable=False)
     plantMaturity = db.Column(db.String(250))
-    maturityDate = db.column(db.String(250), nullable=True)
-    plantGermination = db.Column(db.String(250), nullable=True)
-    germinationDate = db.Column(db.String(250), nullable=True)
+    maturityDate = db.Column(db.String(250))
+    plantGermination = db.Column(db.String(250))
+    germinationDate = db.Column(db.String(250))
     plantSunRequirement = db.Column(db.String(250))
     plantPlacement = db.Column(db.String(250))
     newSeedling = db.Column(db.Integer)
@@ -169,8 +169,39 @@ def calendar():
 @app.route("/myPlants/")
 @login_required
 def myPlants():
+    user_plants = Plant.query.filter_by(user_id=current_user.id).all()
     user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
-    return render_template("myPlants.html", user_seeds=user_seeds)
+    return render_template("myPlants.html",user_plants=user_plants, user_seeds=user_seeds)
+
+@app.route("/remove_plants", methods=["POST"])
+@login_required
+def remove_plants():
+    try:
+        # Get the plant IDs from the JSON request
+        data = request.get_json()
+        plant_ids = data.get('plantIds', [])
+
+        # Remove the selected plants from the database
+        Plant.query.filter(Plant.id.in_(plant_ids)).delete(synchronize_session=False)
+        db.session.commit()
+
+        # Return success response
+        return jsonify(success=True)
+    except Exception as e:
+        print(f"Error: {e}")
+        # Return error response
+        return jsonify(success=False)
+
+@app.route('/get_seeds/<plant_type>')
+@login_required
+def get_seeds(plant_type):
+    # Fetch seeds only for the logged-in user and the selected plant type
+    user_seeds = Seed.query.filter_by(user_id=current_user.id, plant_type=plant_type).all()
+
+    # Convert the seed data to a format that can be easily converted to JSON
+    seed_data = [{'name': seed.name} for seed in user_seeds]
+
+    return jsonify(seed_data)
 
 @app.route('/add_plant', methods=['POST'])
 @login_required
@@ -187,15 +218,24 @@ def add_plant():
     #Convert the date string to a datetime object
     plant_date = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
 
+    #Code needed for Maturity Date and, Germination and Germination Date
+    addMaturityDate = "Code Needed"
+    addPlantGermination = "Code Needed"
+    addGerminationDate = "Code Needed"
+    addNewSeedling = 1
+
     #Create newPlant from above
     newPlant = Plant (
         plantName=addPlantName,
         plantType=addPlantType,
         plantDate=plant_date,
         plantMaturity=addPlantMaturity,
+        maturityDate=addMaturityDate,
+        plantGermination= addPlantGermination,
+        germinationDate=addGerminationDate,
         plantSunRequirement=addPlantSun,
         plantPlacement=addPlantPlace,
-        newSeedling=1,
+        newSeedling=addNewSeedling,
         user_id=current_user.id
     )
      # Add the new seed to the database

@@ -295,62 +295,63 @@ input[type=password] {
 
 /* Container for checkbox */
 .containerInfo { 
-    display: block;
-    position: relative;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   }
 /* Hides default checkbox */
 .containerInfo input { 
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
   }
-  /* Creates new checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 4rem;
-    width: 3rem;
-    background-color:#59e280;
-    border-radius: 8px;
+
+/* Creates new checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4rem;
+  width: 3rem;
+  background-color:#59e280;
+  border-radius: 8px;
   }
-  /* When mouse hovers, change to a light green background colour */
+/* When mouse hovers, change to a light green background colour */
 .containerInfo:hover input ~ .checkmark {
-    background-color:#7dffa2;
+  background-color:#7dffa2;
   }
-  /* When the checkbox has been clicked, change colour */
-  .containerInfo input:checked ~ .checkmark {
-    background-color:#70FF99;
+/* When the checkbox has been clicked, change colour */
+.containerInfo input:checked ~ .checkmark {
+  background-color:#70FF99;
   }
   /* Create the checkmark */
 .checkmarkInfo:after {
-    content: "";
-    position: absolute;
-    display: none;
+  content: "";
+  position: absolute;
+  display: none;
   }
   /* Show the checkmark when checked */
-  .containerInfo input:checked ~ .checkmark:after {
-    display: block;
+.containerInfo input:checked ~ .checkmark:after {
+  display: block;
   }
   /* Style the checkmark*/
-  .containerInfo .checkmark:after {
-    left: 15px;
-    top: 10px;
-    width: 25%;
-    height: 50%;
-    border: solid rgb(0, 0, 0);
-    border-width: 0 2px 2px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+.containerInfo .checkmark:after {
+  left: 15px;
+  top: 10px;
+  width: 25%;
+  height: 50%;
+  border: solid #000000;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
   }
 
   
@@ -417,142 +418,142 @@ input[type=password] {
     display: grid;
     grid-template-columns: 50% 50%;
   }
-  #addSeedName {
-    width: 50%;
-    margin: auto;
-    text-align: center;
-    padding: .5rem 0rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
+#addSeedName {
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  padding: .5rem 0rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
   }
-  .addSeedExit {
-    width: 50%;
-    outline: none;
-    background: #D2FCD6;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 8px;
-    margin: auto;
-    font-size: 1rem;
-    padding: .5rem 0rem;
+.addSeedExit {
+  width: 50%;
+  outline: none;
+  background: #D2FCD6;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-radius: 8px;
+  margin: auto;
+  font-size: 1rem;
+  padding: .5rem 0rem;
   }
-  .addSeedLeft img {
-    width: 50%;
-    height: auto;
-    margin-bottom: 1rem;
+.addSeedLeft img {
+  width: 50%;
+  height: auto;
+  margin-bottom: 1rem;
   }
-  .addSeedLeft input {
-    margin-bottom: 1rem;
+.addSeedLeft input {
+  margin-bottom: 1rem;
   }
-  .addSeedRight input {
-    width: 100%;
-    padding: .5rem;
-    margin-bottom: 1rem;
+.addSeedRight input {
+  width: 100%;
+  padding: .5rem;
+  margin-bottom: 1rem;
   }
-  .addSeedRight select {
-    width: 100%;
-    padding: .5rem;
-    margin-bottom: 1rem;
+.addSeedRight select {
+  width: 100%;
+  padding: .5rem;
+  margin-bottom: 1rem;
   }
 
   /* Plant Popup */
-  .plantPopup {
-    width: 50%;
-    background-color: #7dffa2;
-    border-radius: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 3px solid #59e280;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    display: grid;
-    grid-template-rows: 25% 75%;
-    text-align: center;
-    visibility: hidden;
+.plantPopup {
+  width: 50%;
+  background-color: #7dffa2;
+  border-radius: 6px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #59e280;
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  display: grid;
+  grid-template-rows: 25% 75%;
+  text-align: center;
+  visibility: hidden;
   }
-  .infoContainerPlant {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 25% 25% 25% 25%;
+.infoContainerPlant {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 25% 25% 25% 25%;
   }
   .addPlantPopup {
-    width: 40%;
-    height: 40%;
-    background-color: #7dffa2;
-    border-radius: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 3px solid #59e280;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    visibility: hidden;
+  width: 40%;
+  height: 40%;
+  background-color: #7dffa2;
+  border-radius: 6px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #59e280;
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  visibility: hidden;
   }
-  .open-plantPopup {
-    visibility: visible;
+.open-plantPopup {
+  visibility: visible;
   }
-  .tabPopup {
-    display: inline-block;
-    width: 49%;
-    padding: 1rem 0rem;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    background-color: #cbfad0;
+.tabPopup {
+  display: inline-block;
+  width: 49%;
+  padding: 1rem 0rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #cbfad0;
   }
-  .tabPopup-content {
-    display: none;
+.tabPopup-content {
+  display: none;
   }
-  .activeTab {
-    display: inline-block;
+.activeTab {
+  display: inline-block;
   }
-  .seedLibraryTabLayout select{
-    font-size: 1rem;
-    background-color: #cbfad0;
-    padding: .5rem;
+.seedLibraryTabLayout select{
+  font-size: 1rem;
+  background-color: #cbfad0;
+  padding: .5rem;
   }
-  .newPlantButton {
-    width: 45%;
-    background-color: #cbfad0;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1px solid #59e280;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    padding: 1rem;
+.newPlantButton {
+  width: 45%;
+  background-color: #cbfad0;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #59e280;
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  padding: 1rem;
   }
   
   /* Tasks Page */
-  .tasksPage {
-    display: grid;
-    grid-template-columns: 45% 45%;
-    column-gap: 2rem;
-    justify-content: center;
+.tasksPage {
+  display: grid;
+  grid-template-columns: 45% 45%;
+  column-gap: 2rem;
+  justify-content: center;
   }
   /*Left*/
-  .myTasks {
-    background-color: #59e280;
-    margin-bottom: 1rem;
-    padding: 1rem;
+.myTasks {
+  background-color: #59e280;
+  margin-bottom: 1rem;
+  padding: 1rem;
   }
-  .tasksDaily {
-    display: grid;
-    grid-template-columns: 60% 40%;
-    margin-bottom: 1rem;
+.tasksDaily {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  margin-bottom: 1rem;
   }
-  .tasksToday {
-    background-color: #59e280;
-    padding: 1rem;
+.tasksToday {
+  background-color: #59e280;
+  padding: 1rem;
   }
-  .tasksCompleted {
-    background-color: #59e280;
-    margin-left: 20%;
-    padding: 1rem;
-    text-align: center;
+.tasksCompleted {
+  background-color: #59e280;
+  margin-left: 20%;
+  padding: 1rem;
+  text-align: center;
   }
-  .tasksTomorrow {
-    background-color: #59e280;
-    padding: 1rem;
-    width: 55%;
-    margin-bottom: 1rem;
+.tasksTomorrow {
+  background-color: #59e280;
+  padding: 1rem;
+  width: 55%;
+  margin-bottom: 1rem;
   }
   
 /*Right*/

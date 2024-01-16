@@ -9,7 +9,7 @@ My Plants
         <button class="button addButton" onclick="openAddPlantPopup()">Add Plant</button>
     </div>
     <div class="removeItemButton">
-        <button class="button removeButton">Remove Plant</button>
+        <button type="button" class="button removeButton" onclick="removeSelectedPlants()">Remove Plants</button>
     </div>
     <div class="refineItemButton">
         <button class="button refineButton">Refine Options</button>
@@ -20,38 +20,41 @@ My Plants
 </div>
 
 <!-- Basic Info Button and Checkbox -->
+{% for plant in user_plants %}
 <div class="BasicInfo">
     <button class="InfoButton" onclick="openPlantPopup()">
         <div class="infoDetails">
-            <p>Plant Name</p>
+            <p>{{ plant.plantName }}</p>
         </div>
         <div class="infoDetails">
-            <p>Type of Plant</p>
+            <p>{{ plant.plantType }}</p>
         </div>
         <div class="infoDetails">
-            <p>Where it was Planted</p>
+            <p>{{ plant.plantPlacement }}</p>
         </div>
     </button>
-    <label class="containerInfo">
-        <input type="checkbox">
-        <span class="checkmark"></span>
-    </label>
+    <input type="checkbox" name="marked_plant" id="plant_{{ plant.id }}" value="{{ plant.id }}" onchange="updateCheckedPlants('{{ plant.id }}')">
 </div>
 
 <!-- Plant Information Popup -->
 <div class="plantPopup" id="plantPopup">
     <h2>Plant Name</h2>
     <div class="infoContainerPlant">
-        <div class="infoBackground"><p>Plant date, either from seed or seedling</p></div>
-        <div class="infoBackground"><p>Germination Date, newSeedling in db 0 for false, 1 for true, only show germination if newSeedling is false.</p></div>
-        <div class="infoBackground"><p>Plant Maturity</p></div>
-        <div class="infoBackground"><p>Type of Plant</p></div>
-        <div class="infoBackground"><p>Sun Requirement</p></div>
-        <div class="infoBackground"><p>What it has been Planted in</p></div>
+        <div class="infoBackground"><p>Date Planted: {{ plant.plantDate }}</p></div>
+        {% if plant.newSeedling == 0 %}
+            <div class="infoBackground"><p>Date of Germination: {{ plant.germinationDate }}</p></div>
+        {% else %}
+            <div class="infoBackground"><p>New Seedling</p></div>
+        {% endif %}
+        <div class="infoBackground"><p>Maturity Date: {{ plant.maturityDate}}</p></div>
+        <div class="infoBackground"><p>Plant Type: {{ plant.plantType }}</p></div>
+        <div class="infoBackground"><p>Sun Requirement: {{ plant.plantSunRequirement }}</p></div>
+        <div class="infoBackground"><p>Planted in: {{ plant.plantPlacement}}</p></div>
         <button class="seedExit" onclick="closePlantPopup('plantPopup')">Remove</button>
         <button class="seedExit" onclick="closePlantPopup('plantPopup')">Exit</button>
     </div>
 </div>
+{% endfor %}
 
 <!-- Add Plant Popup -->
 <div class="addPlantPopup" id="addPlantPopup">
@@ -60,7 +63,7 @@ My Plants
     <div id="seedLibraryTab" class="tabPopup-content activeTab">
         <div class="seedLibraryTabLayout">
             <form id="addPlantSeed">
-                <select id="newPlantType">
+                <select id="newPlantType" onchange="updateSeedNames()">
                     <option value="" disabled selected hidden>Type of Plant</option>
                     {% for seed in user_seeds %}
                         <option value="{{ seed.plant_type }}">{{ seed.plant_type }}</option>
@@ -73,14 +76,15 @@ My Plants
                 <input type="date" id="datePlanted">
                 <select id="seedlingPlantPlace" name="seedlingPlantPlace">
                     <option value="" disabled selected hidden>Plant Placement</option>
-                    <option value="seedlingTray">Seedling Tray</option>
-                    <option value="smallPot">Small Pot</option>
-                    <option value="largePot">Large Pot</option>
-                    <option value="raisedBed">Raised Bed</option>
-                    <option value="garden">Garden</option>
+                    <option value="Seedling Tray">Seedling Tray</option>
+                    <option value="Small Pot">Small Pot</option>
+                    <option value="Large Pot">Large Pot</option>
+                    <option value="Raised Bed">Raised Bed</option>
+                    <option value="Garden">Garden</option>
                 </select>
                 <input type="hidden" id="germinateTime" name="germinateTime">
                 <input type="hidden" id="maturityTime" name="maturityTime">
+                <input type="hidden" id="seedlingSunRequirement">
                 <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
             </form>
             <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
@@ -94,17 +98,17 @@ My Plants
             <input type="text" id="plantMaturityTime" placeholder="How long for plant Maturity" required>
             <select id="seedlingSunRequirement" name="seedlingSunRequirement">
                 <option value="" disabled selected hidden>Sun Requirement</option>
-                <option value="fullSun">Full Sun</option>
-                <option value="partSun">Part Sun</option>
-                <option value="shade">Shade</option>
+                <option value="Full Sun">Full Sun</option>
+                <option value="Part Sun">Part Sun</option>
+                <option value="Shade">Shade</option>
             </select>
             <select id="seedlingPlantPlace" name="seedlingPlantPlace">
                 <option value="" disabled selected hidden>Plant Placement</option>
-                <option value="seedlingTray">Seedling Tray</option>
-                <option value="smallPot">Small Pot</option>
-                <option value="largePot">Large Pot</option>
-                <option value="raisedBed">Raised Bed</option>
-                <option value="garden">Garden</option>
+                <option value="Seedling Tray">Seedling Tray</option>
+                <option value="Small Pot">Small Pot</option>
+                <option value="Large Pot">Large Pot</option>
+                <option value="Raised Bed">Raised Bed</option>
+                <option value="Garden">Garden</option>
             </select>
             <button type="submit" class="newPlantButton">Submit</button>
         </form>
@@ -138,6 +142,28 @@ My Plants
         document.getElementById(tabId).classList.add('activeTab');
     }
 
+    function updateSeedNames() {
+        // Get the selected plant type
+        var selectedPlantType = document.getElementById("newPlantType").value;
+
+        // Get the dropdown for seed names
+        var seedNameDropdown = document.getElementById("newPlantName");
+
+        // Clear existing options
+        seedNameDropdown.innerHTML = '<option value="" disabled selected hidden>Seed Name</option>';
+
+        // Fetch seed names based on the selected plant type
+        fetch(`/get_seeds/${selectedPlantType}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate with options based on the fetched seed names
+                data.forEach(seed => {
+                    seedNameDropdown.innerHTML += `<option value="${seed.name}">${seed.name}</option>`;
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
     function submitForm() {
         const form = document.getElementById('addPlantSeedling');                   //Gets form element with the id 'addPlantSeedling'
         const formData = new FormData(form);                                        //Creates new FormData object from the form
@@ -164,6 +190,38 @@ My Plants
         }).catch(error => {
             console.error('Error:', error);         //Logs error message to console if there is an error
         })
+    }
+
+    var checkedPlants = [];
+
+    function updateCheckedPlants(plantId) {
+        // Parse plantId as an integer if needed
+        plantId = parseInt(plantId, 10);
+        var index = checkedPlants.indexOf(plantId);
+        if (index === -1) {
+            checkedPlants.push(plantId);
+        } else {
+            checkedPlants.splice(index, 1);
+        }
+    }
+
+    function removeSelectedPlants() {
+        fetch('/remove_plants', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ plantIds: checkedPlants })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                console.error('Failed to remove plants.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 </script>
 {% endblock %}
