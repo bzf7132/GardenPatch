@@ -266,6 +266,8 @@ input[type=password] {
     padding-bottom: 1rem;
     font-size: 1rem;
 }
+
+/* Basic Info */
 .BasicInfo {
     width: 70%;
     margin-top: 1rem;
@@ -292,69 +294,6 @@ input[type=password] {
   flex-basis: 32%;
 }
 
-
-/* Container for checkbox */
-.containerInfo { 
-  display: block;
-  position: relative;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  }
-/* Hides default checkbox */
-.containerInfo input { 
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-  }
-
-/* Creates new checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 4rem;
-  width: 3rem;
-  background-color:#59e280;
-  border-radius: 8px;
-  }
-/* When mouse hovers, change to a light green background colour */
-.containerInfo:hover input ~ .checkmark {
-  background-color:#7dffa2;
-  }
-/* When the checkbox has been clicked, change colour */
-.containerInfo input:checked ~ .checkmark {
-  background-color:#70FF99;
-  }
-  /* Create the checkmark */
-.checkmarkInfo:after {
-  content: "";
-  position: absolute;
-  display: none;
-  }
-  /* Show the checkmark when checked */
-.containerInfo input:checked ~ .checkmark:after {
-  display: block;
-  }
-  /* Style the checkmark*/
-.containerInfo .checkmark:after {
-  left: 15px;
-  top: 10px;
-  width: 25%;
-  height: 50%;
-  border: solid #000000;
-  border-width: 0 2px 2px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  }
-
-  
   /* Seed Popup CSS */
   .seedPopup {
     width: 50%;

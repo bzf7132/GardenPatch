@@ -256,6 +256,25 @@ def seedLibrary():
     user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
     return render_template("seedLibrary.html", user_seeds=user_seeds)
 
+@app.route("/remove_seeds", methods=["POST"])
+@login_required
+def remove_seeds():
+    try:
+        # Get the seed IDs from the JSON request
+        data = request.get_json()
+        seed_ids = data.get('seedIds', [])
+
+        # Remove the selected seeds from the database
+        Seed.query.filter(Seed.id.in_(seed_ids)).delete(synchronize_session=False)
+        db.session.commit()
+
+        # Return success response
+        return jsonify(success=True)
+    except Exception as e:
+        print(f"Error: {e}")
+        # Return error response
+        return jsonify(success=False)
+
 # Route to reload the seed library content
 @app.route('/reloadSeedLibrary')
 @login_required

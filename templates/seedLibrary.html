@@ -9,7 +9,7 @@ Seed Library
         <button class="button" onclick="openPopup('addSeedPopup')">Add Seed</button>
     </div>
     <div class="seedItemButton">
-        <button class="button">Remove Seed</button>
+        <button type="button" class="button" onclick="removeSelectedSeeds()">Remove Seed</button>
     </div>
     <div class="seedItemButton">
         <select id="seedRefine" name="seedRefine">
@@ -36,9 +36,7 @@ Seed Library
                 <p>{{ seed.when_to_plant }}</p>
             </div>
         </button>
-        <label class="containerInfo">
-            <input type="checkbox" id="checkboxSeed{{ seed.id }}">
-        </label>
+        <input type="checkbox" name="marked_seed" id="seed_{{ seed.id }}" value="{{ seed.id }}" onchange="updateCheckedSeeds('{{ seed.id }}')">
     </div>
 
     <!-- Seed Information Popup -->
@@ -111,18 +109,18 @@ Seed Library
     function closePopupRefresh(popupId) {
     document.getElementById(popupId).classList.remove("open-popup");
 
-    // Reload the content of the seed library using AJAX
-    fetch('/reloadSeedLibrary', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('seedLibraryContainer').innerHTML = html;
-    })
-    .catch(error => console.error('Error:', error));
+        // Reload the content of the seed library using AJAX
+        fetch('/reloadSeedLibrary', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('seedLibraryContainer').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
     }
 
     /* Function to preview selected image */
@@ -148,54 +146,86 @@ Seed Library
 
     /* Function to submit the form */
     function submitForm() {
-    const form = document.getElementById('addSeedForm');    //Gets form element with the id 'addSeedForm'
-    const formData = new FormData(form);                    //Creates new FormData object from the form
+        const form = document.getElementById('addSeedForm');    //Gets form element with the id 'addSeedForm'
+        const formData = new FormData(form);                    //Creates new FormData object from the form
 
-    const seedName = document.getElementById('addSeedName').value;  //Gets element with id addSeedName
-    formData.append('addSeedName', seedName);                       //Append the Seed Name to formData, with key                     
+        const seedName = document.getElementById('addSeedName').value;  //Gets element with id addSeedName
+        formData.append('addSeedName', seedName);                       //Append the Seed Name to formData, with key                     
 
-    const seedType = document.getElementById('addSeedType').value;
-    formData.append('addSeedType', seedType);
+        const seedType = document.getElementById('addSeedType').value;
+        formData.append('addSeedType', seedType);
 
-    const germinationTime = document.getElementById('addSeedGermination').value;
-    formData.append('addSeedGermination', germinationTime);
+        const germinationTime = document.getElementById('addSeedGermination').value;
+        formData.append('addSeedGermination', germinationTime);
 
-    const seedDepth = document.getElementById('addSeedDepth').value;
-    formData.append('addSeedDepth', seedDepth);
+        const seedDepth = document.getElementById('addSeedDepth').value;
+        formData.append('addSeedDepth', seedDepth);
 
-    const seedSpace = document.getElementById('addSeedSpacing').value;
-    formData.append('addSeedSpacing', seedSpace);
+        const seedSpace = document.getElementById('addSeedSpacing').value;
+        formData.append('addSeedSpacing', seedSpace);
 
-    const seedMature = document.getElementById('addSeedMaturity').value;
-    formData.append('addSeedMaturity', seedMature);
+        const seedMature = document.getElementById('addSeedMaturity').value;
+        formData.append('addSeedMaturity', seedMature);
 
-    const seedSun = document.getElementById('addSeedSun').value;
-    formData.append('addSeedSun', seedSun);
+        const seedSun = document.getElementById('addSeedSun').value;
+        formData.append('addSeedSun', seedSun);
 
-    const seedSeason = document.getElementById('addSeedSeason').value;
-    formData.append('addSeedSeason', seedSeason);
-    
-    const imageInput = document.getElementById('addSeedImage');
-    const imageFile = imageInput.files[0];
+        const seedSeason = document.getElementById('addSeedSeason').value;
+        formData.append('addSeedSeason', seedSeason);
+        
+        const imageInput = document.getElementById('addSeedImage');
+        const imageFile = imageInput.files[0];
 
-    formData.append('addSeedImage', imageFile);
+        formData.append('addSeedImage', imageFile);
 
-    console.log(formData);
+        console.log(formData);
 
-    for (const entry of formData.entries()) {
-    console.log(entry);
+        for (const entry of formData.entries()) {
+        console.log(entry);
+        }
+
+        // Make an AJAX request to submit the form data
+        fetch('/add_seed', {
+            method: 'POST',                         //Specifies HTTP method as POST
+            body: formData                          //Sets request body to the FormData object
+        }).then(response => {
+            // Handle the response if needed
+            console.log(response);                  //Logs response to the console
+        }).catch(error => {
+            console.error('Error:', error);         //Log error message to console if there is an error
+        });
     }
 
-    // Make an AJAX request to submit the form data
-    fetch('/add_seed', {
-        method: 'POST',                         //Specifies HTTP method as POST
-        body: formData                          //Sets request body to the FormData object
-    }).then(response => {
-        // Handle the response if needed
-        console.log(response);                  //Logs response to the console
-    }).catch(error => {
-        console.error('Error:', error);         //Log error message to console if there is an error
-    });
-}
+    var checkedSeeds = [];
+    
+    function updateCheckedSeeds(seedId) {
+        // Parse seedId as an integer if needed
+        seedId = parseInt(seedId, 10);
+        var index = checkedSeeds.indexOf(seedId);
+        if (index === -1) {
+            checkedSeeds.push(seedId);
+        } else {
+            checkedSeeds.splice(index, 1);
+        }
+    }
+
+    function removeSelectedSeeds() {
+        fetch('/remove_seeds', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ seedIds: checkedSeeds })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                console.error('Failed to remove seeds.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
 </script>
 {% endblock %}
