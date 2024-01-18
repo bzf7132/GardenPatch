@@ -249,6 +249,13 @@ input[type=password] {
     display: flex;
     justify-content: right;
 }
+.searchButton {
+  background-color: inherit;
+  border: none;
+}
+.searchButton img {
+  height: 2rem;
+}
 .seedItemButton select {
   background-color: #D2FCD6;
   text-align: center;

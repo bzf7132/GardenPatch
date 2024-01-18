@@ -5,18 +5,25 @@ My Plants
 {% block content %}
 <!-- Header for Seed Plant page -->
 <div class="seedPlantHeader">
-    <div class="addItemButton">
+    <div class="seedItemButton">
         <button class="button addButton" onclick="openAddPlantPopup()">Add Plant</button>
     </div>
-    <div class="removeItemButton">
+    <div class="seedItemButton">
         <button type="button" class="button removeButton" onclick="removeSelectedPlants()">Remove Plants</button>
     </div>
-    <div class="refineItemButton">
-        <button class="button refineButton">Refine Options</button>
+    <div class="seedItemButton">
+        <select id="seedRefine" name="seedRefine">
+            <option value="" disabled selected hidden>Refine Plants</option>
+            <option value="All">All Plants</option>
+            {% for plant in user_plants %}
+                <option value="{{ plant.plantType }}">{{ plant.plantType }}</option>
+            {% endfor %}
+        </select>
     </div>
     <div class="searchBar">
         <input type="text" placeholder="Search..">
     </div>
+    <button type="submit" class="searchButton"><img src="{{url_for('static', filename='img/search.png')}}" alt="Search Button"></button>
 </div>
 
 <!-- Basic Info Button and Checkbox -->
@@ -62,7 +69,7 @@ My Plants
     <div class="tabPopup" onclick="showTab('seedlingTab')">New Seedling</div>
     <div id="seedLibraryTab" class="tabPopup-content activeTab">
         <div class="seedLibraryTabLayout">
-            <form id="addPlantSeed">
+            <form id="addPlantSeed" onsubmit="submitSeedForm(); return false;">
                 <select id="newPlantType" onchange="updateSeedNames()">
                     <option value="" disabled selected hidden>Type of Plant</option>
                     {% for seed in user_seeds %}
@@ -71,21 +78,19 @@ My Plants
                 </select>
                 <select id="newPlantName">
                     <option value="" disabled selected hidden>Seed Name</option>
+                    <option value="strawberry">Strawberry</option>
                     <!-- this area is populated by js -->
                 </select>
-                <input type="date" id="datePlanted">
-                <select id="seedlingPlantPlace" name="seedlingPlantPlace">
+                <input type="date" id="seedPlantDate" name="seedPlantDate">
+                <select id="seedPlantPlace" name="seedPlantPlace">
                     <option value="" disabled selected hidden>Plant Placement</option>
                     <option value="Seedling Tray">Seedling Tray</option>
                     <option value="Small Pot">Small Pot</option>
-                    <option value="Large Pot">Large Pot</option>
+                    <option value="Large Pot">Large Pot</option>-=9
                     <option value="Raised Bed">Raised Bed</option>
                     <option value="Garden">Garden</option>
                 </select>
-                <input type="hidden" id="germinateTime" name="germinateTime">
-                <input type="hidden" id="maturityTime" name="maturityTime">
-                <input type="hidden" id="seedlingSunRequirement">
-                <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Submit</button>
+                <button type="submit" class="newPlantButton">Submit</button>
             </form>
             <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
         </div>
@@ -95,7 +100,7 @@ My Plants
             <input type="text" id="seedlingPlantName" placeholder="Enter Plant Name" required>
             <input type="text" id="seedlingPlantType" placeholder="Type of Plant" required>
             <input type="date" id="seedlingPlantDate" placeholder="Plant Date" required>
-            <input type="text" id="plantMaturityTime" placeholder="How long for plant Maturity" required>
+            <input type="text" id="seedlingmaturityTime" placeholder="How long for plant Maturity" required>
             <select id="seedlingSunRequirement" name="seedlingSunRequirement">
                 <option value="" disabled selected hidden>Sun Requirement</option>
                 <option value="Full Sun">Full Sun</option>
@@ -123,6 +128,7 @@ My Plants
     }
     function closeAddPlantPopup() {
         addPlantPopup.classList.remove("open-plantPopup");
+        /*location.reload();*/
     }
 
     let PlantPopup = document.getElementById("plantPopup")
@@ -150,36 +156,58 @@ My Plants
         var seedNameDropdown = document.getElementById("newPlantName");
 
         // Clear existing options
-        seedNameDropdown.innerHTML = '<option value="" disabled selected hidden>Seed Name</option>';
+        seedNameDropdown.innerHTML = '<option value="" disabled selected hidden>Seed Name</option><option value="strawberry">Strawberry</option>';
 
         // Fetch seed names based on the selected plant type
         fetch(`/get_seeds/${selectedPlantType}`)
             .then(response => response.json())
             .then(data => {
                 // Populate with options based on the fetched seed names
+                console.log('Fetched Data:', data);
                 data.forEach(seed => {
+                    console.log('Seed Name:', seed.name);
                     seedNameDropdown.innerHTML += `<option value="${seed.name}">${seed.name}</option>`;
                 });
             })
             .catch(error => console.error('Error:', error));
     }
 
+    function submitSeedForm() {
+        const form = document.getElementById('addPlantSeed');
+        const formData = new FormData(form);
+
+        const selectedPlantType = document.getElementById("newPlantType").value;
+        const selectedSeedName = document.getElementById("newPlantName").value;
+        const selectedDate = document.getElementById("seedPlantDate").value;
+        const selectedPlace = document.getElementById("seedPlantPlace").value;
+
+        // Append the selected plant type to the form data
+        formData.append('selectedPlantType', selectedPlantType);
+        formData.append('selectedSeedName', selectedSeedName)
+        formData.append('selectedDate', selectedDate);
+        formData.append('selectedPlace', selectedPlace);
+
+        // Make an AJAX request to submit the form data
+        fetch('/addSeedPlant', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     function submitForm() {
         const form = document.getElementById('addPlantSeedling');                   //Gets form element with the id 'addPlantSeedling'
         const formData = new FormData(form);                                        //Creates new FormData object from the form
 
-        const plantName = document.getElementById('seedlingPlantName').value;       //Gets element with id seedlingPlantName
-        formData.append('seedlingPlantName', plantName);                             //Appends the Plant Name to the formData
-        const plantType = document.getElementById('seedlingPlantType').value;
-        formData.append('seedlingPlantType', plantType);
-        const plantDate = document.getElementById('seedlingPlantDate').value;
-        formData.append('seedlingPlantDate', plantDate);
-        const plantMaturity = document.getElementById('plantMaturityTime').value;
-        formData.append('plantMaturityTime', plantMaturity);
-        const plantSun = document.getElementById('seedlingSunRequirement').value;
-        formData.append('seedlingSunRequirement', plantSun);
-        const plantPlace = document.getElementById('seedlingPlantPlace').value;
-        formData.append('seedlingPlantPlace', plantPlace);
+        const inputIds = ['seedlingPlantName', 'seedlingPlantType', 'seedlingPlantDate', 'seedlingmaturityTime', 'seedlingSunRequirement', 'seedlingPlantPlace'];
+
+        inputIds.forEach(id => {
+            const value = document.getElementById(id).value;
+            formData.append(id, value);
+        });
 
         // Make an AJAX request to submit the form data
         fetch('/add_plant', {

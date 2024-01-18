@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 #Creates Flask App
 app = Flask(__name__)
@@ -88,6 +88,17 @@ def save_image(file):
         return filename
     return None
 
+#Function to retrieve details from Seed Library
+def getSeedInfo(seedName):
+    seed = Seed.query.filter_by(name=seedName).first()
+    if seed:
+        return {
+            'maturity': seed.maturity_time,
+            'germination': seed.germinate_time,
+            'sunRequirement': seed.sun_requirement
+        }
+    else:
+        return None
 
 #Routes for the Web App
 @app.route("/logout")
@@ -203,6 +214,70 @@ def get_seeds(plant_type):
 
     return jsonify(seed_data)
 
+@app.route('/addSeedPlant', methods=['POST'])
+@login_required
+def addSeedPlant():
+    # Get data from the addPlantSeed form
+    selectedPlantType = request.form.get('selectedPlantType')
+    seedName = request.form.get('selectedSeedName')
+    seedDate = request.form.get('seedPlantDate')
+    seedPlace = request.form.get('seedPlantPlace')
+
+    #Function to convert seedDate to seedPlantDate which can be stored in db
+    seedPlantDate = datetime.strptime(seedDate, '%Y-%m-%d').date()
+
+    # Fetch additional information based on the selected seed
+    seed_info = getSeedInfo(seedName)
+
+    seedPlantMaturity="0"
+    seedPlantGermination="0"
+    seedSun="none"
+
+    if seed_info:
+        seedPlantMaturity = seed_info['maturity']
+        seedPlantGermination = seed_info['germination']
+        seedSun = seed_info['sunRequirement']
+
+    notSeedling=0
+    seedMaturityDate = seedPlantDate + timedelta(weeks=int(seedPlantMaturity))
+    seedGerminationDate = seedPlantDate + timedelta(days=int(seedPlantGermination))
+
+      # Print the received data for debugging
+    print(f"addPlantName: {seedName}")
+    print(f"addPlantType: {selectedPlantType}")
+    print(f"addPlantDate: {seedPlantDate}")
+    print(f"addPlantGermination: {seedPlantGermination}")
+    print(f"addPlantMaturity: {seedPlantMaturity}")
+    print(f"addPlantSun: {seedSun}")
+    print(f"addPlantPlace: {seedPlace}")
+
+    # Create a new plant with the form data
+    new_plant = Plant(
+        plantName=seedName,
+        plantType=selectedPlantType,
+        plantDate=seedPlantDate,
+        plantPlacement=seedPlace,
+        plantMaturity=seedPlantMaturity,
+        maturityDate=seedMaturityDate,
+        plantGermination= seedPlantGermination,
+        germinationDate=seedGerminationDate,
+        plantSunRequirement=seedSun,
+        newSeedling=notSeedling,
+        user_id=current_user.id
+    )
+
+    # Add the new plant to the database
+    db.session.add(new_plant)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        print(f"Error: {e}")
+        db.session.rollback()
+
+    # Redirect to the my plants page or another appropriate page
+    return redirect(url_for('myPlants'))
+
 @app.route('/add_plant', methods=['POST'])
 @login_required
 def add_plant():
@@ -210,18 +285,26 @@ def add_plant():
     addPlantName = request.form.get('seedlingPlantName')
     addPlantType = request.form.get('seedlingPlantType')
     addPlantDate = request.form.get('seedlingPlantDate')
-    addPlantMaturity = request.form.get('plantMaturityTime')
+    addPlantMaturity = request.form.get('seedlingmaturityTime')
     addPlantSun = request.form.get('seedlingSunRequirement')
     addPlantPlace = request.form.get('seedlingPlantPlace')
     addPlantDate = request.form.get('seedlingPlantDate')
 
     #Convert the date string to a datetime object
-    plant_date = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
+    #plant_date = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
+    # Check if addPlantDate is not None
+    if addPlantDate:
+        # Convert the date string to a datetime object
+        plant_date = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
+    else:
+        # Handle the case where addPlantDate is None (or not provided)
+        print("Error: 'seedlingPlantDate' is missing or has an invalid value.")
+        return jsonify(success=False, error="Invalid 'seedlingPlantDate'")
 
     #Code needed for Maturity Date and, Germination and Germination Date
     addMaturityDate = "Code Needed"
-    addPlantGermination = "Code Needed"
-    addGerminationDate = "Code Needed"
+    addPlantGermination = "null"
+    addGerminationDate = "null"
     addNewSeedling = 1
 
     #Create newPlant from above
@@ -238,6 +321,7 @@ def add_plant():
         newSeedling=addNewSeedling,
         user_id=current_user.id
     )
+
      # Add the new seed to the database
     db.session.add(newPlant)
 
@@ -274,18 +358,6 @@ def remove_seeds():
         print(f"Error: {e}")
         # Return error response
         return jsonify(success=False)
-
-# Route to reload the seed library content
-@app.route('/reloadSeedLibrary')
-@login_required
-def reloadSeedLibrary():
-    # Fetch seeds only for the logged-in user
-    user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
-
-    # Render the seed library content as HTML
-    seedLibraryhtml = render_template('seedLibraryContent.html', user_seeds=user_seeds)
-    
-    return seedLibraryhtml
 
 # Route for adding seed form submission
 @app.route('/add_seed', methods=['POST'])
