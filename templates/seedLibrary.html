@@ -11,7 +11,7 @@ Seed Library
     <div class="seedItemButton">
         <button type="button" class="button" onclick="removeSelectedSeeds()">Remove Seed</button>
     </div>
-    <div class="seedItemButton">
+    <div class="refineSeed">
         <select id="seedRefine" name="seedRefine">
             <option value="" disabled selected hidden>Refine by Season</option>
             <option value="All Seasons">All Seasons</option>
@@ -22,9 +22,8 @@ Seed Library
         </select>
     </div>
     <div class="searchBar">
-        <input type="text" id="seedSearchBar" placeholder="Search..">
+        <input type="text" id="seedSearchBar" placeholder="Search.." oninput="searchSeeds()">
     </div>
-    <button type="submit" class="searchButton"><img src="{{url_for('static', filename='img/search.png')}}" alt="Search Button"></button>
 </div>
 <div id="seedLibraryContainer">
     <!-- Basic Info -->
@@ -52,18 +51,19 @@ Seed Library
             <div class="seedImage"> 
                 <img src="{{url_for('static', filename='uploads/seed_images/' + seed.image_filename)}}" alt="Seed Image">
             </div>
-            <div class="infoBackground"><p id="plantType">{{ seed.plant_type }}</p></div>
-            <div class="infoBackground"><p id="germinateTime">{{ seed.germinate_time }}</p></div>
-            <div class="infoBackground"><p id="maturityTime">{{ seed.maturity_time }}</p></div>
-            <div class="infoBackground"><p id="plantingDepth">{{ seed.planting_depth }}</p></div>
-            <div class="infoBackground"><p id="plantSpacing">{{ seed.plant_spacing }}</p></div>
-            <div class="infoBackground"><p id="sunRequirement">{{ seed.sun_requirement }}</p></div>
-            <div class="infoBackground"><p id="whenToPlant">{{ seed.when_to_plant }}</p></div>
+            <div class="infoBackground"><p id="plantType"><b>Plant Type:</b> {{ seed.plant_type }}</p></div>
+            <div class="infoBackground"><p id="germinateTime"><b>Germination Time:</b> {{ seed.germinate_time }} days</p></div>
+            <div class="infoBackground"><p id="maturityTime"><b>Reaches Maturity in</b> {{ seed.maturity_time }} weeks</p></div>
+            <div class="infoBackground"><p id="plantingDepth"><b>Planting Depth:</b> {{ seed.planting_depth }} mm</p></div>
+            <div class="infoBackground"><p id="plantSpacing"><b>Plant Spacing:</b> {{ seed.plant_spacing }} cm</p></div>
+            <div class="infoBackground"><p id="sunRequirement"><b>Sun Requirment: </b>{{ seed.sun_requirement }}</p></div>
+            <div class="infoBackground"><p id="whenToPlant"><b>Season to plant:</b> {{ seed.when_to_plant }}</p></div>
             <button class="seedExit" onclick="closePopup('seedPopup{{ seed.id }}')">Exit</button>
         </div>
     </div>
     {% endfor %}
 </div>
+
 <!-- Add Seed Popup -->
 <div class="seedPopup" id="addSeedPopup">
     <form id="addSeedForm" action="/add_seed" method="post" enctype="multipart/form-data" onsubmit="submitForm(); return false;">
@@ -74,7 +74,7 @@ Seed Library
                     <img id="previewSeedImage" src="{{url_for('static', filename='img/defaultimg.png')}}" alt="Default Image">
                     <input type="file" id="addSeedImage" accept="image/*" onchange="previewImage()">
                 </div>
-                <button type="submit" class="addSeedExit" onclick="closePopupRefresh('addSeedPopup')">Submit</button>
+                <button type="submit" class="addSeedExit">Submit</button>
             </div>
             <div class="addSeedRight">
                 <input type="text" id="addSeedType" class="infoBackground" placeholder="Plant Type" required>
@@ -84,9 +84,9 @@ Seed Library
                 <input type="number" id="addSeedSpacing" class="infoBackground" placeholder="Plant Spacing &#40;cm&#41;" required>
                 <select id="addSeedSun" class="infoBackground" name="addSeedSun" required>
                     <option value="" disabled selected hidden>Sun Requirement</option>
-                    <option value="fullSun">Full Sun</option>
-                    <option value="partSun">Part Sun</option>
-                    <option value="shade">Shade</option>
+                    <option value="Full Sun">Full Sun</option>
+                    <option value="Part Sun">Part Sun</option>
+                    <option value="Shade">Shade</option>
                 </select>
                 <select id="addSeedSeason" class="infoBackground" name="addSeedSeason" required>
                     <option value="" disabled selected hidden>When to Plant</option>
@@ -98,7 +98,7 @@ Seed Library
             </div>
         </div>
     </form>
-        <button class="addSeedExit" onclick="closePopup('addSeedPopup')">Exit</button>
+        <button class="addSeedExit" onclick="closeAddPopup('addSeedPopup')">Exit</button>
 </div>
 
 <!-- Javascript -->
@@ -108,6 +108,9 @@ Seed Library
     }
 
     function closePopup(popupId) {
+        document.getElementById(popupId).classList.remove("open-popup");
+    }
+    function closeAddPopup(popupId) {
         document.getElementById(popupId).classList.remove("open-popup");
         location.reload();
     }
@@ -201,5 +204,68 @@ Seed Library
         })
         .catch(error => console.error('Error:', error));
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const seedRefineDropdown = document.getElementById('seedRefine');
+        seedRefineDropdown.addEventListener('change', function() {
+            const selectedSeason = this.value;
+
+            // Make an AJAX request to the server
+            fetch(`/filter_seeds?season=${selectedSeason}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the seedLibraryContainer with the new data
+                    const seedLibraryContainer = document.getElementById('seedLibraryContainer');
+                    seedLibraryContainer.innerHTML = data.html;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // Function to show/hide seeds based on the selected season
+    function filterSeedsBySeason(selectedSeason) {
+        const seeds = document.querySelectorAll('.BasicInfo');
+        seeds.forEach(seed => {
+            const seasonClass = seed.querySelector('.infoDetails [id="whenToPlant"]').innerText;
+            seed.style.display = selectedSeason === 'All Seasons' || seasonClass.includes(selectedSeason) ? '' : 'none';
+        });
+    }
+
+    // Attach event listener to the seedRefine dropdown
+    const seedRefineDropdown = document.getElementById('seedRefine');
+    seedRefineDropdown.addEventListener('change', function () {
+        const selectedSeason = this.value;
+        filterSeedsBySeason(selectedSeason);
+    });
+
+    // Function to filter seeds based on the search input
+    function filterSeedsBySearch(searchValue) {
+        const seeds = document.querySelectorAll('.BasicInfo');
+        seeds.forEach(seed => {
+            const seedDetails = seed.textContent.toLowerCase();
+            seed.style.display = seedDetails.includes(searchValue.toLowerCase()) ? '' : 'none';
+        });
+    }
+
+    // Attach event listener to the seedSearchBar input
+    const seedSearchBar = document.getElementById('seedSearchBar');
+    seedSearchBar.addEventListener('input', function () {
+        const searchValue = this.value;
+        filterSeedsBySearch(searchValue);
+    });
+
+    // Attach event listener to execute search on "Enter" key press
+    seedSearchBar.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            const searchValue = this.value;
+            filterSeedsBySearch(searchValue);
+        }
+    });
+
+    // Initial filtering based on the default value of the seedRefine dropdown
+    const initialSelectedSeason = seedRefineDropdown.value;
+    filterSeedsBySeason(initialSelectedSeason);
+});
 </script>
 {% endblock %}

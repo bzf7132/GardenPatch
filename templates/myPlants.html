@@ -6,12 +6,12 @@ My Plants
 <!-- Header for Seed Plant page -->
 <div class="seedPlantHeader">
     <div class="seedItemButton">
-        <button class="button addButton" onclick="openAddPlantPopup()">Add Plant</button>
+        <button class="button" onclick="openPopup('addPlantPopup')">Add Plant</button>
     </div>
     <div class="seedItemButton">
-        <button type="button" class="button removeButton" onclick="removeSelectedPlants()">Remove Plants</button>
+        <button type="button" class="button" onclick="removeSelectedPlants()">Remove Plants</button>
     </div>
-    <div class="seedItemButton">
+    <div class="refineSeed">
         <select id="seedRefine" name="seedRefine">
             <option value="" disabled selected hidden>Refine Plants</option>
             <option value="All">All Plants</option>
@@ -23,13 +23,12 @@ My Plants
     <div class="searchBar">
         <input type="text" placeholder="Search..">
     </div>
-    <button type="submit" class="searchButton"><img src="{{url_for('static', filename='img/search.png')}}" alt="Search Button"></button>
 </div>
 
 <!-- Basic Info Button and Checkbox -->
 {% for plant in user_plants %}
 <div class="BasicInfo">
-    <button class="InfoButton" onclick="openPlantPopup()">
+    <button class="InfoButton" onclick="openPopup('plantPopup')">
         <div class="infoDetails">
             <p>{{ plant.plantName }}</p>
         </div>
@@ -45,20 +44,20 @@ My Plants
 
 <!-- Plant Information Popup -->
 <div class="plantPopup" id="plantPopup">
-    <h2>Plant Name</h2>
+    <h2>{{ plant.plantName }}</h2>
     <div class="infoContainerPlant">
-        <div class="infoBackground"><p>Date Planted: {{ plant.plantDate }}</p></div>
+        <div class="infoBackground"><p><b>Date Planted:</b> {{ plant.plantDate }}</p></div>
         {% if plant.newSeedling == 0 %}
-            <div class="infoBackground"><p>Date of Germination: {{ plant.germinationDate }}</p></div>
+            <div class="infoBackground"><p><b>Date of Germination:</b> {{ plant.germinationDate }}</p></div>
         {% else %}
-            <div class="infoBackground"><p>New Seedling</p></div>
+            <div class="infoBackground"><p><b>New Seedling</b></p></div>
         {% endif %}
-        <div class="infoBackground"><p>Maturity Date: {{ plant.maturityDate}}</p></div>
-        <div class="infoBackground"><p>Plant Type: {{ plant.plantType }}</p></div>
-        <div class="infoBackground"><p>Sun Requirement: {{ plant.plantSunRequirement }}</p></div>
-        <div class="infoBackground"><p>Planted in: {{ plant.plantPlacement}}</p></div>
-        <button class="seedExit" onclick="closePlantPopup('plantPopup')">Remove</button>
-        <button class="seedExit" onclick="closePlantPopup('plantPopup')">Exit</button>
+        <div class="infoBackground"><p><b>Maturity Date:</b> {{ plant.maturityDate}}</p></div>
+        <div class="infoBackground"><p><b>Plant Type:</b> {{ plant.plantType }}</p></div>
+        <div class="infoBackground"><p><b>Sun Requirement:</b> {{ plant.plantSunRequirement }}</p></div>
+        <div class="infoBackground"><p><b>Planted in:</b> {{ plant.plantPlacement}}</p></div>
+        <button class="seedExit" onclick="closePopup('plantPopup')">Remove</button>
+        <button class="seedExit" onclick="closePopup('plantPopup')">Exit</button>
     </div>
 </div>
 {% endfor %}
@@ -78,7 +77,6 @@ My Plants
                 </select>
                 <select id="newPlantName">
                     <option value="" disabled selected hidden>Seed Name</option>
-                    <option value="strawberry">Strawberry</option>
                     <!-- this area is populated by js -->
                 </select>
                 <input type="date" id="seedPlantDate" name="seedPlantDate">
@@ -122,21 +120,15 @@ My Plants
 </div>
 
 <script>
-    let addPlantPopup = document.getElementById("addPlantPopup")
-    function openAddPlantPopup() {
-        addPlantPopup.classList.add("open-plantPopup");
+    function openPopup(popupId) {
+        document.getElementById(popupId).classList.add("open-plantPopup");
+    }
+    function closePopup(popupId) {
+        document.getElementById(popupId).classList.remove("open-plantPopup");
     }
     function closeAddPlantPopup() {
         addPlantPopup.classList.remove("open-plantPopup");
-        /*location.reload();*/
-    }
-
-    let PlantPopup = document.getElementById("plantPopup")
-    function openPlantPopup() {
-        PlantPopup.classList.add("open-plantPopup");
-    }
-    function closePlantPopup() {
-        PlantPopup.classList.remove("open-plantPopup");
+        location.reload();
     }
 
     function showTab(tabId) {
@@ -156,7 +148,7 @@ My Plants
         var seedNameDropdown = document.getElementById("newPlantName");
 
         // Clear existing options
-        seedNameDropdown.innerHTML = '<option value="" disabled selected hidden>Seed Name</option><option value="strawberry">Strawberry</option>';
+        seedNameDropdown.innerHTML = '<option value="" disabled selected hidden>Seed Name</option>';
 
         // Fetch seed names based on the selected plant type
         fetch(`/get_seeds/${selectedPlantType}`)
@@ -176,12 +168,13 @@ My Plants
         const form = document.getElementById('addPlantSeed');
         const formData = new FormData(form);
 
+        // Get inputs from form
         const selectedPlantType = document.getElementById("newPlantType").value;
         const selectedSeedName = document.getElementById("newPlantName").value;
         const selectedDate = document.getElementById("seedPlantDate").value;
         const selectedPlace = document.getElementById("seedPlantPlace").value;
 
-        // Append the selected plant type to the form data
+        // Append to formData
         formData.append('selectedPlantType', selectedPlantType);
         formData.append('selectedSeedName', selectedSeedName)
         formData.append('selectedDate', selectedDate);
@@ -202,8 +195,10 @@ My Plants
         const form = document.getElementById('addPlantSeedling');                   //Gets form element with the id 'addPlantSeedling'
         const formData = new FormData(form);                                        //Creates new FormData object from the form
 
+        // Get inputs from form
         const inputIds = ['seedlingPlantName', 'seedlingPlantType', 'seedlingPlantDate', 'seedlingmaturityTime', 'seedlingSunRequirement', 'seedlingPlantPlace'];
 
+        // Append to formData
         inputIds.forEach(id => {
             const value = document.getElementById(id).value;
             formData.append(id, value);

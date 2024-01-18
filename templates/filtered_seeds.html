@@ -1,5 +1,4 @@
-<!-- Basic Info -->
-    {% for seed in user_seeds %}
+{% for seed in user_seeds %}
     <div class="BasicInfo">
         <button class="InfoButton" onclick="openPopup('seedPopup{{ seed.id }}')">
             <img src="{{url_for('static', filename='uploads/seed_images/' + seed.image_filename)}}" alt="Seed Image">
@@ -13,10 +12,7 @@
                 <p>{{ seed.when_to_plant }}</p>
             </div>
         </button>
-        <label class="containerInfo">
-            <input type="checkbox" id="checkboxSeed{{ seed.id }}">
-            <span class="checkmark"></span>
-        </label>
+        <input type="checkbox" name="marked_seed" id="seed_{{ seed.id }}" value="{{ seed.id }}" onchange="updateCheckedSeeds('{{ seed.id }}')">
     </div>
 
     <!-- Seed Information Popup -->
@@ -26,13 +22,13 @@
             <div class="seedImage"> 
                 <img src="{{url_for('static', filename='uploads/seed_images/' + seed.image_filename)}}" alt="Seed Image">
             </div>
-            <div class="infoBackground"><p id="plantType">{{ seed.plant_type }}</p></div>
-            <div class="infoBackground"><p id="germinateTime">{{ seed.germinate_time }}</p></div>
-            <div class="infoBackground"><p id="maturityTime">{{ seed.maturity_time }}</p></div>
-            <div class="infoBackground"><p id="plantingDepth">{{ seed.planting_depth }}</p></div>
-            <div class="infoBackground"><p id="plantSpacing">{{ seed.plant_spacing }}</p></div>
-            <div class="infoBackground"><p id="sunRequirement">{{ seed.sun_requirement }}</p></div>
-            <div class="infoBackground"><p id="whenToPlant">{{ seed.when_to_plant }}</p></div>
+            <div class="infoBackground"><p id="plantType"><b>Plant Type:</b> {{ seed.plant_type }}</p></div>
+            <div class="infoBackground"><p id="germinateTime"><b>Germination Time:</b> {{ seed.germinate_time }} days</p></div>
+            <div class="infoBackground"><p id="maturityTime"><b>Reaches Maturity in</b> {{ seed.maturity_time }} weeks</p></div>
+            <div class="infoBackground"><p id="plantingDepth"><b>Planting Depth:</b> {{ seed.planting_depth }} mm</p></div>
+            <div class="infoBackground"><p id="plantSpacing"><b>Plant Spacing:</b> {{ seed.plant_spacing }} cm</p></div>
+            <div class="infoBackground"><p id="sunRequirement"><b>Sun Requirment: </b>{{ seed.sun_requirement }}</p></div>
+            <div class="infoBackground"><p id="whenToPlant"><b>Season to plant:</b> {{ seed.when_to_plant }}</p></div>
             <button class="seedExit" onclick="closePopup('seedPopup{{ seed.id }}')">Exit</button>
         </div>
     </div>

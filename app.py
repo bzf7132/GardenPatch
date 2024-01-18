@@ -340,6 +340,49 @@ def seedLibrary():
     user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
     return render_template("seedLibrary.html", user_seeds=user_seeds)
 
+@app.route('/filter_seeds', methods=['GET'])
+@login_required
+def filter_seeds():
+    selected_season = request.args.get('season', '')
+    
+    # Fetch filtered seeds based on the selected season
+    if selected_season == 'All Seasons':
+        user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
+    else:
+        user_seeds = Seed.query.filter_by(user_id=current_user.id, when_to_plant=selected_season).all()
+
+    # Render the template with the filtered seeds
+    rendered_html = render_template("filtered_seeds.html", user_seeds=user_seeds)
+
+    # Return the filtered HTML as a JSON response
+    return jsonify(html=rendered_html)
+
+@app.route('/search_seeds', methods=['GET'])
+@login_required
+def search_seeds():
+    search_query = request.args.get('query', '').strip()
+
+    # Fetch seeds that match the search query
+    user_seeds = Seed.query.filter(
+        or_(
+            Seed.name.ilike(f"%{search_query}%"),
+            Seed.plant_type.ilike(f"%{search_query}%"),
+            Seed.germinate_time.ilike(f"%{search_query}%"),
+            Seed.planting_depth.ilike(f"%{search_query}%"),
+            Seed.plant_spacing.ilike(f"%{search_query}%"),
+            Seed.maturity_time.ilike(f"%{search_query}%"),
+            Seed.sun_requirement.ilike(f"%{search_query}%"),
+            Seed.when_to_plant.ilike(f"%{search_query}%"),
+        ),
+        Seed.user_id == current_user.id
+    ).all()
+
+    # Render the template with the filtered seeds
+    rendered_html = render_template("filtered_seeds.html", user_seeds=user_seeds)
+
+    # Return the filtered HTML as a JSON response
+    return jsonify(html=rendered_html)
+
 @app.route("/remove_seeds", methods=["POST"])
 @login_required
 def remove_seeds():

@@ -8,7 +8,7 @@ footer {
 .navbar {
     background-color: #70FF99;
     font-size: 1.5em;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     color: black;
     padding: 1rem 5px 1rem 5px;
     display: flex;
@@ -26,8 +26,8 @@ footer {
 
 .body-content {
     padding: 5px;
-    font-family:'Segoe UI', Tahoma, Verdana, sans-serif;
-    font-size: 1rem;
+    font-size: 1em;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .logo {
@@ -47,6 +47,7 @@ footer {
     background-color: #D2FCD6;
     text-align: center;
     font-size: 1em;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
     padding: 1rem 0em 1rem 0rem;
     width: 90%;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -232,7 +233,7 @@ input[type=password] {
 
 /* Seed Library and My Plants CSS */
 .seedPlantHeader {
-    width: 70%;
+    width: 1000px;
     margin: auto;
     background-color: #70FF99;
     height: 5rem;
@@ -240,130 +241,135 @@ input[type=password] {
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+    padding: 0px 2px;
+    font-size: .8em;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 .seedItemButton {
-    flex-basis: 14%;
+  width: 135px;
+}
+.refineSeed {
+  width: 215px
 }
 .searchBar{
-    flex-basis: 54%;
+  width: 480px;
     display: flex;
     justify-content: right;
 }
-.searchButton {
-  background-color: inherit;
-  border: none;
-}
-.searchButton img {
-  height: 2rem;
-}
-.seedItemButton select {
+.refineSeed select {
   background-color: #D2FCD6;
   text-align: center;
   font-size: 1em;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 1rem 0em 1rem 0rem;
   width: 90%;
-  border: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   border-radius: 8px;
 }
 .searchBar input[type=text] {
-    width: 65%;
-    background-color: #D2FCD6;
-    border-radius: 8px;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    font-size: 1rem;
+  width: 400px;
+  background-color: #D2FCD6;
+  border-radius: 8px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1rem;
 }
 
 /* Basic Info */
 .BasicInfo {
-    width: 70%;
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-    display: grid;
-    grid-template-columns: 95% 5%;
+  width: 1000px;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: 95% 5%;
 }
 .InfoButton {
-    width: 100%;
-    background-color: #7dffa2;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 100%;
+  background-color: #7dffa2;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 .InfoButton img {
-    max-width: 80%;
-    max-height: 80%;
+  max-width: 3.5rem;
+  max-height: 3.5rem;
 }
 .infoDetails {
   flex-basis: 32%;
 }
 
   /* Seed Popup CSS */
-  .seedPopup {
-    width: 50%;
-    background-color: #7dffa2;
-    border-radius: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 3px solid #59e280;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    display: grid;
-    grid-template-rows: 15% 85%;
-    text-align: center;
-    visibility: hidden;
-    padding: 1rem;
-  }
+.seedPopup {
+  width: 750px;
+  height: 500px;
+  background-color: #7dffa2;
+  border-radius: 6px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #59e280;
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  display: grid;
+  grid-template-rows: 15% 85%;
+  text-align: center;
+  visibility: hidden;
+  padding: 1rem;
+}
   /* Open popup window in seed library */
   /* Seed Information Popup */
-  .open-popup { 
-    visibility:visible;
-  }
-  .infoContainer {
-    max-width: 100%;
-    max-height: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 16% 16% 16% 16% 16% 16%;
-    place-items: center;
-  }
-  .seedImage {
-    grid-area: 1 / 1 / 5 / 1;
-  }
-  .seedImage img {
-    object-fit: contain;
-    max-width: 80%;
-    max-height: 80%;
-  }
-  .infoContainer button {
-    padding: 1rem;
-    width: 80%;
-    outline: none;
-    background: #D2FCD6;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 8px;
-  }
-  .infoBackground {
-    width: 80%;
-    background-color: #cbfad0;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    border: 1px solid #4cd172;
-  }
+.open-popup { 
+  visibility:visible;
+}
+.infoContainer {
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: repeat(6, 4rem);
+  place-items: center;
+}
+.seedImage {
+  grid-area: 1 / 1 / 5 / 1;
+}
+.seedImage img {
+  object-fit: contain;
+  max-width: 80%;
+  max-height: 18rem;
+  border-radius: 8px;
+}
+.infoContainer button {
+  padding: 1rem;
+  width: 80%;
+  font-size: 1em;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  outline: none;
+  background: #D2FCD6;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-radius: 8px;
+}
+.infoBackground {
+  width: 80%;
+  background-color: #cbfad0;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px solid #4cd172;
+}
 
-  /* Add Seed Popup */
-  #addSeedPopup {
-    grid-template-rows: 90% 10%;
-    height: 45%;
-  }
-  .addSeedLayout {
-    display: grid;
-    grid-template-columns: 50% 50%;
-  }
+/* Add Seed Popup */
+#addSeedPopup {
+  height: 450px;
+  grid-template-rows: 90% 10%;
+}
+.addSeedLayout {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
 #addSeedName {
   width: 50%;
   margin: auto;
@@ -371,7 +377,10 @@ input[type=password] {
   padding: .5rem 0rem;
   margin-bottom: 1rem;
   font-size: 1rem;
-  }
+}
+.seedExit {
+  width: 80%;
+}
 .addSeedExit {
   width: 50%;
   outline: none;
@@ -383,8 +392,8 @@ input[type=password] {
   padding: .5rem 0rem;
   }
 .addSeedLeft img {
-  width: 50%;
-  height: auto;
+  max-width: 220px;
+  height: 220px;
   margin-bottom: 1rem;
   }
 .addSeedLeft input {
@@ -403,7 +412,8 @@ input[type=password] {
 
   /* Plant Popup */
 .plantPopup {
-  width: 50%;
+  width: 750px;
+  height: 300px;
   background-color: #7dffa2;
   border-radius: 6px;
   position: absolute;
@@ -419,8 +429,9 @@ input[type=password] {
   }
 .infoContainerPlant {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: repeat(2, 375px);
   grid-template-rows: 25% 25% 25% 25%;
+  justify-items: center;
   }
   .addPlantPopup {
   width: 40%;
@@ -604,3 +615,12 @@ padding: 1rem;
   visibility: visible;
 }
 
+
+@media only screen and (max-width: 1000px) {
+  .seedPlantHeader {
+    width: 650px;
+  }
+  .BasicInfo {
+    width: 650px;
+  }
+}
