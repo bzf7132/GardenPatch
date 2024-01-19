@@ -112,41 +112,10 @@ def logout():
 def home():
     return render_template("home.html")
 
-# Route for account details, update password, update security question
-@app.route("/account/", methods=["GET", "POST"])
+@app.route("/account/")
 @login_required
 def account():
-    if request.method == "POST":
-        if "password" in request.form:
-            # Handle password change
-            current_password = request.form["currentPassword"]
-            new_password = request.form["newPassword"]
-            confirm_password = request.form["confirmPassword"]
-
-            if current_password == current_user.password and new_password == confirm_password:
-                current_user.password = new_password  
-                db.session.commit()
-            else:
-                pass
-        elif "question" in request.form:
-            # Handle security question update
-            question = request.form["passwordQuestion"]
-            answer = request.form["passwordAnswer"]
-            # Update the user's security question and answer in the database
-            db.session.commit()
-        return redirect(url_for('account'))
-    return render_template("account.html", user=current_user)
-
-# Route to delete account
-@app.route("/delete_account", methods=["POST"])
-@login_required
-def delete_account():
-    # Code to delete the user's account
-    db.session.delete(current_user)
-    db.session.commit()
-    # Log the user out and redirect to home
-    logout_user()
-    return redirect(url_for('home'))
+    return render_template("account.html")
 
 @app.route('/loginregister/')
 def loginregister():        
@@ -202,8 +171,29 @@ def login():
 
 @app.route("/tasks/")
 @login_required
-def tasks():
-    return render_template("tasks.html")
+def index():
+    tasks = Task.query.all()
+    return render_template('task manager.html', tasks=tasks)
+
+@app.route('/add_task', methods=['POST'])
+def add_task():
+    task_name = request.form['task_name']
+    description = request.form['description']
+    due_date = request.form['due_date']
+
+    new_task = Task(task_name=task_name, description=description, due_date=due_date)
+
+    try:
+        db.session.add(new_task)
+        db.session.commit()
+        return redirect(url_for('task'))
+    except:
+        return 'Error adding task'
+
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)
+    return render_template("tasks manager.html")
 
 @app.route("/calendar/")
 @login_required
