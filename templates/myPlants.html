@@ -14,7 +14,7 @@ My Plants
     <div class="refineSeed">
         <select id="plantRefine" name="plantRefine">
             <option value="" disabled selected hidden>Refine Plants</option>
-            <option value="All">All Plants</option>
+            <option value="All Plants">All Plants</option>
             {% for plant in user_plants %}
                 <option value="{{ plant.plantType }}">{{ plant.plantType }}</option>
             {% endfor %}
@@ -38,6 +38,9 @@ My Plants
             <div class="infoDetails">
                 <p>{{ plant.plantPlacement }}</p>
             </div>
+            <div class="infoDetails">
+                <p>Date Planted: {{ plant.plantDate }}</p>
+            </div>
         </button>
         <input type="checkbox" name="marked_plant" id="plant_{{ plant.id }}" value="{{ plant.id }}" onchange="updateCheckedPlants('{{ plant.id }}')">
     </div>
@@ -56,7 +59,6 @@ My Plants
             <div class="infoBackground"><p><b>Plant Type:</b> {{ plant.plantType }}</p></div>
             <div class="infoBackground"><p><b>Sun Requirement:</b> {{ plant.plantSunRequirement }}</p></div>
             <div class="infoBackground"><p><b>Planted in:</b> {{ plant.plantPlacement}}</p></div>
-            <button class="seedExit" onclick="closePopup('plantPopup')">Remove</button>
             <button class="seedExit" onclick="closePopup('plantPopup{{ plant.id }}')">Exit</button>
         </div>
     </div>
@@ -70,18 +72,18 @@ My Plants
     <div id="seedLibraryTab" class="tabPopup-content activeTab">
         <div class="seedLibraryTabLayout">
             <form id="addPlantSeed" onsubmit="submitSeedForm(); return false;">
-                <select id="newPlantType" onchange="updateSeedNames()">
+                <select id="newPlantType" onchange="updateSeedNames()" required>
                     <option value="" disabled selected hidden>Type of Plant</option>
                     {% for seed in user_seeds %}
                         <option value="{{ seed.seedType }}">{{ seed.seedType }}</option>
                     {% endfor %}
                 </select>
-                <select id="newPlantName">
+                <select id="newPlantName" required>
                     <option value="" disabled selected hidden>Seed Name</option>
                     <!-- this area is populated by js -->
                 </select>
-                <input type="date" id="seedPlantDate" name="seedPlantDate">
-                <select id="seedPlantPlace" name="seedPlantPlace">
+                <input type="date" id="seedPlantDate" name="seedPlantDate" required>
+                <select id="seedPlantPlace" name="seedPlantPlace" required>
                     <option value="" disabled selected hidden>Plant Placement</option>
                     <option value="Seedling Tray">Seedling Tray</option>
                     <option value="Small Pot">Small Pot</option>
@@ -89,34 +91,36 @@ My Plants
                     <option value="Raised Bed">Raised Bed</option>
                     <option value="Garden">Garden</option>
                 </select>
-                <button type="submit" class="newPlantButton">Submit</button>
+                <button type="submit" class="plantFormButton">Submit</button>
             </form>
             <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
         </div>
     </div>
     <div id="seedlingTab" class="tabPopup-content">
-        <form id="addPlantSeedling" action="/add_plant" method="post" onsubmit="submitForm(); return false;">
-            <input type="text" id="seedlingPlantName" placeholder="Enter Plant Name" required>
-            <input type="text" id="seedlingPlantType" placeholder="Type of Plant" required>
-            <input type="date" id="seedlingPlantDate" placeholder="Plant Date" required>
-            <input type="text" id="seedlingmaturityTime" placeholder="How long for plant Maturity" required>
-            <select id="seedlingSunRequirement" name="seedlingSunRequirement">
-                <option value="" disabled selected hidden>Sun Requirement</option>
-                <option value="Full Sun">Full Sun</option>
-                <option value="Part Sun">Part Sun</option>
-                <option value="Shade">Shade</option>
-            </select>
-            <select id="seedlingPlantPlace" name="seedlingPlantPlace">
-                <option value="" disabled selected hidden>Plant Placement</option>
-                <option value="Seedling Tray">Seedling Tray</option>
-                <option value="Small Pot">Small Pot</option>
-                <option value="Large Pot">Large Pot</option>
-                <option value="Raised Bed">Raised Bed</option>
-                <option value="Garden">Garden</option>
-            </select>
-            <button type="submit" class="newPlantButton">Submit</button>
-        </form>
-        <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
+        <div class="seedlingTabLayout">
+            <form id="addPlantSeedling" action="/add_plant" method="post" onsubmit="submitForm(); return false;">
+                <input type="text" id="seedlingPlantName" placeholder="Enter Plant Name" required>
+                <input type="text" id="seedlingPlantType" placeholder="Type of Plant" required>
+                <input type="date" id="seedlingPlantDate" placeholder="Plant Date" required>
+                <input type="number" id="seedlingmaturityTime" placeholder="How long for plant Maturity" required>
+                <select id="seedlingSunRequirement" name="seedlingSunRequirement" required>
+                    <option value="" disabled selected hidden>Sun Requirement</option>
+                    <option value="Full Sun">Full Sun</option>
+                    <option value="Part Sun">Part Sun</option>
+                    <option value="Shade">Shade</option>
+                </select>
+                <select id="seedlingPlantPlace" name="seedlingPlantPlace" required>
+                    <option value="" disabled selected hidden>Plant Placement</option>
+                    <option value="Seedling Tray">Seedling Tray</option>
+                    <option value="Small Pot">Small Pot</option>
+                    <option value="Large Pot">Large Pot</option>
+                    <option value="Raised Bed">Raised Bed</option>
+                    <option value="Garden">Garden</option>
+                </select>
+                <button type="submit" class="newSeedlingButton">Submit</button>
+            </form>
+            <button class="newPlantButton" onclick="closeAddPlantPopup('addPlantPopup')">Exit</button>
+        </div>
     </div>
 </div>
 

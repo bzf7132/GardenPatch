@@ -30,7 +30,11 @@ Seed Library
     {% for seed in user_seeds %}
     <div class="BasicInfo">
         <button class="InfoButton" onclick="openPopup('seedPopup{{ seed.id }}')">
-            <img src="{{url_for('static', filename='uploads/seed_images/' + seed.image_filename)}}" alt="Seed Image">
+            {% if seed.image_filename %}
+                <img src="{{url_for('static', filename='uploads/seed_images/' + seed.image_filename)}}" alt="Seed Image">
+            {% else %}
+                <img src="{{url_for('static', filename='img/defaultimg.png')}}" alt="Seed Image">
+            {% endif %}
             <div class="infoDetails">
                 <p>{{ seed.name }}</p>
             </div>
@@ -72,7 +76,7 @@ Seed Library
             <div class="addSeedLeft">
                 <div class="imageUpload">
                     <img id="previewSeedImage" src="{{url_for('static', filename='img/defaultimg.png')}}" alt="Default Image">
-                    <input type="file" id="addSeedImage" accept="image/*" onchange="previewImage()">
+                    <input type="file" id="addSeedImage" accept="image/*" onchange="previewImage()" required>
                 </div>
                 <button type="submit" class="addSeedExit">Submit</button>
             </div>

@@ -3,6 +3,7 @@ from operator import or_
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+from sqlalchemy import null
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime, timedelta
@@ -38,10 +39,10 @@ class Seed(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     seedType = db.Column(db.String(250), nullable=False)
-    germinate_time = db.Column(db.String(250))
+    germinate_time = db.Column(db.Integer, nullable=False)
     planting_depth = db.Column(db.String(250))
     plant_spacing = db.Column(db.String(250))
-    maturity_time = db.Column(db.String(250))
+    maturity_time = db.Column(db.Integer, nullable=False)
     sun_requirement = db.Column(db.String(250))
     when_to_plant = db.Column(db.String(250))
     image_filename = db.Column(db.String(255))
@@ -53,10 +54,10 @@ class Plant(db.Model):
     plantName = db.Column(db.String(250), nullable=False)
     plantType = db.Column(db.String(250), nullable=False)
     plantDate = db.Column(db.Date, nullable=False)
-    plantMaturity = db.Column(db.String(250))
-    maturityDate = db.Column(db.String(250))
-    plantGermination = db.Column(db.String(250))
-    germinationDate = db.Column(db.String(250))
+    plantMaturity = db.Column(db.Integer)
+    maturityDate = db.Column(db.Date, nullable=False)
+    plantGermination = db.Column(db.Integer)
+    germinationDate = db.Column(db.Date, nullable=False)
     plantSunRequirement = db.Column(db.String(250))
     plantPlacement = db.Column(db.String(250))
     newSeedling = db.Column(db.Integer)
@@ -333,6 +334,8 @@ def add_plant():
     addPlantPlace = request.form.get('seedlingPlantPlace')
     addPlantDate = request.form.get('seedlingPlantDate')
 
+    plantDateAdded = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
+
     #Convert the date string to a datetime object
     #plant_date = datetime.strptime(addPlantDate, '%Y-%m-%d').date()
     # Check if addPlantDate is not None
@@ -344,10 +347,9 @@ def add_plant():
         print("Error: 'seedlingPlantDate' is missing or has an invalid value.")
         return jsonify(success=False, error="Invalid 'seedlingPlantDate'")
 
-    #Code needed for Maturity Date and, Germination and Germination Date
-    addMaturityDate = "Code Needed"
-    addPlantGermination = "null"
-    addGerminationDate = "null"
+    addMaturityDate = plantDateAdded + timedelta(weeks=int(addPlantMaturity))
+    addPlantGermination = None
+    addGerminationDate = plantDateAdded
     addNewSeedling = 1
 
     #Create newPlant from above
