@@ -111,10 +111,41 @@ def logout():
 def home():
     return render_template("home.html")
 
-@app.route("/account/")
+# Route for account details, update password, update security question
+@app.route("/account/", methods=["GET", "POST"])
 @login_required
 def account():
-    return render_template("account.html")
+    if request.method == "POST":
+        if "password" in request.form:
+            # Handle password change
+            current_password = request.form["currentPassword"]
+            new_password = request.form["newPassword"]
+            confirm_password = request.form["confirmPassword"]
+
+            if current_password == current_user.password and new_password == confirm_password:
+                current_user.password = new_password  
+                db.session.commit()
+            else:
+                pass
+        elif "question" in request.form:
+            # Handle security question update
+            question = request.form["passwordQuestion"]
+            answer = request.form["passwordAnswer"]
+            # Update the user's security question and answer in the database
+            db.session.commit()
+        return redirect(url_for('account'))
+    return render_template("account.html", user=current_user)
+
+# Route to delete account
+@app.route("/delete_account", methods=["POST"])
+@login_required
+def delete_account():
+    # Code to delete the user's account
+    db.session.delete(current_user)
+    db.session.commit()
+    # Log the user out and redirect to home
+    logout_user()
+    return redirect(url_for('home'))
 
 @app.route('/loginregister/')
 def loginregister():        
