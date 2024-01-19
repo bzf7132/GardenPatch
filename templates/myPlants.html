@@ -12,7 +12,7 @@ My Plants
         <button type="button" class="button" onclick="removeSelectedPlants()">Remove Plants</button>
     </div>
     <div class="refineSeed">
-        <select id="seedRefine" name="seedRefine">
+        <select id="plantRefine" name="plantRefine">
             <option value="" disabled selected hidden>Refine Plants</option>
             <option value="All">All Plants</option>
             {% for plant in user_plants %}
@@ -21,46 +21,47 @@ My Plants
         </select>
     </div>
     <div class="searchBar">
-        <input type="text" placeholder="Search..">
+        <input type="text" id="plantSearchBar" placeholder="Search..">
     </div>
 </div>
-
-<!-- Basic Info Button and Checkbox -->
-{% for plant in user_plants %}
-<div class="BasicInfo">
-    <button class="InfoButton" onclick="openPopup('plantPopup')">
-        <div class="infoDetails">
-            <p>{{ plant.plantName }}</p>
-        </div>
-        <div class="infoDetails">
-            <p>{{ plant.plantType }}</p>
-        </div>
-        <div class="infoDetails">
-            <p>{{ plant.plantPlacement }}</p>
-        </div>
-    </button>
-    <input type="checkbox" name="marked_plant" id="plant_{{ plant.id }}" value="{{ plant.id }}" onchange="updateCheckedPlants('{{ plant.id }}')">
-</div>
-
-<!-- Plant Information Popup -->
-<div class="plantPopup" id="plantPopup">
-    <h2>{{ plant.plantName }}</h2>
-    <div class="infoContainerPlant">
-        <div class="infoBackground"><p><b>Date Planted:</b> {{ plant.plantDate }}</p></div>
-        {% if plant.newSeedling == 0 %}
-            <div class="infoBackground"><p><b>Date of Germination:</b> {{ plant.germinationDate }}</p></div>
-        {% else %}
-            <div class="infoBackground"><p><b>New Seedling</b></p></div>
-        {% endif %}
-        <div class="infoBackground"><p><b>Maturity Date:</b> {{ plant.maturityDate}}</p></div>
-        <div class="infoBackground"><p><b>Plant Type:</b> {{ plant.plantType }}</p></div>
-        <div class="infoBackground"><p><b>Sun Requirement:</b> {{ plant.plantSunRequirement }}</p></div>
-        <div class="infoBackground"><p><b>Planted in:</b> {{ plant.plantPlacement}}</p></div>
-        <button class="seedExit" onclick="closePopup('plantPopup')">Remove</button>
-        <button class="seedExit" onclick="closePopup('plantPopup')">Exit</button>
+<div id="myPlantsContainer">
+    <!-- Basic Info Button and Checkbox -->
+    {% for plant in user_plants %}
+    <div class="BasicInfo">
+        <button class="InfoButton" onclick="openPopup('plantPopup{{ plant.id }}')">
+            <div class="infoDetails">
+                <p>{{ plant.plantName }}</p>
+            </div>
+            <div class="infoDetails" id="typeOfPlant">
+                <p>{{ plant.plantType }}</p>
+            </div>
+            <div class="infoDetails">
+                <p>{{ plant.plantPlacement }}</p>
+            </div>
+        </button>
+        <input type="checkbox" name="marked_plant" id="plant_{{ plant.id }}" value="{{ plant.id }}" onchange="updateCheckedPlants('{{ plant.id }}')">
     </div>
+
+    <!-- Plant Information Popup -->
+    <div class="plantPopup" id="plantPopup{{ plant.id }}">
+        <h2>{{ plant.plantName }}</h2>
+        <div class="infoContainerPlant">
+            <div class="infoBackground"><p><b>Date Planted:</b> {{ plant.plantDate }}</p></div>
+            {% if plant.newSeedling == 0 %}
+                <div class="infoBackground"><p><b>Date of Germination:</b> {{ plant.germinationDate }}</p></div>
+            {% else %}
+                <div class="infoBackground"><p><b>New Seedling</b></p></div>
+            {% endif %}
+            <div class="infoBackground"><p><b>Maturity Date:</b> {{ plant.maturityDate}}</p></div>
+            <div class="infoBackground"><p><b>Plant Type:</b> {{ plant.plantType }}</p></div>
+            <div class="infoBackground"><p><b>Sun Requirement:</b> {{ plant.plantSunRequirement }}</p></div>
+            <div class="infoBackground"><p><b>Planted in:</b> {{ plant.plantPlacement}}</p></div>
+            <button class="seedExit" onclick="closePopup('plantPopup')">Remove</button>
+            <button class="seedExit" onclick="closePopup('plantPopup{{ plant.id }}')">Exit</button>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 
 <!-- Add Plant Popup -->
 <div class="addPlantPopup" id="addPlantPopup">
@@ -72,7 +73,7 @@ My Plants
                 <select id="newPlantType" onchange="updateSeedNames()">
                     <option value="" disabled selected hidden>Type of Plant</option>
                     {% for seed in user_seeds %}
-                        <option value="{{ seed.plant_type }}">{{ seed.plant_type }}</option>
+                        <option value="{{ seed.seedType }}">{{ seed.seedType }}</option>
                     {% endfor %}
                 </select>
                 <select id="newPlantName">
@@ -215,8 +216,9 @@ My Plants
         })
     }
 
-    var checkedPlants = [];
 
+    // Functions for Checkboxes:
+    var checkedPlants = [];
     function updateCheckedPlants(plantId) {
         // Parse plantId as an integer if needed
         plantId = parseInt(plantId, 10);
@@ -227,7 +229,6 @@ My Plants
             checkedPlants.splice(index, 1);
         }
     }
-
     function removeSelectedPlants() {
         fetch('/remove_plants', {
             method: 'POST',
@@ -246,5 +247,68 @@ My Plants
         })
         .catch(error => console.error('Error:', error));
     }
+
+    // For refine dropdown and search bar:
+
+    // Event listener for when the DOM content is fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        const plantRefineDropdown = document.getElementById('plantRefine');
+        plantRefineDropdown.addEventListener('change', function() {
+            const selectedType = this.value;
+
+            // Make an AJAX request to the server
+            fetch(`/filter_plants?type=${selectedType}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update myPlantsContainer with the new data
+                    const myPlantsContainer = document.getElementById('myPlantsContainer');
+                    myPlantsContainer.innerHTML = data.html;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+    // Event listener for when the DOM content is fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        //Function to show and hide plants based on selected plant type
+        function filterPlantsByType(selectedType) {
+            const plants = document.querySelectorAll('.BasicInfo');
+
+            // Iterate over each Plant and check if type matches
+            plants.forEach(plant => {
+                const typeElement = plant.querySelector('.infoDetails [id="typeOfPlant"]');
+                const typeClass = typeElement ? typeElement.innerText : '';
+                plant.style.display = selectedType === 'All Plants' || typeClass.includes(selectedType) ? '' : 'none';
+            });
+        }
+
+        // Attach event listener to the Plant refine dropdown
+        const plantRefineDropdown = document.getElementById('plantRefine');
+        plantRefineDropdown.addEventListener('change', function () {
+            const selectedType = this.value;
+            filterPlantsByType(selectedType);
+        });
+
+        //function to filter plants based on the search input
+        function filterPlantsBySearch(searchValue) {
+            const plants = document.querySelectorAll('.BasicInfo');
+            plants.forEach(plant => {
+                const plantDetails = plant.textContent.toLowerCase();
+                plant.style.display = plantDetails.includes(searchValue.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        // Attach event listener to the plantSearchBar input
+        const plantSearchBar = document.getElementById('plantSearchBar');
+        plantSearchBar.addEventListener('input', function() {
+            const searchValue = this.value;
+            filterPlantsBySearch(searchValue);
+        });
+
+        // Initial filtering based on the default value of the plantRefine dropdown
+        const initialSelectedType = plantRefineDropdown.value;
+        filterPlantsByType(initialSelectedType);
+
+    });
 </script>
 {% endblock %}

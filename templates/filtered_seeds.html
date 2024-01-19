@@ -6,7 +6,7 @@
                 <p>{{ seed.name }}</p>
             </div>
             <div class="infoDetails">
-                <p>{{ seed.plant_type }}</p>
+                <p>{{ seed.seedType }}</p>
             </div>
             <div class="infoDetails">
                 <p>{{ seed.when_to_plant }}</p>
@@ -22,7 +22,7 @@
             <div class="seedImage"> 
                 <img src="{{url_for('static', filename='uploads/seed_images/' + seed.image_filename)}}" alt="Seed Image">
             </div>
-            <div class="infoBackground"><p id="plantType"><b>Plant Type:</b> {{ seed.plant_type }}</p></div>
+            <div class="infoBackground"><p id="plantType"><b>Plant Type:</b> {{ seed.seedType }}</p></div>
             <div class="infoBackground"><p id="germinateTime"><b>Germination Time:</b> {{ seed.germinate_time }} days</p></div>
             <div class="infoBackground"><p id="maturityTime"><b>Reaches Maturity in</b> {{ seed.maturity_time }} weeks</p></div>
             <div class="infoBackground"><p id="plantingDepth"><b>Planting Depth:</b> {{ seed.planting_depth }} mm</p></div>

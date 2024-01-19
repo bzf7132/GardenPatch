@@ -1,4 +1,5 @@
 #Imports necessary classes/modules
+from operator import or_
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
@@ -36,7 +37,7 @@ class Users(UserMixin, db.Model):
 class Seed(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    plant_type = db.Column(db.String(250), nullable=False)
+    seedType = db.Column(db.String(250), nullable=False)
     germinate_time = db.Column(db.String(250))
     planting_depth = db.Column(db.String(250))
     plant_spacing = db.Column(db.String(250))
@@ -177,12 +178,54 @@ def tasks():
 def calendar():
     return render_template("calendar.html")
 
+# myPlants Page Routes:
+
 @app.route("/myPlants/")
 @login_required
 def myPlants():
     user_plants = Plant.query.filter_by(user_id=current_user.id).all()
     user_seeds = Seed.query.filter_by(user_id=current_user.id).all()
     return render_template("myPlants.html",user_plants=user_plants, user_seeds=user_seeds)
+
+@app.route('/filter_plants', methods=['GET'])
+@login_required
+def filter_plants():
+    selected_type = request.args.get('type', '')
+
+    #Fetch filter plants based on the selected type
+    if selected_type == 'All Plants' :
+        user_plants = Plant.query.filter_by(user_id=current_user.id).all()
+    else:
+        user_plants = Plant.query.filter_by(user_id=current_user.id, plantType=selected_type).all()
+
+    # Render the template with the filtered Plants
+    rendered_html = render_template("filtered_plants.html", user_plants=user_plants)
+
+    #Return the filtered HTML as a JSON response
+    return jsonify(html=rendered_html)
+
+@app.route('/search_plants', methods=['GET'])
+@login_required
+def search_plants():
+    search_query = request.args.get('query', '').strip()
+
+    # Fetch plants that match the search query
+    user_plants = Plant.query.filter(
+        or_(
+            Plant.plantName.ilike(f"%{search_query}%"),
+            Plant.plantType.ilike(f"%{search_query}%"),
+            Plant.plantSunRequirement.ilike(f"%{search_query}%"),
+            Plant.plantPlacement.ilike(f"%{search_query}%"),
+        ),
+        Plant.user_id == current_user.id
+    ).all()
+
+    # Render the template with the filtered Plants
+    rendered_html = render_template("filtered_plants.html", user_plants=user_plants)
+
+    # Return the filtered HTML as a JSON response
+    return jsonify(html=rendered_html)
+
 
 @app.route("/remove_plants", methods=["POST"])
 @login_required
@@ -203,11 +246,11 @@ def remove_plants():
         # Return error response
         return jsonify(success=False)
 
-@app.route('/get_seeds/<plant_type>')
+@app.route('/get_seeds/<seedType>')
 @login_required
-def get_seeds(plant_type):
+def get_seeds(seedType):
     # Fetch seeds only for the logged-in user and the selected plant type
-    user_seeds = Seed.query.filter_by(user_id=current_user.id, plant_type=plant_type).all()
+    user_seeds = Seed.query.filter_by(user_id=current_user.id, seedType=seedType).all()
 
     # Convert the seed data to a format that can be easily converted to JSON
     seed_data = [{'name': seed.name} for seed in user_seeds]
@@ -366,11 +409,7 @@ def search_seeds():
     user_seeds = Seed.query.filter(
         or_(
             Seed.name.ilike(f"%{search_query}%"),
-            Seed.plant_type.ilike(f"%{search_query}%"),
-            Seed.germinate_time.ilike(f"%{search_query}%"),
-            Seed.planting_depth.ilike(f"%{search_query}%"),
-            Seed.plant_spacing.ilike(f"%{search_query}%"),
-            Seed.maturity_time.ilike(f"%{search_query}%"),
+            Seed.seedType.ilike(f"%{search_query}%"),
             Seed.sun_requirement.ilike(f"%{search_query}%"),
             Seed.when_to_plant.ilike(f"%{search_query}%"),
         ),
@@ -408,7 +447,7 @@ def remove_seeds():
 def add_seed():
     #Get data from form
     seed_name = request.form.get('addSeedName')
-    plant_type = request.form.get('addSeedType')
+    seedType = request.form.get('addSeedType')
     germinate_time = request.form.get('addSeedGermination')
     planting_depth = request.form.get('addSeedDepth')
     plant_spacing = request.form.get('addSeedSpacing')
@@ -431,7 +470,7 @@ def add_seed():
     # Create a new seed with the form data
     new_seed = Seed(
         name=seed_name,
-        plant_type=plant_type,
+        seedType=seedType,
         germinate_time=germinate_time,
         planting_depth=planting_depth,
         plant_spacing=plant_spacing,

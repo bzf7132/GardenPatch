@@ -1,0 +1,35 @@
+{% for plant in user_plants %}
+    <div class="BasicInfo">
+        <button class="InfoButton" onclick="openPopup('plantPopup{{ plant.id }}')">
+            <div class="infoDetails">
+                <p>{{ plant.plantName }}</p>
+            </div>
+            <div class="infoDetails" id="typeOfPlant">
+                <p>{{ plant.plantType }}</p>
+            </div>
+            <div class="infoDetails">
+                <p>{{ plant.plantPlacement }}</p>
+            </div>
+        </button>
+        <input type="checkbox" name="marked_plant" id="plant_{{ plant.id }}" value="{{ plant.id }}" onchange="updateCheckedPlants('{{ plant.id }}')">
+    </div>
+
+    <!-- Plant Information Popup -->
+    <div class="plantPopup" id="plantPopup{{ plant.id }}">
+        <h2>{{ plant.plantName }}</h2>
+        <div class="infoContainerPlant">
+            <div class="infoBackground"><p><b>Date Planted:</b> {{ plant.plantDate }}</p></div>
+            {% if plant.newSeedling == 0 %}
+                <div class="infoBackground"><p><b>Date of Germination:</b> {{ plant.germinationDate }}</p></div>
+            {% else %}
+                <div class="infoBackground"><p><b>New Seedling</b></p></div>
+            {% endif %}
+            <div class="infoBackground"><p><b>Maturity Date:</b> {{ plant.maturityDate}}</p></div>
+            <div class="infoBackground"><p><b>Plant Type:</b> {{ plant.plantType }}</p></div>
+            <div class="infoBackground"><p><b>Sun Requirement:</b> {{ plant.plantSunRequirement }}</p></div>
+            <div class="infoBackground"><p><b>Planted in:</b> {{ plant.plantPlacement}}</p></div>
+            <button class="seedExit" onclick="closePopup('plantPopup')">Remove</button>
+            <button class="seedExit" onclick="closePopup('plantPopup{{ plant.id }}')">Exit</button>
+        </div>
+    </div>
+    {% endfor %}
