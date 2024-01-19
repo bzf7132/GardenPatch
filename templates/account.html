@@ -120,49 +120,50 @@
     <a href="{{url_for('calendar')}}">Calendar</a>
   </div>
 
-  <!-- Account settings section -->
+  <!-- Account Settings Section -->
   <div class="account-container">
     <a href="#" class="edit-link">edit</a>
     <div class="profile-picture"></div>
     <input type="text" placeholder="Username" class="account-input" required>
+    <!-- Change Password button -->
     <button onclick="toggleForm('changePassword')">Change Password</button>
     <input type="text" placeholder="Hemisphere" class="account-input" required>
+    <!-- Set Password Question button -->
     <button onclick="toggleForm('setPasswordQuestion')">Set Password Question</button>
+    <!-- Delete Account button -->
     <button class="delete-account-btn">Delete Account</button>
   </div>
 
-  <!-- Change Password Form -->
+  <!-- Change Password Form (hidden by default) -->
   <div id="changePassword" class="form-container hidden">
+    <!-- Form title -->
     <h2>Change Password</h2>
+    <!-- Input for current, new, and confirmed new password -->
     <input type="password" placeholder="Current Password" required>
     <input type="password" placeholder="New Password" required>
     <input type="password" placeholder="Confirm Password" required>
+    <!-- Submit and cancel buttons -->
     <button onclick="toggleForm('changePassword')">Submit</button>
     <button onclick="toggleForm('changePassword')">Cancel</button>
   </div>
 
-  <!-- Set Password Question Form -->
+  <!-- Set Password Question Form (hidden by default) -->
   <div id="setPasswordQuestion" class="form-container hidden">
     <h2>Set Password Question</h2>
+    <!-- Input for security question and answer -->
     <input type="text" placeholder="Question" required>
     <input type="text" placeholder="Answer" required>
+    <!-- Submit and cancel buttons -->
     <button onclick="toggleForm('setPasswordQuestion')">Submit</button>
     <button onclick="toggleForm('setPasswordQuestion')">Cancel</button>
   </div>
-  <a href="{{ url_for('logout') }}">Logout</a>
 
+  <!-- JavaScript for toggling the visibility of forms -->
   <script>
     function toggleForm(formId) {
-      // Retrieve all form containers
-      var forms = document.querySelectorAll('.form-container');
-
-      // Loop through all forms and hide them
-      forms.forEach(function (form) {
-        form.classList.add('hidden');
-      });
-
-      // Toggle the selected form
+      // Retrieve the form element based on formId
       var form = document.getElementById(formId);
+      // Toggle the 'hidden' class to show or hide the form
       form.classList.toggle('hidden');
     }
   </script>
