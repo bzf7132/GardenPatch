@@ -202,8 +202,29 @@ def login():
 
 @app.route("/tasks/")
 @login_required
-def tasks():
-    return render_template("tasks.html")
+def index():
+    tasks = Task.query.all()
+    return render_template('task manager.html', tasks=tasks)
+
+@app.route('/add_task', methods=['POST'])
+def add_task():
+    task_name = request.form['task_name']
+    description = request.form['description']
+    due_date = request.form['due_date']
+
+    new_task = Task(task_name=task_name, description=description, due_date=due_date)
+
+    try:
+        db.session.add(new_task)
+        db.session.commit()
+        return redirect(url_for('task'))
+    except:
+        return 'Error adding task'
+
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)
+    return render_template("tasks manager.html")
 
 @app.route("/calendar/")
 @login_required
