@@ -14,22 +14,35 @@
     }
 
     .navbar {
-      background-color: #98FB98;
-      overflow: hidden;
-      padding: 10px 0;
+      background-color: #70FF99;
+      font-size: 1.5em;
+      font-family: Arial, Helvetica, sans-serif;
+      color: black;
+      padding: 1rem 5px 1rem 5px;
+      display: flex;
+      justify-content: center;
     }
 
     .navbar a {
-      float: left;
-      display: block;
-      color: black;
-      text-align: center;
-      padding: 14px 16px;
       text-decoration: none;
+      color: inherit;
     }
 
-    .navbar a:hover {
-      background-color: #7F9F7F;
+    .navbar-item {
+      margin-left: 30px;
+    }
+    .logo {
+    background-color: #D2FCD6;
+    }
+
+    .logo img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 1em;
+      padding-bottom: 1em;
+      max-width: 10%;
+      height: auto;
     }
 
     .account-container {
@@ -110,14 +123,22 @@
 <body>
 
   <!-- Navigation bar section -->
-  <div class="navbar">
-    <a href="{{ url_for('home') }}">Home</a>
-    <a href="{{ url_for('account') }}">Account</a>
-    <a href="{{ url_for('loginregister') }}">Login or Register</a>
-    <a href="{{url_for('seedLibrary') }}">Seed Library</a>
-    <a href="{{url_for('myPlants')}}">My Plants</a>
-    <a href="{{url_for('tasks')}}">Tasks</a>
-    <a href="{{url_for('calendar')}}">Calendar</a>
+  <div class="mainHeader">
+    <div class="logo">
+        <img src="{{url_for('static', filename='img/logo.png')}}" alt="Logo">
+    </div>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}" class="navbar-item">Home</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{url_for('seedLibrary') }}" class="navbar-item">Seed Library</a>
+            <a href="{{url_for('myPlants')}}" class="navbar-item">My Plants</a>
+            <a href="{{url_for('tasks')}}" class="navbar-item">Tasks</a>
+            <a href="{{url_for('calendar')}}" class="navbar-item">Calendar</a>
+            <a href="{{ url_for('account') }}" class="navbar-item">Account</a>
+        {% else %}
+            <a href="{{ url_for('loginregister') }}" class="navbar-item">Login/Register</a>
+        {% endif %}
+    </div>
   </div>
 
   <!-- Account Settings Section -->
@@ -132,6 +153,7 @@
     <button onclick="toggleForm('setPasswordQuestion')">Set Password Question</button>
     <!-- Delete Account button -->
     <button class="delete-account-btn">Delete Account</button>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
 
   <!-- Change Password Form (hidden by default) -->

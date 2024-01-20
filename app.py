@@ -32,7 +32,8 @@ class Users(UserMixin, db.Model):
     password = db.Column(db.String(250), nullable=False)
     hemisphere = db.Column(db.String(20), nullable=False)
     seeds = db.relationship('Seed', backref='user', lazy=True)      #Relationship for Seed table
-    plants = db.relationship('Plant', backref='user', lazy=True)
+    plants = db.relationship('Plant', backref='user', lazy=True)    # Relationship for Plant table
+    tasks = db.relationship('Task', backref='user', lazy=True)      # Relationship for Task table
 
 #Create Seed class, a subclass of db.Model
 class Seed(db.Model):
@@ -62,6 +63,13 @@ class Plant(db.Model):
     plantPlacement = db.Column(db.String(250))
     newSeedling = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)   #User ID from Users table
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    task_name = db.Column(db.String(255), nullable=False)
+    priority = db.Column(db.String(50), nullable=False)
+    deadline = db.Column(db.Date, nullable=False)  # Use Date type for the deadline
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 #Initializes Flask-SQLAlchemy extension with flask App.
 db.init_app(app)
@@ -200,31 +208,57 @@ def login():
 
     return render_template("loginregister.html")
 
-@app.route("/tasks/")
+@app.route('/tasks')
 @login_required
-def index():
-    tasks = Task.query.all()
-    return render_template('task manager.html', tasks=tasks)
+def tasks():
+    user_tasks = Task.query.filter_by(user_id=current_user.id).all()
+    return render_template('tasks.html', user_tasks=user_tasks)
 
 @app.route('/add_task', methods=['POST'])
+@login_required
 def add_task():
-    task_name = request.form['task_name']
-    description = request.form['description']
-    due_date = request.form['due_date']
-
-    new_task = Task(task_name=task_name, description=description, due_date=due_date)
-
     try:
+        task_name = request.json.get('task')
+        priority = request.json.get('priority')
+        deadline = datetime.strptime(request.json.get('deadline'), '%Y-%m-%d')
+
+        # Create a new Task instance
+        new_task = Task(task_name=task_name, priority=priority, deadline=deadline, user_id=current_user.id)
+
+        # Add the new task to the database
         db.session.add(new_task)
         db.session.commit()
-        return redirect(url_for('task'))
-    except:
-        return 'Error adding task'
 
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
-    return render_template("tasks manager.html")
+        # Return a JSON response indicating success
+        return jsonify(success=True)
+
+    except Exception as e:
+        print(f"Error adding task: {e}")
+        db.session.rollback()
+        # Return a JSON response indicating failure
+        return jsonify(success=False, error="Error adding task. Please try again.")
+    
+@app.route('/mark_done/<int:task_id>', methods=['POST'])
+@login_required
+def mark_done(task_id):
+    task = Task.query.get(task_id)
+    
+    if task and task.user_id == current_user.id:
+        try:
+            # Perform any necessary task completion logic
+            # ...
+
+            # Delete the task from the database
+            db.session.delete(task)
+            db.session.commit()
+
+            return jsonify(success=True)  # Return JSON response for success
+        except Exception as e:
+            print(f"Error marking task as done: {e}")
+            db.session.rollback()
+            return jsonify(success=False, error="Error marking task as done. Please try again.")
+
+    return jsonify(success=False, error="Task not found or unauthorized.")
 
 @app.route("/calendar/")
 @login_required

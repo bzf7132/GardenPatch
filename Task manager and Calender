@@ -25,7 +25,7 @@
 		</div>
 		<div class="task-list" id="task-list">
 			</div>
-		<script src="./js/task manager.js"></script>
+		<script src="static/js/taskManager.js"></script>
 	</main>
 </body>
 

@@ -1,86 +1,126 @@
-{% extends "layout.html" %}
-{% block title %}
-Tasks
-{% endblock %}
-{% block content %}
-<p>Tasks will be displayed here</p>
-<div class="tasksPage">
-    <div class="leftTasks">
-        <div class="myTasks">My Tasks</div>
-        <div class="tasksDaily">
-            <div class="tasksToday">Today</div>
-            <div class="tasksCompleted">Completed</div>
-        </div>
-        <div class="tasksBox">
-            <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
-            <button class="taskButton">N</button>
-        </div>
-        <div class="tasksTomorrow">Tomorrow</div>
-        <div class="tomorrowTasks">
-            <button class="tomorrowSelect" onclick="openTaskPopup()">Tomorrow Task</button>
-            <button class="tomorrowButton">N</button>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="static/css/style.css">
+        <title>Task Scheduler</title>
+    </head>
 
-    <div class="rightTasks">
-        <button class="addTasks" onclick="openPopup()">Add Tasks</button>
-        <div class="tasksWeekly">
-            <div class="weeklyTasks">Weekly</div>
-            <div class="tasksCompleted">Completed</div>
+    <body>
+        <div class="mainHeader">
+            <div class="logo">
+                <img src="{{url_for('static', filename='img/logo.png')}}" alt="Logo">
+            </div>
+            <div class="navbar">
+                <a href="{{ url_for('home') }}" class="navbar-item">Home</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{url_for('seedLibrary') }}" class="navbar-item">Seed Library</a>
+                    <a href="{{url_for('myPlants')}}" class="navbar-item">My Plants</a>
+                    <a href="{{url_for('tasks')}}" class="navbar-item">Tasks</a>
+                    <a href="{{url_for('calendar')}}" class="navbar-item">Calendar</a>
+                    <a href="{{ url_for('account') }}" class="navbar-item">Account</a>
+                {% else %}
+                    <a href="{{ url_for('loginregister') }}" class="navbar-item">Login/Register</a>
+                {% endif %}
+            </div>
         </div>
-        <div class="tasksBox">
-            <button class="taskSelect" onclick="openTaskPopup()">Task Name</button>
-            <button class="taskButton">N</button>
-        </div>
-    </div>
-</div>
+        <header>
+            <h1>Task Scheduler</h1>
+        </header>
+        <main>
+            <div class="task-form">
+                <input type="text" id="task" placeholder="Enter task...">
+                <select id="priority">
+                    <option value="top">Top Priority</option>
+                    <option value="middle">Middle Priority</option>
+                    <option value="low">Less Priority</option>
+                </select>
+                <input type="date" id="deadline">
+                <button id="add-task">Add Task</button>
+            </div>
+            {% for task in user_tasks %}
+            <div class="task-list" data-task-id="{{ task.id }}">
+                <p>{{ task.task_name }}</p>
+                <p><b>Priority:</b> {{ task.priority }}</p>
+                <p><b>Deadline:</b> {{ task.deadline }}</p>
+                <button class="mark-done">Mark Done</button>
+            </div>
+            {% endfor %}
+        </main>
 
-<!-- View Task Popup-->
-<div class="taskPopup" id="taskPopup">
-    <div class="infoBackground"><h1>Task Name</h1></div>
-    <div class="taskDescription">Task Description</div>
-    <div class="taskPopupLayout">
-        <div class="DateforTask">Need to add Date</div>
-        <div class="Reccuring">Recurring: No</div>
-        <button class="submitButton" onclick="closeTaskPopup()">Submit</button>
-        <button class="exitButton" onclick="closeTaskPopup()">Exit</button>
-    </div>
-</div>
-
-<!--Add Task Popup-->
-<div class="addTaskPopup" id="addTaskPopup">
-        <div class="infoBackground"><p>Add Tasks</p></div>
-        <form>
-            <input type="text" name="taskName" placeholder="Task Name">
-            <textarea name="taskDesc" rows="4" cols="50" placeholder="Task Description"></textarea>
-            <input type="date" name="Date" placeholder="Date">
-            <select name="yesNo">
-                <option value="" disabled selected hidden>Recurring?</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-        </form>
-        <button class="submitButton" onclick="closePopup()">Submit</button>
-        <button class="exitButton" onclick="closePopup()">Exit</button>
-</div>
-
-<script>
-    /* Js Popup for tasks */
-    let taskPopup = document.getElementById("taskPopup")
-    function openTaskPopup() {
-        taskPopup.classList.add("open-taskPopup");
-    }
-    function closeTaskPopup() {
-        taskPopup.classList.remove("open-taskPopup");
-    }
-
-    /* Js Popup for Adding Task */
-    let addTaskPopup = document.getElementById("addTaskPopup")
-    function openPopup() {
-        addTaskPopup.classList.add("open-addTaskPopup");
-    }
-    function closePopup() {
-        addTaskPopup.classList.remove("open-addTaskPopup");
-    }
-</script>
-{% endblock %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const addTaskButton = document.getElementById("add-task");
+                const taskInput = document.getElementById("task");
+                const priorityInput = document.getElementById("priority");
+                const deadlineInput = document.getElementById("deadline");
+        
+                addTaskButton.addEventListener("click", () => {
+                    const task = taskInput.value;
+                    const priority = priorityInput.value;
+                    const deadline = deadlineInput.value;
+        
+                    if (task.trim() === "" || deadline === "") {
+                        alert("Please enter a task and select an upcoming date for the deadline.");
+                        return;
+                    }
+        
+                    const taskData = {
+                        task: task,
+                        priority: priority,
+                        deadline: deadline
+                    };
+        
+                    // Send the task data to the server using fetch
+                    fetch('/add_task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(taskData),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // If the task was successfully added, update the UI or handle as needed
+                            // ...
+                        } else {
+                            alert("Error adding task. Please try again.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("Error adding task. Please try again.");
+                    });
+                });
+        
+                // Event delegation for mark-done button clicks
+                document.addEventListener("click", function (event) {
+                    if (event.target.classList.contains("mark-done")) {
+                        const taskItem = event.target.parentElement;
+                        const taskId = taskItem.dataset.taskId;
+        
+                        // Send a request to mark the task as done
+                        fetch(`/mark_done/${taskId}`, {
+                            method: 'POST',
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // If the task was successfully marked as done, refresh the page
+                                location.reload();
+                            } else {
+                                alert("Error marking task as done. Please try again.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert("Error marking task as done. Please try again.");
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -4,6 +4,38 @@ body {
 	padding: 0;
 }
 
+.navbar {
+	background-color: #70FF99;
+	font-size: 1.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	padding: 1rem 5px 1rem 5px;
+	display: flex;
+	justify-content: center;
+}
+
+.navbar a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.navbar-item {
+	margin-left: 30px;
+}
+.logo {
+  background-color: #D2FCD6;
+}
+
+.logo img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	max-width: 10%;
+	height: auto;
+}
+
 header {
 	background-color: green;
 	color: white;
@@ -24,8 +56,14 @@ main {
 }
 
 .task-list {
-	border: 1px solid #ddd;
-	padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+	border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+	background-color: #D2FCD6;
 }
 
 .task {
@@ -38,11 +76,10 @@ main {
 	border-radius: 5px;
 }
 
-.task button {
+.task-form button {
 	background-color: #28a745;
 	color: white;
 	border: none;
 	border-radius: 3px;
 	cursor: pointer;
 }
-
