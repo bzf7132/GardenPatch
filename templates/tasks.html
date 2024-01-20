@@ -51,28 +51,32 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
+                // Get references to form elements and initialize event listeners
                 const addTaskButton = document.getElementById("add-task");
                 const taskInput = document.getElementById("task");
                 const priorityInput = document.getElementById("priority");
                 const deadlineInput = document.getElementById("deadline");
-        
+
                 addTaskButton.addEventListener("click", () => {
+                    // When the "Add Task" button is clicked, collect task data
                     const task = taskInput.value;
                     const priority = priorityInput.value;
                     const deadline = deadlineInput.value;
-        
+
+                    // Validate task input
                     if (task.trim() === "" || deadline === "") {
                         alert("Please enter a task and select an upcoming date for the deadline.");
                         return;
                     }
-        
+
+                    // Construct the task data object
                     const taskData = {
                         task: task,
                         priority: priority,
                         deadline: deadline
                     };
-        
-                    // Send the task data to the server using fetch
+
+                    // Send a POST request to the server to add the task
                     fetch('/add_task', {
                         method: 'POST',
                         headers: {
@@ -82,31 +86,34 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        // Handle the response from the server after adding the task
                         if (data.success) {
-                            // If the task was successfully added, update the UI or handle as needed
-                            // ...
+                            location.reload();
                         } else {
                             alert("Error adding task. Please try again.");
                         }
                     })
                     .catch(error => {
+                        // Handle errors that may occur during the fetch
                         console.error('Error:', error);
                         alert("Error adding task. Please try again.");
                     });
                 });
-        
+
                 // Event delegation for mark-done button clicks
                 document.addEventListener("click", function (event) {
                     if (event.target.classList.contains("mark-done")) {
+                        // When a "Mark Done" button is clicked, find the associated task and mark it as done
                         const taskItem = event.target.parentElement;
                         const taskId = taskItem.dataset.taskId;
-        
-                        // Send a request to mark the task as done
+
+                        // Send a POST request to the server to mark the task as done
                         fetch(`/mark_done/${taskId}`, {
                             method: 'POST',
                         })
                         .then(response => response.json())
                         .then(data => {
+                            // Handle the response from the server after marking the task as done
                             if (data.success) {
                                 // If the task was successfully marked as done, refresh the page
                                 location.reload();
@@ -115,6 +122,7 @@
                             }
                         })
                         .catch(error => {
+                            // Handle errors that may occur during the fetch
                             console.error('Error:', error);
                             alert("Error marking task as done. Please try again.");
                         });
