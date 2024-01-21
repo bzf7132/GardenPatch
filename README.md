@@ -10,6 +10,8 @@
 
 **IMPORTANT - make sure python is installed before trying to run the app!**
 
+**Presentation Link:** https://drive.google.com/file/d/1OgJiw46wMCkcaBmZzIo6qiWLZcViAe0O/view
+
 **For Contributors:**
 
 Add this repository to github desktop.
