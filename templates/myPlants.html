@@ -3,7 +3,7 @@
 My Plants
 {% endblock %}
 {% block content %}
-<!-- Header for Seed Plant page -->
+<!-- Header for My Plant page -->
 <div class="seedPlantHeader">
     <div class="seedItemButton">
         <button class="button" onclick="openPopup('addPlantPopup')">Add Plant</button>
@@ -170,8 +170,8 @@ My Plants
     }
 
     function submitSeedForm() {
-        const form = document.getElementById('addPlantSeed');
-        const formData = new FormData(form);
+        const form = document.getElementById('addPlantSeed');                       //Gets form element with id addPlantSeed
+        const formData = new FormData(form);                                        //Creates new FormData object from the form
 
         // Get inputs from form
         const selectedPlantType = document.getElementById("newPlantType").value;
@@ -222,31 +222,31 @@ My Plants
 
 
     // Functions for Checkboxes:
-    var checkedPlants = [];
+    var checkedPlants = [];                                     // Array to store IDs of checked plants
     function updateCheckedPlants(plantId) {
         // Parse plantId as an integer if needed
         plantId = parseInt(plantId, 10);
-        var index = checkedPlants.indexOf(plantId);
-        if (index === -1) {
+        var index = checkedPlants.indexOf(plantId);             // Check if plantId is already in the array
+        if (index === -1) {                                     // If not in the array, add it; otherwise, remove it
             checkedPlants.push(plantId);
         } else {
             checkedPlants.splice(index, 1);
         }
     }
-    function removeSelectedPlants() {
-        fetch('/remove_plants', {
+    function removeSelectedPlants() {                           // Function to remove selected plants using a server-side request
+        fetch('/remove_plants', {                               // Make a POST request to the server to remove the selected plants
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ plantIds: checkedPlants })
+            body: JSON.stringify({ plantIds: checkedPlants })   // Send the list of plantIds to be removed in the request body
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+            if (data.success) {                                 // If the server reports success, reload the page to reflect the changes
                 location.reload();
             } else {
-                console.error('Failed to remove plants.');
+                console.error('Failed to remove plants.');      // If removal fails, log an error message
             }
         })
         .catch(error => console.error('Error:', error));
@@ -256,8 +256,8 @@ My Plants
 
     // Event listener for when the DOM content is fully loaded
     document.addEventListener("DOMContentLoaded", function () {
-        const plantRefineDropdown = document.getElementById('plantRefine');
-        plantRefineDropdown.addEventListener('change', function() {
+        const plantRefineDropdown = document.getElementById('plantRefine');         // Get reference to the dropdown element for plant refinement
+        plantRefineDropdown.addEventListener('change', function() {                 // Add event listener for when the value of the dropdown changes
             const selectedType = this.value;
 
             // Make an AJAX request to the server

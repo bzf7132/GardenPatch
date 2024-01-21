@@ -245,9 +245,6 @@ def mark_done(task_id):
     
     if task and task.user_id == current_user.id:
         try:
-            # Perform any necessary task completion logic
-            # ...
-
             # Delete the task from the database
             db.session.delete(task)
             db.session.commit()
